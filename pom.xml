@@ -70,6 +70,11 @@
             <artifactId>spring-social-core</artifactId>
             <version>1.1.4.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-web</artifactId>
+            <version>1.1.4.RELEASE</version>
+        </dependency>
 
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
@@ -97,6 +102,8 @@
             <!-- optional=true,依赖不会往下传递，如果有项目依赖本项目，并且想要使用devtools，需要重新引入 -->
             <optional>true</optional>
         </dependency>
+
+
 
 
 

@@ -1,8 +1,10 @@
 package com.leiming.course_evaluation.service;
 
+import com.leiming.course_evaluation.dto.User;
+import com.leiming.course_evaluation.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
+//import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,11 +18,18 @@ public class UserService implements UserDetailsService {
     //spring security默认处理登录的的类
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println(username);
+        User user = userRepository.findByUsername(username);
         //用户名,密码跟权限,密码必须要设置加密方式
         //User实现UserDetails接口
-        return new User(username,passwordEncoder.encode("123456"), AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        //username,passwordEncoder.encode("123456"), AuthorityUtils.commaSeparatedStringToAuthorityList("admin")
+        if (user == null){
+            throw new UsernameNotFoundException(username);
+        }
+        return new User(user.getUsername(),passwordEncoder.encode(user.getPassword()),AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 }

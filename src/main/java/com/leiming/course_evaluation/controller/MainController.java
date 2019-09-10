@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class MainController {
-    @RequestMapping("/")
+    @RequestMapping("/login")
     public String index(){
-        return "index.html";
+        return "login.html";
     }
     @RequestMapping("/toRegister")
     public String toRegister(){
