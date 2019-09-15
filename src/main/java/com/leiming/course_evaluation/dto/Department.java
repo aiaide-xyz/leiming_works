@@ -1,9 +1,11 @@
 package com.leiming.course_evaluation.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 //院系实体
 @Entity
 public class Department {
@@ -12,13 +14,13 @@ public class Department {
     private Long id;
     private String dptName;
     private String mark;
+    @OneToMany(mappedBy = "department")
+
+    private List<Student> students;
+    @OneToMany(mappedBy = "department")
+    private List<Teacher> teachers = new ArrayList<>();
     protected Department(){
 
-    }
-
-    public Department(String dptName, String mark) {
-        this.dptName = dptName;
-        this.mark = mark;
     }
 
     public Long getId() {
@@ -43,5 +45,28 @@ public class Department {
 
     public void setMark(String mark) {
         this.mark = mark;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
+    }
+
+    public Department(String dptName, String mark, List<Student> students, List<Teacher> teachers) {
+        this.dptName = dptName;
+        this.mark = mark;
+        this.students = students;
+        this.teachers = teachers;
     }
 }

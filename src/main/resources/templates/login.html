@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>后台管理-登陆</title>
@@ -10,6 +10,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="../lib/layui-v2.5.4/css/layui.css" media="all">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+    <script src="/lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -35,38 +38,43 @@
 <div class="layui-container">
     <div class="admin-login-background">
         <div class="layui-form login-form">
-            <form class="layui-form" action="/login" id="login" method="post">
+
                 <div class="layui-form-item logo-title">
                     <h1>评教系统后台登录</h1>
                 </div>
+            <form action="/login" method="post">
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-username" for="username"></label>
-                    <input type="text" name="username" placeholder="用户名" autocomplete="off" class="layui-input" value="">
+                    <input type="text"  id="username" name="username" placeholder="用户名" autocomplete="off" class="layui-input" value="123">
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-password" for="password"></label>
-                    <input type="password" name="password" placeholder="密码" autocomplete="off" class="layui-input" value="">
+                    <input type="password" id="password" name="password" placeholder="密码" autocomplete="off" class="layui-input" value="123">
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-vercode" for="captcha"></label>
-                    <input type="text" name="userCode" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="">
+                    <input type="text" id="userCode" name="userCode" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="">
                     <div class="captcha-img" style="background-color: white">
                         <img id="captchaPic" src="/getGifCode">
                     </div>
+
+
                 </div>
+                <span style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}" id="msg"></span>
+                <span>&nbsp;</span>
+
                 <div class="layui-form-item">
                     <input type="checkbox" name="rememberMe" value="true" lay-skin="primary" title="记住密码">
                 </div>
                 <div class="layui-form-item">
-                    <button class="layui-btn layui-btn-fluid" type="submit" lay-filter="code" lay-submit="">登 入</button>
+                    <button class="layui-btn layui-btn-fluid" type="submit" lay-submit="login" lay-filter="login">登 入</button>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
-<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
-<script src="../lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
-<script src="../lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
+
 <script>
     layui.use(['form'], function () {
         var form = layui.form,
@@ -82,9 +90,18 @@
                 lineColor:'#5cbdaa'
             });
         });
+        //ajax登录
+        // $.ajax({
+        //     url:"/login",
+        //     type:"post",
+        //     data:{"username":$("#username").val(),"password":$("#password"),"userCode":$("#userCode")},
+        //     success:function (data) {
+        //         layer.msg(data)
+        //     }
+        // })
 
         // 进行登录操作
-        form.on('submit(code)', function (data) {
+        form.on('submit(login)', function (data) {
             data = data.field;
             if (data.username == '') {
                 layer.msg('用户名不能为空');
@@ -105,6 +122,9 @@
 
 
         });
+        $("input").focus(function () {
+            $("#msg").css("display","none")
+        })
         $("#captchaPic").click(function () {
 
             $(this).attr("src", "/getGifCode?"+Math.random());

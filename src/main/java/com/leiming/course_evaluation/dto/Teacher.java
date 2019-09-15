@@ -1,11 +1,14 @@
 package com.leiming.course_evaluation.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
+
 //教师实体
 @Entity
+
+
 public class Teacher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +17,13 @@ public class Teacher {
     private String password;
     private String sex;
     private String teacherNumber;
+    @Transient
+    private String dptName;
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    @JsonBackReference
+    private Department department;
+
     protected Teacher(){
 
     }
@@ -58,10 +68,28 @@ public class Teacher {
         this.teacherNumber = teacherNumber;
     }
 
-    public Teacher(String username, String password, String sex, String teacherNumber) {
+    public String getDptName() {
+        return dptName;
+    }
+
+    public void setDptName(String dptName) {
+        this.dptName = dptName;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public Teacher(String username, String password, String sex, String teacherNumber, String dptName, Department department) {
         this.username = username;
         this.password = password;
         this.sex = sex;
         this.teacherNumber = teacherNumber;
+        this.dptName = dptName;
+        this.department = department;
     }
 }

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>layui</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../lib/layui-v2.5.4/css/layui.css" media="all">
-    <link rel="stylesheet" href="../css/public.css" media="all">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
 </head>
 <body>
 <div class="layuimini-container">
@@ -54,39 +55,43 @@
             <button class="layui-btn data-add-btn">添加</button>
             <button class="layui-btn layui-btn-danger data-delete-btn">删除</button>
         </div>
-        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+        <div class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"> ></div>
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">查看更多/编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
     </div>
 </div>
-<script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
-<script>
+<script src="/lib/layui-v2.5.4/layui.js" charset="utf-8" ></script>
+<script th:inline="none">
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
 
         table.render({
-            elem: '#currentTableId',
-            url: '../api/table.json',
+            elem: document.getElementById('currentTableId'),
+            url: '/department',
+
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"},
-                {field: 'id', width: 80, title: 'ID', sort: true},
-                {field: 'username', width: 80, title: '用户名'},
-                {field: 'sex', width: 80, title: '性别', sort: true},
-                {field: 'city', width: 80, title: '城市'},
-                {field: 'sign', title: '签名', minWidth: 150},
-                {field: 'experience', width: 80, title: '积分',},
-                {field: 'score', width: 80, title: '评分'},
-                {field: 'classify', width: 80, title: '职业'},
-                {field: 'wealth', width: 135, title: '财富'},
+                {field: 'id', title: 'ID', sort: true},
+                {field: 'dptName', title: '院系'},
+                {field: 'mark', title: '备注'},
                 {title: '操作', minWidth: 50, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
-            limits: [10, 15, 20, 25, 50, 100],
-            limit: 15,
-            page: true
+            page:true,
+            limit:10,
+            response:{statusCode:0},
+            parseData:function (data) {
+                return {
+                    "code": 0, //解析接口状态
+                    "msg": "", //解析提示文本
+                    "count": data.size, //解析数据长度
+                    "data": data.data //解析数据列表
+                }
+            }
+
         });
 
         // 监听搜索操作
@@ -127,9 +132,21 @@
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
+
             var data = obj.data;
             if (obj.event === 'edit') {
-                layer.alert('编辑行：<br>' + JSON.stringify(data))
+                // layer.open({
+                //     type:2,
+                //     content:'https://www.layui.com/admin/std/dist/views/user/user/userform.html',
+                //     area: ['500px', '300px']
+                // })
+                layer.open({
+                    type:2,
+                    content:"https://www.layui.com/admin/std/dist/views/user/user/userform.html",
+                    maxmin:true,
+                    area:['500px','500px']
+                })
+
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();
@@ -141,6 +158,7 @@
     });
 </script>
 <script>
+
 
 </script>
 
