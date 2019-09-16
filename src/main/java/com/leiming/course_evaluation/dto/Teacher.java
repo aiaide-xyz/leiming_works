@@ -24,7 +24,7 @@ public class Teacher {
     @JsonBackReference
     private Department department;
 
-    protected Teacher(){
+    public Teacher(){
 
     }
 
@@ -92,4 +92,6 @@ public class Teacher {
         this.dptName = dptName;
         this.department = department;
     }
+
+
 }

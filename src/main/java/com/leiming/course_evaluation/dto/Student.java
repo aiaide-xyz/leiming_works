@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 //学生实体
 @Entity
-
-
 public class Student {
 
     @Id
@@ -34,7 +32,7 @@ public class Student {
 
 
 
-    protected Student(){
+    public Student(){
 
     }
 

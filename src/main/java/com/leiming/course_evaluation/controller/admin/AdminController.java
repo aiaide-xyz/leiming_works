@@ -34,13 +34,15 @@ public class AdminController {
     @RequestMapping("/admin")
     public ModelAndView index(@ModelAttribute("msg") String msg, Model model, HttpServletRequest request){
         model.addAttribute("msg", msg);
-        if ((Admin)request.getSession().getAttribute("user") == null){
+        System.out.println(request.getSession().getAttribute("user"));
+//        if ((Admin)request.getSession().getAttribute("user") == null){
+        if (!(request.getSession().getAttribute("user") instanceof Admin)){
             return new ModelAndView("error/403");
         }
         return new ModelAndView("admin/index");
     }
 
-    @GetMapping("/student")
+    @GetMapping("/students")
     @ResponseBody
     public Map<String,Object> student(Integer page, Integer limit){
         page--;
@@ -60,7 +62,7 @@ public class AdminController {
         map.put("size",studentService.findAllCount());
         return map;
     }
-    @GetMapping("/teacher")
+    @GetMapping("/teachers")
     @ResponseBody
     public Map<String,Object> teacher(Integer page, Integer limit){
         page--;
@@ -79,7 +81,7 @@ public class AdminController {
         map.put("size",studentService.findAllCount());
         return map;
     }
-    @GetMapping("/department")
+    @GetMapping("/departments")
     @ResponseBody
     public Map<String,Object> department(Integer page, Integer limit){
         page--;
@@ -90,7 +92,7 @@ public class AdminController {
         map.put("size",studentService.findAllCount());
         return map;
     }
-    @GetMapping("/class")
+    @GetMapping("/classes")
     @ResponseBody
     public Map<String,Object> class_list(Integer page, Integer limit){
         page--;
@@ -102,20 +104,20 @@ public class AdminController {
         map.put("size",studentService.findAllCount());
         return map;
     }
-    @GetMapping("/test")
-    public ModelAndView test(Model model,Integer page, Integer limit){
-        page--;
-        Pageable pageable = PageRequest.of(page,limit);
-        List<CgClass> content = classService.findAll(pageable).getContent();
-        for (CgClass c:content
-             ) {
-
-        }
-        System.out.println(content);
-        model.addAttribute("class",content);
-        return new ModelAndView("admin/test.html","model",model);
-    }
-    @GetMapping("/course")
+//    @GetMapping("/test")
+//    public ModelAndView test(Model model,Integer page, Integer limit){
+//        page--;
+//        Pageable pageable = PageRequest.of(page,limit);
+//        List<CgClass> content = classService.findAll(pageable).getContent();
+//        for (CgClass c:content
+//             ) {
+//
+//        }
+//        System.out.println(content);
+//        model.addAttribute("class",content);
+//        return new ModelAndView("admin/test.html","model",model);
+//    }
+    @GetMapping("/courses")
     @ResponseBody
     public Map<String,Object> course(Integer page, Integer limit){
 
