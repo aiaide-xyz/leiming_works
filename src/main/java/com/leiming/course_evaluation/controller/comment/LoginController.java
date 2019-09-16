@@ -33,13 +33,11 @@ public class LoginController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String postLogin(RedirectAttributes model, HttpServletRequest request, String username, String userCode, String password) {
         String code = (String) request.getSession().getAttribute("code");
-        System.out.println(code);
-        System.out.println(userCode);
         if (code == null) {
             model.addFlashAttribute("msg", "服务器错误");
             return "redirect:login";
         }
-        if (!code.equals(userCode)) {
+        if (!code.equals(userCode.toLowerCase())) {
             model.addFlashAttribute("msg", "验证码错误！");
             return "redirect:login";
 

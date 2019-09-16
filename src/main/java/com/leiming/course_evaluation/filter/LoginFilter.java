@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+//强制登录拦截器
 @Component
 public class LoginFilter implements HandlerInterceptor {
     /**
@@ -36,11 +36,12 @@ public class LoginFilter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println("进入controller之前");
+        //判断session有没有“user”的值，也就是有没有登录
         Object user = request.getSession().getAttribute("user");
         if(user!=null){
             return  true;
         }
-        //跳转到登录页
+        //没有值就直接跳转到登录页
         String url = "/login";
         response.sendRedirect(url);
         return false;
