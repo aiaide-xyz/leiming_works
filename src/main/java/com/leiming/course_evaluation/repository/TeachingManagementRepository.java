@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public interface TeachingManagementRepository extends JpaRepository<TeachingManagement,Long> {
-    @Query(value = "select * from teacher_management",nativeQuery = true)
+    @Query(value = "select * from teaching_management",nativeQuery = true)
     Page<TeachingManagement> findAll(Pageable pageable);
-    @Query(value = "select count(*) from teacher_management",nativeQuery = true)
+    @Query(value = "select count(*) from teaching_management",nativeQuery = true)
     int findAllCount();
 }

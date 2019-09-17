@@ -28,6 +28,8 @@ public class AdminController {
     private CourseService courseService;
     @Autowired
     private BatchService batchService;
+    @Autowired
+    private TeachingManagementService teachingManagementService;
     //管理员登录后主页面
     @RequestMapping(value = "/admin",method = RequestMethod.GET)
     public ModelAndView index(@ModelAttribute("msg") String msg, Model model, HttpServletRequest request){
@@ -151,10 +153,10 @@ public class AdminController {
     public Map<String,Object> teachingManagements(Integer page, Integer limit){
         page--;
         Pageable pageable = PageRequest.of(page,limit);
-        List<Batch> content = batchService.findAll(pageable).getContent();
+        List<TeachingManagement> content = teachingManagementService.findAll(pageable).getContent();
         Map<String,Object> map = new HashMap<>();
         map.put("data",content);
-        map.put("size",batchService.findAllCount());
+        map.put("size",teachingManagementService.findAllCount());
         return map;
     }
 

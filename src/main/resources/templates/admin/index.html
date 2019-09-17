@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="utf-8">
     <title>LayuiMini - 基于Layui的后台管理系统前端模板</title>
@@ -49,7 +50,7 @@
                 <a href="javascript:;" data-clear="清理" class="layuimini-clear"><i class="fa fa-trash-o"></i></a>
             </li>
             <li class="layui-nav-item layuimini-setting">
-                <a href="javascript:;">admin</a>
+                <a href="javascript:;" th:text="${session.user.getUsername()}"></a>
                 <dl class="layui-nav-child">
                     <dd>
                         <a href="javascript:;" data-iframe-tab="page/user-password" data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
