@@ -1,10 +1,9 @@
 package com.leiming.course_evaluation.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+//课程
 @Entity
 public class Course {
     @Id
@@ -12,6 +11,9 @@ public class Course {
     private Long id;
     private String courseName;
     private String mark;
+
+    @ManyToMany(mappedBy = "courses")
+    private Set<CgClass> cgClasses = new HashSet<>();
     protected Course(){
 
     }
@@ -40,8 +42,17 @@ public class Course {
         this.mark = mark;
     }
 
-    public Course(String courseName, String mark) {
+    public Set<CgClass> getCgClasses() {
+        return cgClasses;
+    }
+
+    public void setCgClasses(Set<CgClass> cgClasses) {
+        this.cgClasses = cgClasses;
+    }
+
+    public Course(String courseName, String mark, Set<CgClass> cgClasses) {
         this.courseName = courseName;
         this.mark = mark;
+        this.cgClasses = cgClasses;
     }
 }

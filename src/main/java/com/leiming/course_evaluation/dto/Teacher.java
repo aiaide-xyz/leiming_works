@@ -11,17 +11,17 @@ import javax.persistence.*;
 
 public class Teacher {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//设置id，生成策略
     private Long id;
     private String username;
     private String password;
     private String sex;
     private String teacherNumber;
-    @Transient
+    @Transient//禁止此字段对应数据库
     private String dptName;
-    @ManyToOne
+    @ManyToOne//与院系实体多对一关系建立
     @JoinColumn(name = "department_id")
-    @JsonBackReference
+    @JsonBackReference//禁止此字段序列化，防止死循环
     private Department department;
 
     public Teacher(){

@@ -1,6 +1,5 @@
 package com.leiming.course_evaluation.controller.admin;
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -42,5 +41,13 @@ public class AdminMainController {
     @RequestMapping("/course/list")
     public String course_list(){
         return "admin/course-list.html";
+    }
+    @RequestMapping("/batch/list")
+    public String batch_list(){
+        return "admin/batch-list.html";
+    }
+    @RequestMapping("/teachingManagement/list")
+    public String teachingManagement(){
+        return "admin/teaching-management-list.html";
     }
 }

@@ -14,10 +14,9 @@ public class Department {
     private Long id;
     private String dptName;
     private String mark;
-    @OneToMany(mappedBy = "department")
-
+    @OneToMany(mappedBy = "department")//与院系建立一对多关系
     private List<Student> students;
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department")//与教师建立一对多关系
     private List<Teacher> teachers = new ArrayList<>();
     protected Department(){
 

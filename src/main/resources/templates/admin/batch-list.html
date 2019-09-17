@@ -71,16 +71,13 @@
 
         table.render({
             elem: document.getElementById('currentTableId'),
-            url: '/teachers',
+            url: '/batches',
 
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"},
                 {type: 'numbers', title: '序号', sort: true},
-                {field: 'username', title: '姓名'},
-                {field: 'sex', title: '性别'},
-                // {field: 'className',title: '班级'},
-                {field: 'teacherNumber', title: '工号'},
-                {field: 'dptName', title: '院系'},
+                {field: 'batchName', title: '批次名'},
+                {field: 'status', title: '评教状态'},
                 {title: '操作', minWidth: 50, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
             page:true,

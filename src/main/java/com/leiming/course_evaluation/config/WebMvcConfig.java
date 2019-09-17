@@ -23,7 +23,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginFilter).addPathPatterns("/**")
-                .excludePathPatterns("/","/admin","/api/**","/css/**","/images/**","/js/**","/lib/**","/getGifCode","/login","/logout");
+                .excludePathPatterns("/","/api/**","/css/**","/images/**","/js/**","/lib/**","/getGifCode","/login","/logout");
     }
 
     //扩大session作用范围

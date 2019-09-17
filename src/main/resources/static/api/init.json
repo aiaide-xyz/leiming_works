@@ -72,7 +72,7 @@
           "child": [
             {
               "title": "授课管理",
-              "href": "page/button.html",
+              "href": "page/teachingManagement/list",
               "icon": "fa fa-snowflake-o",
               "target": "_self"
             },
@@ -96,7 +96,7 @@
             },
             {
               "title": "批次管理",
-              "href": "page/layer.html",
+              "href": "page/batch/list",
               "icon": "fa fa-shield",
               "target": "_self"
             },

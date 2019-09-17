@@ -26,11 +26,12 @@ public class AdminController {
     private DepartmentService departmentService;
     @Autowired
     private CourseService courseService;
+    @Autowired
+    private BatchService batchService;
     //管理员登录后主页面
     @RequestMapping(value = "/admin",method = RequestMethod.GET)
     public ModelAndView index(@ModelAttribute("msg") String msg, Model model, HttpServletRequest request){
         model.addAttribute("msg", msg);
-        System.out.println(request.getSession().getAttribute("user"));
 //        if ((Admin)request.getSession().getAttribute("user") == null){
         if (!(request.getSession().getAttribute("user") instanceof Admin)){
             return new ModelAndView("error/403");
@@ -47,8 +48,21 @@ public class AdminController {
     public String modifyAdmin(Admin admin){
         return "ok";
     }
-    //学生列表
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //学生列表获取
     @GetMapping("/students")
     @ResponseBody
     public Map<String,Object> student(Integer page, Integer limit){
@@ -65,7 +79,7 @@ public class AdminController {
         map.put("size",studentService.findAllCount());
         return map;
     }
-
+    //教师列表获取
     @GetMapping("/teachers")
     @ResponseBody
     public Map<String,Object> teacher(Integer page, Integer limit){
@@ -82,7 +96,7 @@ public class AdminController {
         map.put("size",teacherService.findAllCount());
         return map;
     }
-
+    //院系列表获取
     @GetMapping("/departments")
     @ResponseBody
     public Map<String,Object> department(Integer page, Integer limit){
@@ -94,6 +108,7 @@ public class AdminController {
         map.put("size",studentService.findAllCount());
         return map;
     }
+    //班级列表获取
     @GetMapping("/classes")
     @ResponseBody
     public Map<String,Object> class_list(Integer page, Integer limit){
@@ -106,7 +121,7 @@ public class AdminController {
         map.put("size",studentService.findAllCount());
         return map;
     }
-
+    //课程列表获取
     @GetMapping("/courses")
     @ResponseBody
     public Map<String,Object> course(Integer page, Integer limit){
@@ -116,6 +131,30 @@ public class AdminController {
         Map<String,Object> map = new HashMap<>();
         map.put("data",content);
         map.put("size",courseService.findAllCount());
+        return map;
+    }
+    //【批次】（年级）列表获取
+    @GetMapping("/batches")
+    @ResponseBody
+    public Map<String,Object> batches(Integer page, Integer limit){
+        page--;
+        Pageable pageable = PageRequest.of(page,limit);
+        List<Batch> content = batchService.findAll(pageable).getContent();
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",content);
+        map.put("size",batchService.findAllCount());
+        return map;
+    }
+    //授课管理（包括年级，批次）
+    @GetMapping("/teachingManagements")
+    @ResponseBody
+    public Map<String,Object> teachingManagements(Integer page, Integer limit){
+        page--;
+        Pageable pageable = PageRequest.of(page,limit);
+        List<Batch> content = batchService.findAll(pageable).getContent();
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",content);
+        map.put("size",batchService.findAllCount());
         return map;
     }
 

@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 //班级
 @Entity
-
-
 public class CgClass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,20 +18,16 @@ public class CgClass {
     private String type;
     @OneToMany(mappedBy = "cgClass")
     private List<Student> students = new ArrayList<>();
-
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "class_course",
+            joinColumns = @JoinColumn(name = "class_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set<Course> courses = new HashSet<>();
 
     protected CgClass(){
 
-    }
-
-    @Override
-    public String toString() {
-        return "CgClass{" +
-                "id=" + id +
-                ", className='" + className + '\'' +
-                ", type='" + type + '\'' +
-                ", students=" + students +
-                '}';
     }
 
     public Long getId() {
@@ -66,9 +62,18 @@ public class CgClass {
         this.students = students;
     }
 
-    public CgClass(String className, String type, List<Student> students) {
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
+    }
+
+    public CgClass(String className, String type, List<Student> students, Set<Course> courses) {
         this.className = className;
         this.type = type;
         this.students = students;
+        this.courses = courses;
     }
 }
