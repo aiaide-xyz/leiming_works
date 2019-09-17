@@ -19,7 +19,6 @@ public class StudentController {
         if (!(request.getSession().getAttribute("user") instanceof Student)){
             return new ModelAndView("error/403");
         }
-
         return new ModelAndView("student/index");
     }
 }
