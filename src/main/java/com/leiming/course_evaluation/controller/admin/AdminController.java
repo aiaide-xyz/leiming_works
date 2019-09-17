@@ -45,21 +45,24 @@ public class AdminController {
 
 
     //修改账号（信息，密码等）
-    @PostMapping("/admin")
+    @Autowired
+    private AdminService adminService;
+
+    @PostMapping(value = "/admin")
     @ResponseBody
-    public String modifyAdmin(Admin admin){
-        return "ok";
+    public String changePassword(String old_password, String new_password) {
+        Admin admin = adminService.findOneByPassword(old_password);
+        if (admin != null){
+            admin.setPassword(new_password);
+            adminService.save(admin);
+            return "ok";
+        }else if (admin == null){
+            return "no";
+        }
+
+
+        return "fail";
     }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -107,7 +110,7 @@ public class AdminController {
         List<Department> content = departmentService.findAll(pageable).getContent();
         Map<String,Object> map = new HashMap<>();
         map.put("data",content);
-        map.put("size",studentService.findAllCount());
+        map.put("size",departmentService.findAllCount());
         return map;
     }
     //班级列表获取
@@ -120,7 +123,7 @@ public class AdminController {
 
         Map<String,Object> map = new HashMap<>();
         map.put("data",content);
-        map.put("size",studentService.findAllCount());
+        map.put("size",classService.findAllCount());
         return map;
     }
     //课程列表获取

@@ -8,4 +8,5 @@ import org.springframework.data.domain.Pageable;
 public interface DepartmentService {
     Page<Department> findAll(Pageable pageable);
     int findAllCount();
+    Department updateById(Long id,String dptName,String mark);
 }

@@ -8,9 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 
 @Component
-public interface DepartmentRepository extends JpaRepository<Department,Long> {
-    @Query(value = "select * from department",nativeQuery = true)
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
+    @Query(value = "select * from department", nativeQuery = true)
     Page<Department> findAll(Pageable pageable);
-    @Query(value = "select count(*) from department",nativeQuery = true)
+
+    @Query(value = "select count(*) from department", nativeQuery = true)
     int findAllCount();
+
+//    //根据院系名称查询部门
+    @Query(value = "UPDATE department SET dpt_name=#{dptName},mark=#{mark} WHERE id = #{id}",nativeQuery = true)
+    Department updateById(Long id, String dptName, String mark);
 }

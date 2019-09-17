@@ -11,6 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <link rel="icon" href="/images/favicon.ico">
     <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
     <link rel="stylesheet" href="/css/layuimini.css" media="all">
@@ -103,7 +104,7 @@
 
 <script src="/lib/layui-v2.5.4/layui.js?v=1.0.4" charset="utf-8"></script>
 <script src="/js/lay-config.js?v=1.0.4" charset="utf-8"></script>
-<script>
+<script type="text/javascript" th:inline="javascript">
     layui.use(['element', 'layer', 'layuimini'], function () {
         var $ = layui.jquery,
             element = layui.element,
@@ -117,7 +118,16 @@
                 window.location = "/logout";
                 },700);
         });
+        var msg=[[${msg}]];
+        if(msg != null&&msg != "") {
+            layer.msg(msg)
+        }
     });
+</script>
+<script type="text/javascript" th:inline="javascript">
+
+
+
 </script>
 </body>
 </html>

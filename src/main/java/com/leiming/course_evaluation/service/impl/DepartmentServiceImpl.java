@@ -21,4 +21,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     public int findAllCount() {
         return departmentRepository.findAllCount();
     }
+    @Override
+    public Department updateById(Long id,String dptName,String mark) {
+        return departmentRepository.updateById(id,dptName,mark);
+    }
 }
