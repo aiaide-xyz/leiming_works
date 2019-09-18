@@ -16,16 +16,16 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/login")
 public class LoginController {
-
     @Autowired
     private LoginService loginService;
+    //登录页面跳转
     @RequestMapping("/")
     public String index(){
         return "redirect:login";
     }
-
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ModelAndView getLogin(HttpServletRequest request, @ModelAttribute("msg") String msg, Model model) {
+    public ModelAndView getLogin(HttpServletRequest request, /*获取一次性数据*/@ModelAttribute("msg") String msg, Model model) {
+        //判断用户是否已经登录，跳转相应页面
         if (request.getSession().getAttribute("user") != null) {
             if (request.getSession().getAttribute("user") instanceof Admin){
                 return new ModelAndView("redirect:admin");
@@ -35,9 +35,12 @@ public class LoginController {
                 return new ModelAndView("redirect:student");
             }
         }
+        //未登录跳转登录页面
         return new ModelAndView("login.html");
     }
 
+
+    //登录的方法post提交
     @RequestMapping(value = "", method = RequestMethod.POST)
     public String postLogin(RedirectAttributes model, HttpServletRequest request, String username, String userCode, String password) {
         String code = (String) request.getSession().getAttribute("code");
@@ -92,7 +95,6 @@ public class LoginController {
         else {
             model.addFlashAttribute("msg", "此用户不存在");
         }
-
         return "redirect:login";
     }
 }

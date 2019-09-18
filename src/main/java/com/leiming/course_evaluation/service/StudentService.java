@@ -9,4 +9,7 @@ import java.util.List;
 public interface StudentService {
     Page<Student> findAll(Pageable pageable);
     int findAllCount();
+
+    Student findById(Long id);
+    void saveOne(Student student);
 }

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
@@ -24,5 +26,15 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Department updateById(Long id,String dptName,String mark) {
         return departmentRepository.updateById(id,dptName,mark);
+    }
+
+    @Override
+    public List<Department> findAllList() {
+        return departmentRepository.findAll();
+    }
+
+    @Override
+    public Department findByID(Long id) {
+        return departmentRepository.findById(id).get();
     }
 }

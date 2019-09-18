@@ -22,4 +22,14 @@ public class StudentServiceImpl implements StudentService {
     public int findAllCount() {
         return studentRepository.findAllCount();
     }
+
+    @Override
+    public Student findById(Long id) {
+        return studentRepository.findById(id).get();
+    }
+
+    @Override
+    public void saveOne(Student student) {
+        studentRepository.save(student);
+    }
 }

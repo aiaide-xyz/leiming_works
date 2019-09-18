@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/page")
+//admin主要页面获取
 public class AdminMainController {
     @RequestMapping("/welcome")
     public String welcome_1(){
