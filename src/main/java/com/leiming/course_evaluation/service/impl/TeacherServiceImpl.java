@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TeacherServiceImpl implements TeacherService {
     @Autowired
@@ -30,5 +32,14 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public void saveOne(Teacher teacherNew) {
         teacherRepository.save(teacherNew);
+    }
+    @Override
+    public int deleteTeacher(int id) {
+        return teacherRepository.deleteTeacher(id);
+    }
+
+    @Override
+    public int deleteAllTeacher(List<Long> teaList) {
+        return teacherRepository.deleteAllTeacher(teaList);
     }
 }

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -31,5 +33,14 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void saveOne(Student student) {
         studentRepository.save(student);
+    }
+    @Override
+    public int deleteStudent(int id) {
+        return studentRepository.deleteStudent(id);
+    }
+
+    @Override
+    public int deleteAllStudent(List<Long> stuList) {
+        return studentRepository.deleteAllStudent(stuList);
     }
 }

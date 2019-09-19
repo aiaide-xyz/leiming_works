@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,9 +105,29 @@ public class AdminController {
         studentService.saveOne(studentNew);
         return "ok";
     }
-    @GetMapping("/test")
-    public String test(){
-        return "admin/studentForm.html";
+    //删除单个学生
+    @PostMapping("/deleteStudent")
+    @ResponseBody
+    public int deleteStudent(int id){
+        int i =studentService.deleteStudent(id);
+        System.out.println("======"+id);
+        return i;
+    }
+    //删除多个学生
+    @PostMapping("/deleteAllStudent")
+    @ResponseBody
+    public int deleteAllStudent(@RequestParam("id") String id){
+        // 接收包含stuId的字符串，并将它分割成字符串数组
+        String[] stuList = id.split(",");
+        // 将字符串数组转为List<Intger> 类型
+        List<Long> LString = new ArrayList<Long>();
+        for(String str : stuList){
+            LString.add(new Long(str));
+        }
+        System.out.println("====="+LString);
+        // 调用service层的批量删除函数
+        int i = studentService.deleteAllStudent(LString);
+        return i;
     }
 
 
@@ -137,7 +158,7 @@ public class AdminController {
         model.addAttribute("departmentList",departmentList);
         return new ModelAndView("admin/teacherForm.html","model",model);
     }
-    //方法
+    //修改教师方法
     @PostMapping("/editTeacher")
     @ResponseBody
     public String editStudent(Teacher teacher,Long department){
@@ -148,6 +169,30 @@ public class AdminController {
         teacherNew.setDepartment(departmentService.findByID(department));
         teacherService.saveOne(teacherNew);
         return "ok";
+    }
+    //删除单个教师
+    @GetMapping("/deleteTeacher")
+    @ResponseBody
+    public int deleteTeacher(int id){
+        int i =teacherService.deleteTeacher(id);
+        System.out.println("======"+id);
+        return i;
+    }
+    //删除多个教师
+    @GetMapping("/deleteAllTeacher")
+    @ResponseBody
+    public int deleteAllTeacher(@RequestParam("id") String id){
+        // 接收包含stuId的字符串，并将它分割成字符串数组
+        String[] teaList = id.split(",");
+        // 将字符串数组转为List<Intger> 类型
+        List<Long> LString = new ArrayList<Long>();
+        for(String str : teaList){
+            LString.add(new Long(str));
+        }
+        System.out.println("====="+LString);
+        // 调用service层的批量删除函数
+        int i = teacherService.deleteAllTeacher(LString);
+        return i;
     }
 
 
@@ -186,7 +231,30 @@ public class AdminController {
         departmentService.saveOne(departmentNew);
         return "ok";
     }
-
+//单个删除
+    @GetMapping("/deleteDepartment")
+    @ResponseBody
+    public int deleteDepartment(int id){
+        int i =departmentService.deleteDepartment(id);
+        System.out.println("======"+id);
+        return i;
+    }
+    //多个删除
+    @GetMapping("/deleteAllDepartment")
+    @ResponseBody
+    public int deleteAllDepartment(@RequestParam("id") String id){
+        // 接收包含stuId的字符串，并将它分割成字符串数组
+        String[] depList = id.split(",");
+        // 将字符串数组转为List<Intger> 类型
+        List<Long> LString = new ArrayList<Long>();
+        for(String str : depList){
+            LString.add(new Long(str));
+        }
+        System.out.println("====="+LString);
+        // 调用service层的批量删除函数
+        int i = departmentService.deleteAllDepartment(LString);
+        return i;
+    }
 
 
     //班级列表获取
@@ -219,6 +287,31 @@ public class AdminController {
         classService.saveOne(cgClassNew);
         return "ok";
     }
+    //删除单个
+    @GetMapping("/deleteClass")
+    @ResponseBody
+    public int deleteClass(int id){
+        int i =classService.deleteClass(id);
+        System.out.println("======"+id);
+        return i;
+    }
+    //删除多个
+    @GetMapping("/deleteAllClass")
+    @ResponseBody
+    public int deleteAllClass(@RequestParam("id") String id){
+        // 接收包含stuId的字符串，并将它分割成字符串数组
+        String[] claList = id.split(",");
+        // 将字符串数组转为List<Intger> 类型
+        List<Long> LString = new ArrayList<Long>();
+        for(String str : claList){
+            LString.add(new Long(str));
+        }
+        System.out.println("====="+LString);
+        // 调用service层的批量删除函数
+        int i = classService.deleteAllClass(LString);
+        return i;
+    }
+
 
 
     //课程列表获取
@@ -250,7 +343,30 @@ public class AdminController {
         courseService.saveOne(courseNew);
         return "ok";
     }
-
+    //删除单个
+    @GetMapping("/deleteCourse")
+    @ResponseBody
+    public int deleteCourse(int id){
+        int i =courseService.deleteCourse(id);
+        System.out.println("======"+id);
+        return i;
+    }
+    //删除多个
+    @GetMapping("/deleteAllCourse")
+    @ResponseBody
+    public int deleteAllCourse(@RequestParam("id") String id){
+        // 接收包含stuId的字符串，并将它分割成字符串数组
+        String[] couList = id.split(",");
+        // 将字符串数组转为List<Intger> 类型
+        List<Long> LString = new ArrayList<Long>();
+        for(String str : couList){
+            LString.add(new Long(str));
+        }
+        System.out.println("====="+LString);
+        // 调用service层的批量删除函数
+        int i = courseService.deleteAllCourse(LString);
+        return i;
+    }
 
 
 

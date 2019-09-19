@@ -42,4 +42,13 @@ public class ClassServiceImpl implements ClassService {
     public void saveOne(CgClass cgClassNew) {
         classRepository.save(cgClassNew);
     }
+    @Override
+    public int deleteClass(int id) {
+        return classRepository.deleteClass(id);
+    }
+
+    @Override
+    public int deleteAllClass(List<Long> claList) {
+        return classRepository.deleteAllClass(claList);
+    }
 }

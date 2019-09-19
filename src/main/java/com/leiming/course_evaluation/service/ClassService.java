@@ -15,4 +15,6 @@ public interface ClassService {
     CgClass findById(Long id);
 
     void saveOne(CgClass cgClassNew);
+    int deleteClass(int id);
+    int deleteAllClass(List<Long> claList);
 }

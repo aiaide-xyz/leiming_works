@@ -4,6 +4,8 @@ import com.leiming.course_evaluation.dto.Course;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface CourseService {
     Page<Course> findAll(Pageable pageable);
     int findAllCount();
@@ -11,4 +13,7 @@ public interface CourseService {
     Course findById(Long id);
 
     void saveOne(Course courseNew);
+
+    int deleteCourse(int id);
+    int deleteAllCourse(List<Long> couList);
 }

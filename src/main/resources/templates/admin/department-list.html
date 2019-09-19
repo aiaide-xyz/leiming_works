@@ -121,9 +121,30 @@
 
         // 监听删除操作
         $(".data-delete-btn").on("click", function () {
-            var checkStatus = table.checkStatus('currentTableId')
-                , data = checkStatus.data;
-            layer.alert(JSON.stringify(data));
+            layer.confirm('真的删除行么', function (index) {
+                if (index){
+                    var checkStatus = table.checkStatus('currentTableId'),
+                        data = checkStatus.data
+                    var id=[];
+                    if (data.length > 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            id += data[i].id + ',';
+                        }
+                        console.log(id);
+                        $.ajax({
+                            url: '/deleteAllDepartment?id=' + id,
+                            success: function (data) {
+                                layer.msg('删除成功');
+                                setTimeout(function(){
+                                    location.reload();
+                                },700);
+                            }
+                        });
+                    };
+                }else {
+                    layer.close(index);
+                }
+            });
         });
 
         //监听表格复选框选择
@@ -144,13 +165,25 @@
                     type:2,
                     content:"/editDepartment?id="+data.id,
                     maxmin:true,
-                    area:['500px','500px']
+                    area:['500px','500px'],
+                    end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
+                        location.reload();　　//layer.open关闭刷新
+                    }
                 })
 
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+                    if (index){
+                        $.ajax({
+                            url:"/deleteDepartment?id="+data.id,
+                            success:function (data) {
+                                obj.del();
+                                layer.alert('删除成功');
+                            }
+                        });
+                    }else {
+                        layer.close(index);
+                    }
                 });
             }
         });

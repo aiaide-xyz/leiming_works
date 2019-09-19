@@ -12,4 +12,6 @@ public interface StudentService {
 
     Student findById(Long id);
     void saveOne(Student student);
+    int deleteStudent(int id);
+    int deleteAllStudent(List<Long> stuList);
 }

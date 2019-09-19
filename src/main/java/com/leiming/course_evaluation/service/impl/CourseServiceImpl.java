@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CourseServiceImpl implements CourseService {
     @Autowired
@@ -30,5 +32,15 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public void saveOne(Course courseNew) {
         courseRepository.save(courseNew);
+    }
+
+    @Override
+    public int deleteCourse(int id) {
+        return courseRepository.deleteCourse(id);
+    }
+
+    @Override
+    public int deleteAllCourse(List<Long> couList) {
+        return courseRepository.deleteAllCourse(couList);
     }
 }

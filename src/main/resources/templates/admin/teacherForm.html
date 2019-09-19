@@ -36,7 +36,9 @@
         <label class="layui-form-label">选择院系</label>
         <div class="layui-input-inline">
             <select name="department" lay-search="" th:each="dept:${departmentList}">
-                <option th:value="${dept.id}" th:text="${dept.dptName}"></option>
+                <span th:each="dept:${departmentList}">
+                    <option th:value="${dept.id}" th:text="${dept.dptName}"></option>
+                </span>
             </select>
         </div>
     </div>

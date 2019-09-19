@@ -18,4 +18,6 @@ public interface DepartmentService {
     Department findById(Long id);
 
     void saveOne(Department departmentNew);
+    int deleteDepartment(int id);
+    int deleteAllDepartment(List<Long> depList);
 }
