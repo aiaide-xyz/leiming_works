@@ -23,4 +23,14 @@ public class BatchServiceImpl implements BatchService {
     public int findAllCount() {
         return batchRepository.findAllCount();
     }
+
+    @Override
+    public Batch findById(Long id) {
+        return batchRepository.findById(id).get();
+    }
+
+    @Override
+    public void saveOne(Batch batchNew) {
+        batchRepository.save(batchNew);
+    }
 }

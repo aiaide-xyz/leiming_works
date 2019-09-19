@@ -7,4 +7,8 @@ import org.springframework.data.domain.Pageable;
 public interface CourseService {
     Page<Course> findAll(Pageable pageable);
     int findAllCount();
+
+    Course findById(Long id);
+
+    void saveOne(Course courseNew);
 }

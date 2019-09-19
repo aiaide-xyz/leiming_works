@@ -21,4 +21,14 @@ public class CourseServiceImpl implements CourseService {
     public int findAllCount() {
         return courseRepository.findAllCount();
     }
+
+    @Override
+    public Course findById(Long id) {
+        return courseRepository.findById(id).get();
+    }
+
+    @Override
+    public void saveOne(Course courseNew) {
+        courseRepository.save(courseNew);
+    }
 }

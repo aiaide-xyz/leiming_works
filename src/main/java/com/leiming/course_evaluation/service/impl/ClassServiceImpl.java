@@ -37,4 +37,9 @@ public class ClassServiceImpl implements ClassService {
     public CgClass findById(Long id) {
         return classRepository.findById(id).get();
     }
+
+    @Override
+    public void saveOne(CgClass cgClassNew) {
+        classRepository.save(cgClassNew);
+    }
 }

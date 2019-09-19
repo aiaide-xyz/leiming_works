@@ -21,4 +21,14 @@ public class TeacherServiceImpl implements TeacherService {
     public int findAllCount() {
         return teacherRepository.findAllCount();
     }
+
+    @Override
+    public Teacher findById(Long id) {
+        return teacherRepository.findById(id).get();
+    }
+
+    @Override
+    public void saveOne(Teacher teacherNew) {
+        teacherRepository.save(teacherNew);
+    }
 }

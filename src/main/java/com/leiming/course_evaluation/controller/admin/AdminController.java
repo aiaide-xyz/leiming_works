@@ -111,7 +111,7 @@ public class AdminController {
 
 
 
-    //教师列表获取：页面
+    //教师列表获取
     @GetMapping("/teachers")
     @ResponseBody
     public Map<String,Object> teacher(Integer page, Integer limit){
@@ -128,6 +128,33 @@ public class AdminController {
         map.put("size",teacherService.findAllCount());
         return map;
     }
+    //修改教师信息：页面
+    @GetMapping("/editTeacher")
+    public ModelAndView editTeacher(Long id,Model model){
+        Teacher teacher = teacherService.findById(id);
+        List<Department> departmentList = departmentService.findAllList();
+        model.addAttribute("teacher",teacher);
+        model.addAttribute("departmentList",departmentList);
+        return new ModelAndView("admin/teacherForm.html","model",model);
+    }
+    //方法
+    @PostMapping("/editTeacher")
+    @ResponseBody
+    public String editStudent(Teacher teacher,Long department){
+        Teacher teacherNew = teacherService.findById(teacher.getId());
+        teacherNew.setUsername(teacher.getUsername());
+        teacherNew.setTeacherNumber(teacher.getTeacherNumber());
+        teacherNew.setSex(teacher.getSex());
+        teacherNew.setDepartment(departmentService.findByID(department));
+        teacherService.saveOne(teacherNew);
+        return "ok";
+    }
+
+
+
+
+
+
 
 
     //院系列表获取：页面
@@ -142,10 +169,27 @@ public class AdminController {
         map.put("size",departmentService.findAllCount());
         return map;
     }
+    //修改页面获取
+    @GetMapping("/editDepartment")
+    public ModelAndView toEditDepartment(Long id,Model model){
+        Department department = departmentService.findById(id);
+        model.addAttribute("department",department);
+        return new ModelAndView("admin/departmentForm.html","model",model);
+    }
+    //方法
+    @PostMapping("/editDepartment")
+    @ResponseBody
+    public String editDepartment(Department department){
+        Department departmentNew = departmentService.findById(department.getId());
+        departmentNew.setDptName(department.getDptName());
+        departmentNew.setMark(department.getMark());
+        departmentService.saveOne(departmentNew);
+        return "ok";
+    }
 
 
 
-    //班级列表获取：页面
+    //班级列表获取
     @GetMapping("/classes")
     @ResponseBody
     public Map<String,Object> class_list(Integer page, Integer limit){
@@ -158,9 +202,26 @@ public class AdminController {
         map.put("size",classService.findAllCount());
         return map;
     }
+    //修改页面获取
+    @GetMapping("/editClass")
+    public ModelAndView toEditClass(Long id,Model model){
+        CgClass cgClass = classService.findById(id);
+        model.addAttribute("cgClass",cgClass);
+        return new ModelAndView("admin/classForm.html","model",model);
+    }
+    //方法
+    @PostMapping("/editClass")
+    @ResponseBody
+    public String editClass(CgClass cgClass){
+        CgClass cgClassNew = classService.findById(cgClass.getId());
+        cgClassNew.setClassName(cgClass.getClassName());
+        cgClassNew.setType(cgClass.getType());
+        classService.saveOne(cgClassNew);
+        return "ok";
+    }
 
 
-    //课程列表获取：页面
+    //课程列表获取
     @GetMapping("/courses")
     @ResponseBody
     public Map<String,Object> course(Integer page, Integer limit){
@@ -172,6 +233,24 @@ public class AdminController {
         map.put("size",courseService.findAllCount());
         return map;
     }
+    //修改课程列表页面
+    @GetMapping("/editCourse")
+    public ModelAndView toEditCourse(Long id,Model model){
+        Course course = courseService.findById(id);
+        model.addAttribute("course",course);
+        return new ModelAndView("admin/courseForm.html","model",model);
+    }
+    //方法
+    @PostMapping("/editCourse")
+    @ResponseBody
+    public String editCourse(Course course){
+        Course courseNew = courseService.findById(course.getId());
+        courseNew.setCourseName(course.getCourseName());
+        courseNew.setMark(course.getMark());
+        courseService.saveOne(courseNew);
+        return "ok";
+    }
+
 
 
 
@@ -186,6 +265,22 @@ public class AdminController {
         map.put("data",content);
         map.put("size",batchService.findAllCount());
         return map;
+    }
+    @GetMapping("/editBatch")
+    public ModelAndView toEditBatch(Long id,Model model){
+        Batch batch = batchService.findById(id);
+        model.addAttribute("batch",batch);
+        return new ModelAndView("admin/batchForm.html","model",model);
+    }
+    //方法
+    @PostMapping("/editBatch")
+    @ResponseBody
+    public String editBatch(Batch batch){
+        Batch batchNew = batchService.findById(batch.getId());
+        batchNew.setBatchName(batch.getBatchName());
+        batchNew.setStatus(batch.getStatus());
+        batchService.saveOne(batchNew);
+        return "ok";
     }
 
 

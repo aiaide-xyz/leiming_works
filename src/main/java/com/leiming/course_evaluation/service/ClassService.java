@@ -13,4 +13,6 @@ public interface ClassService {
 
     List<CgClass> findAllList();
     CgClass findById(Long id);
+
+    void saveOne(CgClass cgClassNew);
 }

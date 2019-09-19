@@ -8,4 +8,8 @@ import org.springframework.data.domain.Pageable;
 public interface TeacherService {
     Page<Teacher> findAll(Pageable pageable);
     int findAllCount();
+
+    Teacher findById(Long id);
+
+    void saveOne(Teacher teacherNew);
 }

@@ -10,4 +10,8 @@ import java.util.List;
 public interface BatchService {
     Page<Batch> findAll(Pageable pageable);
     int findAllCount();
+
+    Batch findById(Long id);
+
+    void saveOne(Batch batchNew);
 }

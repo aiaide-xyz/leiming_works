@@ -37,4 +37,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Department findByID(Long id) {
         return departmentRepository.findById(id).get();
     }
+
+    @Override
+    public Department findById(Long id) {
+        return departmentRepository.findById(id).get();
+    }
+
+    @Override
+    public void saveOne(Department departmentNew) {
+        departmentRepository.save(departmentNew);
+    }
 }

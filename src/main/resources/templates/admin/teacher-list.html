@@ -145,9 +145,12 @@
                 // })
                 layer.open({
                     type:2,
-                    content:"https://www.layui.com/admin/std/dist/views/user/user/userform.html",
+                    content:"/editTeacher?id="+data.id,
                     maxmin:true,
-                    area:['500px','500px']
+                    area:['500px','500px'],
+                    end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
+                        location.reload();　　//layer.open关闭刷新
+                    }
                 })
 
             } else if (obj.event === 'delete') {

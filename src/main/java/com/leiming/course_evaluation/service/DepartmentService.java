@@ -14,4 +14,8 @@ public interface DepartmentService {
 
     List<Department> findAllList();
     Department findByID(Long id);
+
+    Department findById(Long id);
+
+    void saveOne(Department departmentNew);
 }
