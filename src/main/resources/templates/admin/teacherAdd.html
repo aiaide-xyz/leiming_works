@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>编辑老师信息</title>
+    <title>新增老师信息</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -11,31 +11,31 @@
     <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
 </head>
 <body>
-<input type="hidden" th:value="${teacher.id}">
+<input type="hidden">
 <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
     <div class="layui-form-item">
         <label class="layui-form-label">姓名</label>
         <div class="layui-input-inline">
-            <input type="text" th:value="${teacher.username}" name="username" lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
+            <input type="text" name="username" lay-verify="required" placeholder="姓名" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item" lay-filter="sex">
         <label class="layui-form-label">选择性别</label>
         <div class="layui-input-block">
             <input type="radio" name="sex" value="男" title="男" checked>
-            <input type="radio" name="sex" value="女" title="女" th:checked="${teacher.sex=='女'}? true : false">
+            <input type="radio" name="sex" value="女" title="女">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">工号</label>
         <div class="layui-input-inline">
-            <input type="text" th:value="${teacher.teacherNumber}" name="teacherNumber" lay-verify="required" placeholder="工号" autocomplete="off" class="layui-input" >
+            <input type="text" name="teacherNumber" lay-verify="required" placeholder="工号" autocomplete="off" class="layui-input" >
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">选择院系</label>
         <div class="layui-input-inline">
-            <select name="department" lay-search="" th:each="dept:${departmentList}">
+            <select name="department" lay-search="" >
                 <option value="" selected disabled style="display: none;">请选择院系</option>
                 <span th:each="dept:${departmentList}">
                     <option th:value="${dept.id}" th:text="${dept.dptName}"></option>
@@ -45,7 +45,7 @@
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button type="button" class="layui-btn" id="edit">确认修改</button>
+            <button type="button" class="layui-btn" id="edit">确认添加</button>
         </div>
     </div>
 </div>
@@ -68,15 +68,25 @@
                 console.log(sex);
                 $.ajax({
                     type:"post",
-                    url:"/editTeacher",
+                    url:"/addTeacher",
                     data:{"sex":sex,"username":username,"teacherNumber":teacherNumber,"department":department,"id":id},
                     success:function (data) {
-                        layer.msg("修改成功！");
-                        setTimeout(function(){
-                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                            parent.layer.close(index); //再执行关闭
-                        },700);
+                        if (data == "ok") {
 
+                            layer.msg("添加成功！");
+                            setTimeout(function () {
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭
+                            }, 700);
+                        }
+                        else {
+                            layer.msg("添加失败！");
+                            setTimeout(function () {
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭
+                            }, 700);
+
+                        }
                     }
                 })
             }

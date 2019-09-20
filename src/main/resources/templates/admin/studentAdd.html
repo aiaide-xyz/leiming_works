@@ -10,18 +10,18 @@
     <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
 </head>
 <body>
-<input type="hidden" th:value="${student.id}">
+<input type="hidden">
 <div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin" style="padding: 20px 0 0 0;">
     <div class="layui-form-item">
         <label class="layui-form-label">姓名</label>
         <div class="layui-input-inline">
-            <input th:value="${student.username}" type="text" name="username" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            <input  type="text" name="username" placeholder="请输入姓名" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">学号</label>
         <div class="layui-input-inline">
-            <input th:value="${student.stuNumber}" type="text" name="stuNumber" placeholder="请输入学号" autocomplete="off" class="layui-input">
+            <input  type="text" name="stuNumber" placeholder="请输入学号" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -47,16 +47,18 @@
         </div>
     </div>
 
+
+
     <div class="layui-form-item" lay-filter="sex">
         <label class="layui-form-label">选择性别</label>
         <div class="layui-input-block">
             <input type="radio" name="sex" value="男" title="男" checked>
-            <input type="radio" name="sex" value="女" title="女" th:checked="${student.sex=='女'}? true : false">
+            <input type="radio" name="sex" value="女" title="女">
         </div>
     </div>
     <div class="layui-form-item">
         <div class="layui-input-block">
-            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" id="edit">确认修改</button>
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1" id="edit">确认添加</button>
         </div>
     </div>
 </div>
@@ -80,14 +82,25 @@
                 console.log(sex);
                 $.ajax({
                     type:"post",
-                    url:"/editStudent",
+                    url:"/addStudent",
                     data:{"sex":sex,"username":username,"stuNumber":stuNumber,"classId":classId,"department":department,"id":id},
                     success:function (data) {
-                        layer.msg("修改成功！");
-                        setTimeout(function(){
-                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                            parent.layer.close(index); //再执行关闭
-                        },700);
+                        if (data == "ok") {
+
+                            layer.msg("添加成功！");
+                            setTimeout(function () {
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭
+                            }, 700);
+                        }
+                        else {
+                            layer.msg("添加失败！");
+                            setTimeout(function () {
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭
+                            }, 700);
+
+                        }
 
                     }
                 })

@@ -50,16 +50,24 @@
               "target": "_self"
             },
             {
-              "title": "功能管理",
-              "href": "page/welcome-2.html",
-              "icon": "fa fa-tachometer",
-              "target": "_self"
-            },
-            {
               "title": "评教详情管理",
-              "href": "page/welcome-2.html",
+              "href": "",
               "icon": "fa fa-tachometer",
-              "target": "_self"
+              "target": "_self",
+              "child": [
+                {
+                  "title": "学生方面",
+                  "href": "page/welcome-2.html",
+                  "icon": "fa fa-tachometer",
+                  "target": "_self"
+                },
+                {
+                  "title": "系部方面",
+                  "href": "page/welcome-2.html",
+                  "icon": "fa fa-tachometer",
+                  "target": "_self"
+                }
+              ]
             }
           ]
         },

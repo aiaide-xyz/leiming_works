@@ -105,6 +105,35 @@ public class AdminController {
         studentService.saveOne(studentNew);
         return "ok";
     }
+    //添加学生的界面
+    @GetMapping("/addStudent")
+    public ModelAndView addStudent(Model model){
+        List<Department> departmentList = departmentService.findAllList();
+        List<CgClass> cgClassList = classService.findAllList();
+
+        model.addAttribute("departmentList",departmentList);
+        model.addAttribute("cgClassList",cgClassList);
+
+        return new ModelAndView("admin/studentAdd.html","model",model);
+    }
+    //添加学生的方法
+    @PostMapping("/addStudent")
+    @ResponseBody
+    public String addStudent(Student student,Long classId,Long department){
+
+        student.setPassword(student.getStuNumber());
+        CgClass cgClass = classService.findById(classId);
+        student.setCgClass(cgClass);
+        student.setDepartment(departmentService.findByID(department));
+        try{
+            studentService.saveOne(student);
+            return "ok";
+        } catch (Exception e){
+            return "no";
+        }
+
+    }
+
     //删除单个学生
     @PostMapping("/deleteStudent")
     @ResponseBody
@@ -170,6 +199,34 @@ public class AdminController {
         teacherService.saveOne(teacherNew);
         return "ok";
     }
+    //添加教师的界面
+    @GetMapping("/addTeacher")
+    public ModelAndView addTeacher(Model model){
+
+        List<Department> departmentList = departmentService.findAllList();
+        model.addAttribute("departmentList",departmentList);
+
+
+        return new ModelAndView("admin/teacherAdd.html","model",model);
+    }
+
+
+    //添加教师的方法
+    @PostMapping("/addTeacher")
+    @ResponseBody
+    public String addTeacher(Teacher teacher ,Long department){
+        teacher.setPassword(teacher.getTeacherNumber());
+        teacher.setDepartment(departmentService.findByID(department));
+        try {
+            teacherService.saveOne(teacher);
+            return "ok";
+        }
+        catch (Exception e){
+            return "no";
+        }
+
+
+    }
     //删除单个教师
     @GetMapping("/deleteTeacher")
     @ResponseBody
@@ -231,7 +288,29 @@ public class AdminController {
         departmentService.saveOne(departmentNew);
         return "ok";
     }
-//单个删除
+
+    //添加院系的界面
+    @GetMapping("/addDepartment")
+    public ModelAndView addDepartment(Model model){
+        return new ModelAndView("admin/departmentAdd.html","model",model);
+    }
+
+
+    //添加院系的方法
+    @PostMapping("/addDepartment")
+    @ResponseBody
+    public String addDepartment(Department department){
+
+        try {
+            departmentService.saveOne(department);
+            return "ok";
+        }
+        catch (Exception e){
+            return "no";
+        }
+    }
+
+    //单个删除
     @GetMapping("/deleteDepartment")
     @ResponseBody
     public int deleteDepartment(int id){
@@ -255,6 +334,7 @@ public class AdminController {
         int i = departmentService.deleteAllDepartment(LString);
         return i;
     }
+
 
 
     //班级列表获取
@@ -287,6 +367,24 @@ public class AdminController {
         classService.saveOne(cgClassNew);
         return "ok";
     }
+    //添加班级的界面
+    @GetMapping("/addClass")
+    public ModelAndView addClass(Model model){
+        return new ModelAndView("admin/classAdd.html","model",model);
+    }
+    //添加班级的方法
+    @PostMapping("/addClass")
+    @ResponseBody
+    public String addClass(CgClass cgClass){
+
+        try {
+            classService.saveOne(cgClass);
+            return "ok";
+        }
+        catch (Exception e){
+            return "no";
+        }
+    }
     //删除单个
     @GetMapping("/deleteClass")
     @ResponseBody
@@ -311,6 +409,7 @@ public class AdminController {
         int i = classService.deleteAllClass(LString);
         return i;
     }
+
 
 
 
@@ -342,6 +441,25 @@ public class AdminController {
         courseNew.setMark(course.getMark());
         courseService.saveOne(courseNew);
         return "ok";
+    }
+    //添加课程的界面
+    @GetMapping("/addCourse")
+    public ModelAndView addCourse(Model model){
+        return new ModelAndView("admin/courseAdd.html","model",model);
+    }
+
+    //添加课程的方法
+    @PostMapping("/addCourse")
+    @ResponseBody
+    public String addCourse(Course cgClass){
+
+        try {
+            courseService.saveOne(cgClass);
+            return "ok";
+        }
+        catch (Exception e){
+            return "no";
+        }
     }
     //删除单个
     @GetMapping("/deleteCourse")
@@ -398,6 +516,26 @@ public class AdminController {
         batchService.saveOne(batchNew);
         return "ok";
     }
+    //添加批次的界面
+    @GetMapping("/addBatch")
+    public ModelAndView addBatch(Model model){
+        return new ModelAndView("admin/batchAdd.html","model",model);
+    }
+    //添加批次的方法
+    @PostMapping("/addBatch")
+    @ResponseBody
+    public String addBatch(Batch batch){
+
+        try {
+            batchService.saveOne(batch);
+            return "ok";
+        }
+        catch (Exception e){
+            return "no";
+        }
+    }
+
+
 
 
     //授课管理（包括年级，批次）：页面
