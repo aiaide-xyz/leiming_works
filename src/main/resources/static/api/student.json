@@ -8,7 +8,7 @@
     "href": "page/welcome?mpi=m-p-i-0"
   },
   "logoInfo": {
-    "title": "LovelyLM出品",
+    "title": "重工评教",
     "image": "images/logo.png",
     "href": ""
   },
@@ -25,6 +25,12 @@
           "child": [
             {
               "title": "在线评教",
+              "href": "student/evaluation",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "查看成绩",
               "href": "student/evaluation",
               "icon": "fa fa-tachometer",
               "target": "_self"

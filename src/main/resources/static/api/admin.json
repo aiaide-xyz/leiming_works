@@ -8,7 +8,7 @@
     "href": "page/welcome?mpi=m-p-i-0"
   },
   "logoInfo": {
-    "title": "LovelyLM出品",
+    "title": "重工评教",
     "image": "images/logo.png",
     "href": ""
   },
@@ -56,7 +56,7 @@
               "target": "_self",
               "child": [
                 {
-                  "title": "学生方面",
+                  "title": "教学方面",
                   "href": "point/student",
                   "icon": "fa fa-tachometer",
                   "target": "_self"

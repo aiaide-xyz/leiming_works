@@ -129,30 +129,37 @@
 
         // 监听删除操作
         $(".data-delete-btn").on("click", function () {
-            layer.confirm('真的删除行么', function (index) {
-                if (index){
-                    var checkStatus = table.checkStatus('currentTableId'),
-                        data = checkStatus.data
-                    var id=[];
-                    if (data.length > 0) {
-                        for (var i = 0; i < data.length; i++) {
-                            id += data[i].id + ',';
-                        }
-                        console.log(id);
-                        $.ajax({
-                            url: '/deleteAllDepartment?id=' + id,
-                            success: function (data) {
-                                layer.msg('删除成功');
-                                setTimeout(function(){
-                                    location.reload();
-                                },700);
+            var checkStatus = table.checkStatus('currentTableId')
+                , data = checkStatus.data;
+            if (JSON.stringify(data) == null || JSON.stringify(data) == "[]"){
+                layer.msg("选择不能为空！");
+            }else {
+                layer.confirm('真的删除行么', function (index) {
+                    if (index) {
+                        var checkStatus = table.checkStatus('currentTableId'),
+                            data = checkStatus.data
+                        var id = [];
+                        if (data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                id += data[i].id + ',';
                             }
-                        });
-                    };
-                }else {
-                    layer.close(index);
-                }
-            });
+                            console.log(id);
+                            $.ajax({
+                                url: '/deleteAllDepartment?id=' + id,
+                                success: function (data) {
+                                    layer.msg('删除成功');
+                                    setTimeout(function () {
+                                        location.reload();
+                                    }, 700);
+                                }
+                            });
+                        }
+                        ;
+                    } else {
+                        layer.close(index);
+                    }
+                });
+            }
         });
 
         //监听表格复选框选择
