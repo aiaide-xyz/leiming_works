@@ -24,4 +24,7 @@ public interface CourseRepository extends JpaRepository<Course,Long> {
     @Transactional
     @Query(value = "delete from course  where id in (?1)",nativeQuery = true)
     int deleteAllCourse(List<Long> ids);
+
+    @Query(value = "from Course where courseName = ?1")
+    Course findOneByName(String courseName);
 }

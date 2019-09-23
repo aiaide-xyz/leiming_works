@@ -29,4 +29,7 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
     @Transactional
     @Query(value = "delete from Student where id in (?1)",nativeQuery = true)
     int deleteAllStudent(List<Long> ids);
+
+    @Query(value = "from Student where stuNumber = ?1")
+    Student findOneByNumber(String stuNumber);
 }

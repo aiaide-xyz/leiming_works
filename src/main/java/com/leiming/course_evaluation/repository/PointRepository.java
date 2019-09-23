@@ -12,4 +12,9 @@ public interface PointRepository extends JpaRepository<Point,Long> {
     Page<Point> findAll(Pageable pageable);
     @Query(value = "select count(*) from point where type = 'student'",nativeQuery = true)
     int findAllCountOfStudent();
+    @Query(value = "select * from point where type ='student'",nativeQuery = true)
+    Page<Point> findAllByStudent(Pageable pageable);
+    @Query(value = "select * from point where type ='department'",nativeQuery = true)
+    Page<Point> findAllByDepartment(Pageable pageable);
+
 }

@@ -31,4 +31,6 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
     @Transactional
     @Query(value = "delete from department  where id in (?1)",nativeQuery = true)
     int deleteAllDepartment(List<Long> ids);
+    @Query(value = "from Department where dptName=?1")
+    Department findOneByName(String dptName);
 }

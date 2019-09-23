@@ -18,6 +18,16 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
+    public Page<Point> findAllByDepartment(Pageable pageable) {
+        return pointRepository.findAllByDepartment(pageable);
+    }
+
+    @Override
+    public Page<Point> findAllByStudent(Pageable pageable) {
+        return pointRepository.findAllByStudent(pageable);
+    }
+
+    @Override
     public int findAllCountOfStudent() {
         return pointRepository.findAllCountOfStudent();
     }

@@ -51,4 +51,8 @@ public class ClassServiceImpl implements ClassService {
     public int deleteAllClass(List<Long> claList) {
         return classRepository.deleteAllClass(claList);
     }
+    @Override
+    public CgClass findOneByName(String className) {
+        return classRepository.findOneByName(className);
+    }
 }

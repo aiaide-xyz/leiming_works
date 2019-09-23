@@ -1,0 +1,45 @@
+{
+  "clearInfo": {
+    "clearUrl": "api/clear.json"
+  },
+  "homeInfo": {
+    "title": "首页",
+    "icon": "fa fa-home",
+    "href": "page/welcome?mpi=m-p-i-0"
+  },
+  "logoInfo": {
+    "title": "重工评教",
+    "image": "images/logo.png",
+    "href": ""
+  },
+  "menuInfo": {
+    "currency": {
+      "title": "在线评教",
+      "icon": "fa fa-address-book",
+      "child": [
+        {
+          "title": "重工在线评教系统",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self",
+          "child": [
+            {
+              "title": "在线评教",
+              "href": "student/evaluation",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        },
+
+
+        {
+          "title": "其他",
+          "href": "page/layer.html",
+          "icon": "fa fa-shield",
+          "target": "_self"
+        }
+      ]
+    }
+  }
+}

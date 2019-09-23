@@ -16,4 +16,6 @@ public interface TeacherService {
     void saveOne(Teacher teacherNew);
     int deleteTeacher(int id);
     int deleteAllTeacher(List<Long> teaList);
+
+    Teacher findOneByNumber(String teacherNumber);
 }

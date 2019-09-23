@@ -17,4 +17,5 @@ public interface ClassService {
     void saveOne(CgClass cgClassNew);
     int deleteClass(int id);
     int deleteAllClass(List<Long> claList);
+    CgClass findOneByName(String className);
 }

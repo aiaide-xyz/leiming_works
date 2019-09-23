@@ -20,4 +20,5 @@ public interface DepartmentService {
     void saveOne(Department departmentNew);
     int deleteDepartment(int id);
     int deleteAllDepartment(List<Long> depList);
+    Department findOneByName(String dptName);
 }

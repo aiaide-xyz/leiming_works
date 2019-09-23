@@ -57,4 +57,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     public int deleteAllDepartment(List<Long> depList) {
         return departmentRepository.deleteAllDepartment(depList);
     }
+    @Override
+    public Department findOneByName(String dptName) {
+        return departmentRepository.findOneByName(dptName);
+    }
 }

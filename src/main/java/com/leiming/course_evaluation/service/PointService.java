@@ -6,5 +6,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface PointService {
     Page<Point> findAll(Pageable pageable);
+    Page<Point> findAllByDepartment(Pageable pageable);
+    Page<Point> findAllByStudent(Pageable pageable);
     int findAllCountOfStudent();
 }

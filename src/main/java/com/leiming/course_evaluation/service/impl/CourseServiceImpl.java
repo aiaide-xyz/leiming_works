@@ -43,4 +43,9 @@ public class CourseServiceImpl implements CourseService {
     public int deleteAllCourse(List<Long> couList) {
         return courseRepository.deleteAllCourse(couList);
     }
+
+    @Override
+    public Course findOneByName(String courseName) {
+        return courseRepository.findOneByName(courseName);
+    }
 }

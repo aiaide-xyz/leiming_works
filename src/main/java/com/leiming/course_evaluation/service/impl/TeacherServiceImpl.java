@@ -42,4 +42,8 @@ public class TeacherServiceImpl implements TeacherService {
     public int deleteAllTeacher(List<Long> teaList) {
         return teacherRepository.deleteAllTeacher(teaList);
     }
+    @Override
+    public Teacher findOneByNumber(String teacherNumber) {
+        return teacherRepository.findOneByNumber(teacherNumber);
+    }
 }

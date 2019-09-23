@@ -43,4 +43,8 @@ public class StudentServiceImpl implements StudentService {
     public int deleteAllStudent(List<Long> stuList) {
         return studentRepository.deleteAllStudent(stuList);
     }
+    @Override
+    public Student findOneByNumber(String stuNumber) {
+        return studentRepository.findOneByNumber(stuNumber);
+    }
 }

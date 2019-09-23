@@ -26,4 +26,6 @@ public interface TeacherRepository extends JpaRepository<Teacher,Long> {
     @Transactional
     @Query(value = "delete from teacher  where id in (?1)",nativeQuery = true)
     int deleteAllTeacher(List<Long> ids);
+    @Query(value = "from Teacher where teacherNumber = ?1")
+    Teacher findOneByNumber(String teacherNumber);
 }

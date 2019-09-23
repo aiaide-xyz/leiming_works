@@ -26,4 +26,7 @@ public interface ClassRepository extends JpaRepository<CgClass,Long> {
     @Transactional
     @Query(value = "delete from cg_class  where id in (?1)",nativeQuery = true)
     int deleteAllClass(List<Long> ids);
+
+    @Query(value = "from CgClass where className = ?1")
+    CgClass findOneByName(String className);
 }

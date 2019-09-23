@@ -14,4 +14,5 @@ public interface StudentService {
     void saveOne(Student student);
     int deleteStudent(int id);
     int deleteAllStudent(List<Long> stuList);
+    Student findOneByNumber(String stuNumber);
 }

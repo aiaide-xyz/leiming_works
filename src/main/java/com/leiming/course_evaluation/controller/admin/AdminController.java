@@ -96,6 +96,11 @@ public class AdminController {
     @PostMapping("/editStudent")
     @ResponseBody
     public String editStudent(Student student,Long classId,Long department){
+        //判断学号是否存在
+        if (studentService.findOneByNumber(student.getStuNumber()) !=null){
+//            System.out.println(666);
+            return "equals";
+        }
         Student studentNew = studentService.findById(student.getId());
         studentNew.setUsername(student.getUsername());
         studentNew.setStuNumber(student.getStuNumber());
@@ -120,7 +125,11 @@ public class AdminController {
     @PostMapping("/addStudent")
     @ResponseBody
     public String addStudent(Student student,Long classId,Long department){
-
+        //判断学号是否存在
+        if (studentService.findOneByNumber(student.getStuNumber()) !=null){
+//            System.out.println(666);
+            return "equals";
+        }
         student.setPassword(student.getStuNumber());
         CgClass cgClass = classService.findById(classId);
         student.setCgClass(cgClass);
@@ -191,6 +200,13 @@ public class AdminController {
     @PostMapping("/editTeacher")
     @ResponseBody
     public String editStudent(Teacher teacher,Long department){
+        //判断工号是否存在
+
+
+        if (teacherService.findOneByNumber(teacher.getTeacherNumber())!=null){
+            return "equals";
+        }
+
         Teacher teacherNew = teacherService.findById(teacher.getId());
         teacherNew.setUsername(teacher.getUsername());
         teacherNew.setTeacherNumber(teacher.getTeacherNumber());
@@ -215,6 +231,12 @@ public class AdminController {
     @PostMapping("/addTeacher")
     @ResponseBody
     public String addTeacher(Teacher teacher ,Long department){
+        //判断工号是否存在
+
+
+        if (teacherService.findOneByNumber(teacher.getTeacherNumber())!=null){
+            return "equals";
+        }
         teacher.setPassword(teacher.getTeacherNumber());
         teacher.setDepartment(departmentService.findByID(department));
         try {
@@ -274,6 +296,7 @@ public class AdminController {
     //修改页面获取
     @GetMapping("/editDepartment")
     public ModelAndView toEditDepartment(Long id,Model model){
+
         Department department = departmentService.findById(id);
         model.addAttribute("department",department);
         return new ModelAndView("admin/departmentForm.html","model",model);
@@ -282,6 +305,9 @@ public class AdminController {
     @PostMapping("/editDepartment")
     @ResponseBody
     public String editDepartment(Department department){
+        if (departmentService.findOneByName(department.getDptName())!=null){
+            return "equals";
+        }
         Department departmentNew = departmentService.findById(department.getId());
         departmentNew.setDptName(department.getDptName());
         departmentNew.setMark(department.getMark());
@@ -292,6 +318,7 @@ public class AdminController {
     //添加院系的界面
     @GetMapping("/addDepartment")
     public ModelAndView addDepartment(Model model){
+
         return new ModelAndView("admin/departmentAdd.html","model",model);
     }
 
@@ -300,7 +327,9 @@ public class AdminController {
     @PostMapping("/addDepartment")
     @ResponseBody
     public String addDepartment(Department department){
-
+        if (departmentService.findOneByName(department.getDptName())!=null){
+            return "equals";
+        }
         try {
             departmentService.saveOne(department);
             return "ok";
@@ -361,6 +390,12 @@ public class AdminController {
     @PostMapping("/editClass")
     @ResponseBody
     public String editClass(CgClass cgClass){
+
+        //判断班级名称是否存在
+        if (classService.findOneByName(cgClass.getClassName())!=null){
+            return "equals";
+        }
+
         CgClass cgClassNew = classService.findById(cgClass.getId());
         cgClassNew.setClassName(cgClass.getClassName());
         cgClassNew.setType(cgClass.getType());
@@ -376,6 +411,10 @@ public class AdminController {
     @PostMapping("/addClass")
     @ResponseBody
     public String addClass(CgClass cgClass){
+        //判断班级名称是否存在
+        if (classService.findOneByName(cgClass.getClassName())!=null){
+            return "equals";
+        }
 
         try {
             classService.saveOne(cgClass);
@@ -428,6 +467,8 @@ public class AdminController {
     //修改课程列表页面
     @GetMapping("/editCourse")
     public ModelAndView toEditCourse(Long id,Model model){
+
+
         Course course = courseService.findById(id);
         model.addAttribute("course",course);
         return new ModelAndView("admin/courseForm.html","model",model);
@@ -436,6 +477,10 @@ public class AdminController {
     @PostMapping("/editCourse")
     @ResponseBody
     public String editCourse(Course course){
+        if (courseService.findOneByName(course.getCourseName())!=null){
+            return "equals";
+        }
+
         Course courseNew = courseService.findById(course.getId());
         courseNew.setCourseName(course.getCourseName());
         courseNew.setMark(course.getMark());
@@ -451,10 +496,13 @@ public class AdminController {
     //添加课程的方法
     @PostMapping("/addCourse")
     @ResponseBody
-    public String addCourse(Course cgClass){
+    public String addCourse(Course course){
+        if (courseService.findOneByName(course.getCourseName())!=null){
+            return "equals";
+        }
 
         try {
-            courseService.saveOne(cgClass);
+            courseService.saveOne(course);
             return "ok";
         }
         catch (Exception e){

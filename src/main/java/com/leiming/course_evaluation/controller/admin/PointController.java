@@ -30,7 +30,7 @@ public class PointController {
     public Map<String,Object> point_student_list(Integer page, Integer limit){
         page--;
         Pageable pageable = PageRequest.of(page,limit);
-        List<Point> content = pointService.findAll(pageable).getContent();
+        List<Point> content = pointService.findAllByStudent(pageable).getContent();
         Map<String,Object> map = new HashMap<>();
         map.put("data",content);
         map.put("size",pointService.findAllCountOfStudent());
@@ -52,7 +52,7 @@ public class PointController {
     public Map<String,Object> point_department_list(Integer page, Integer limit){
         page--;
         Pageable pageable = PageRequest.of(page,limit);
-        List<Point> content = pointService.findAll(pageable).getContent();
+        List<Point> content = pointService.findAllByDepartment(pageable).getContent();
         Map<String,Object> map = new HashMap<>();
         map.put("data",content);
         map.put("size",pointService.findAllCountOfStudent());

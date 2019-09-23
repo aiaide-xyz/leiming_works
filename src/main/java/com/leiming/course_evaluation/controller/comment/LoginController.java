@@ -18,11 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 public class LoginController {
     @Autowired
     private LoginService loginService;
-    //登录页面跳转
-    @RequestMapping("/")
-    public String index(){
-        return "redirect:login";
-    }
+
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ModelAndView getLogin(HttpServletRequest request, /*获取一次性数据*/@ModelAttribute("msg") String msg, Model model) {
         //判断用户是否已经登录，跳转相应页面
