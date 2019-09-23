@@ -57,13 +57,13 @@
               "child": [
                 {
                   "title": "学生方面",
-                  "href": "page/welcome-2.html",
+                  "href": "point/student",
                   "icon": "fa fa-tachometer",
                   "target": "_self"
                 },
                 {
                   "title": "系部方面",
-                  "href": "page/welcome-2.html",
+                  "href": "point/department",
                   "icon": "fa fa-tachometer",
                   "target": "_self"
                 }

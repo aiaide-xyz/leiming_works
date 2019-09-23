@@ -35,7 +35,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">选择院系</label>
         <div class="layui-input-inline">
-            <select name="department" lay-search="" th:each="dept:${departmentList}">
+            <select name="department" lay-search="">
                 <option value="" selected disabled style="display: none;">请选择院系</option>
                 <span th:each="dept:${departmentList}">
                     <option th:value="${dept.id}" th:text="${dept.dptName}"></option>

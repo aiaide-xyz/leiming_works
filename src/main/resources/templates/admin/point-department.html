@@ -14,42 +14,42 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
 
-        <fieldset class="layui-elem-field layuimini-search">
-            <legend>搜索信息</legend>
-            <div style="margin: 10px 10px 10px 10px">
-                <form class="layui-form layui-form-pane" action="">
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户姓名</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户性别</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户城市</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="city" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户职业</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="classify" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">搜索</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </fieldset>
+<!--        <fieldset class="layui-elem-field layuimini-search">-->
+<!--            <legend>搜索信息</legend>-->
+<!--            <div style="margin: 10px 10px 10px 10px">-->
+<!--                <form class="layui-form layui-form-pane" action="">-->
+<!--                    <div class="layui-form-item">-->
+<!--                        <div class="layui-inline">-->
+<!--                            <label class="layui-form-label">用户姓名</label>-->
+<!--                            <div class="layui-input-inline">-->
+<!--                                <input type="text" name="username" autocomplete="off" class="layui-input">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="layui-inline">-->
+<!--                            <label class="layui-form-label">用户性别</label>-->
+<!--                            <div class="layui-input-inline">-->
+<!--                                <input type="text" name="sex" autocomplete="off" class="layui-input">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="layui-inline">-->
+<!--                            <label class="layui-form-label">用户城市</label>-->
+<!--                            <div class="layui-input-inline">-->
+<!--                                <input type="text" name="city" autocomplete="off" class="layui-input">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="layui-inline">-->
+<!--                            <label class="layui-form-label">用户职业</label>-->
+<!--                            <div class="layui-input-inline">-->
+<!--                                <input type="text" name="classify" autocomplete="off" class="layui-input">-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="layui-inline">-->
+<!--                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">搜索</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </fieldset>-->
 
         <div class="layui-btn-group">
             <button class="layui-btn data-add-btn">添加</button>
@@ -71,13 +71,13 @@
 
         table.render({
             elem: document.getElementById('currentTableId'),
-            url: '/classes',
+            url: '/point/department/list',
 
             cols: [[
-                {type: "checkbox", width: 50, fixed: "left"},
+                {type: "checkbox", width: 65, fixed: "left"},
                 {type: 'numbers', title: '序号', sort: true, width:50},
-                {field: 'className',title: '班级'},
-                {field: 'type',title: '类型'},
+                {field: 'pointName', title: '考核指标'},
+                {field: 'weight', title: '权重占比'},
                 {title: '操作', minWidth: 50, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
             page:true,
@@ -118,7 +118,7 @@
         $(".data-add-btn").on("click", function () {
             layer.open({
                 type:2,
-                content:"/addClass",
+                content:"/",
                 maxmin:true,
                 area:['500px','500px'],
                 end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
@@ -140,12 +140,13 @@
                         }
                         console.log(id);
                         $.ajax({
-                            url: '/deleteAllClass?id=' + id,
+                            url: '/deleteAllTeacher?id=' + id,
                             success: function (data) {
                                 layer.msg('删除成功');
                                 setTimeout(function(){
                                     location.reload();
                                 },700);
+
                             }
                         });
                     };
@@ -171,7 +172,7 @@
                 // })
                 layer.open({
                     type:2,
-                    content:"/editClass?id="+data.id,
+                    content:"/editTeacher?id="+data.id,
                     maxmin:true,
                     area:['500px','500px'],
                     end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
@@ -179,15 +180,14 @@
                     }
                 })
 
-            } else if (obj.event === 'delete') {
+            }  else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
                     if (index){
                         $.ajax({
-                            url:"/deleteClass?id="+data.id,
+                            url:"/deleteTeacher?id="+data.id,
                             success:function (data) {
                                 obj.del();
-                                layer.msg('删除成功');
-
+                                layer.alert('删除成功');
                             }
                         });
                     }else {
