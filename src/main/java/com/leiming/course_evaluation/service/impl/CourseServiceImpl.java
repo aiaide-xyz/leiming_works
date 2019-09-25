@@ -48,4 +48,9 @@ public class CourseServiceImpl implements CourseService {
     public Course findOneByName(String courseName) {
         return courseRepository.findOneByName(courseName);
     }
+
+    @Override
+    public List<Course> findAllList() {
+        return courseRepository.findAll();
+    }
 }

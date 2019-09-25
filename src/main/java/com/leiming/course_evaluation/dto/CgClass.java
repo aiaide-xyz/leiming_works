@@ -1,5 +1,6 @@
 package com.leiming.course_evaluation.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -16,6 +17,8 @@ public class CgClass {
     private Long id;
     private String className;
     private String type;
+    @Transient
+    private String dptName;
     @OneToMany(mappedBy = "cgClass")
     private List<Student> students = new ArrayList<>();
     @ManyToMany(cascade = CascadeType.PERSIST)
@@ -26,6 +29,10 @@ public class CgClass {
     )
     private Set<Course> courses = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    @JsonBackReference
+    private Department department;
     protected CgClass(){
 
     }
@@ -54,6 +61,14 @@ public class CgClass {
         this.type = type;
     }
 
+    public String getDptName() {
+        return dptName;
+    }
+
+    public void setDptName(String dptName) {
+        this.dptName = dptName;
+    }
+
     public List<Student> getStudents() {
         return students;
     }
@@ -70,10 +85,20 @@ public class CgClass {
         this.courses = courses;
     }
 
-    public CgClass(String className, String type, List<Student> students, Set<Course> courses) {
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public CgClass(String className, String type, String dptName, List<Student> students, Set<Course> courses, Department department) {
         this.className = className;
         this.type = type;
+        this.dptName = dptName;
         this.students = students;
         this.courses = courses;
+        this.department = department;
     }
 }

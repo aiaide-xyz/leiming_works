@@ -46,4 +46,9 @@ public class TeacherServiceImpl implements TeacherService {
     public Teacher findOneByNumber(String teacherNumber) {
         return teacherRepository.findOneByNumber(teacherNumber);
     }
+
+    @Override
+    public List<Teacher> findAllList() {
+        return teacherRepository.findAll();
+    }
 }

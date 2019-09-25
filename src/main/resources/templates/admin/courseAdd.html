@@ -21,7 +21,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">备注</label>
         <div class="layui-input-inline">
-            <input type="text" name="mark" placeholder="备注" autocomplete="off" class="layui-input">
+            <input type="text" name="mark" placeholder="为空默认'无'" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -41,7 +41,10 @@
             var id = $('input:hidden').val();
             var courseName = $("input[name='courseName']").val();
             var mark = $("input[name='mark']").val();
-            if (courseName==""||mark==""){
+            if (mark==""||mark==null){
+                mark='无';
+            }
+            if (courseName==""||courseName==null){
                 layer.msg("每项都必须不为空！")
             }else {
                 $.ajax({

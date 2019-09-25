@@ -14,10 +14,13 @@ public class Department {
     private Long id;
     private String dptName;
     private String mark;
-    @OneToMany(mappedBy = "department")//与院系建立一对多关系
+    @OneToMany(mappedBy = "department")//与学生建立一对多关系
+
     private List<Student> students;
     @OneToMany(mappedBy = "department")//与教师建立一对多关系
     private List<Teacher> teachers = new ArrayList<>();
+    @OneToMany(mappedBy = "department")
+    private List<CgClass> cgClasses = new ArrayList<>();
     protected Department(){
 
     }
@@ -62,10 +65,19 @@ public class Department {
         this.teachers = teachers;
     }
 
-    public Department(String dptName, String mark, List<Student> students, List<Teacher> teachers) {
+    public List<CgClass> getCgClasses() {
+        return cgClasses;
+    }
+
+    public void setCgClasses(List<CgClass> cgClasses) {
+        this.cgClasses = cgClasses;
+    }
+
+    public Department(String dptName, String mark, List<Student> students, List<Teacher> teachers, List<CgClass> cgClasses) {
         this.dptName = dptName;
         this.mark = mark;
         this.students = students;
         this.teachers = teachers;
+        this.cgClasses = cgClasses;
     }
 }

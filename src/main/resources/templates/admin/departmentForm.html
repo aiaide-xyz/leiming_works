@@ -41,6 +41,9 @@
             var id = $('input:hidden').val();
             var dptName = $("input[name='dptName']").val();
             var mark = $("input[name='mark']").val();
+            console.log(id);
+            console.log(dptName);
+            console.log(mark);
             if (dptName==""||mark==""){
                 layer.msg("每项都必须不为空！")
             }else {

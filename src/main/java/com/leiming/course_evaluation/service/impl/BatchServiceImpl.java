@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class BatchServiceImpl implements BatchService {
@@ -32,5 +34,10 @@ public class BatchServiceImpl implements BatchService {
     @Override
     public void saveOne(Batch batchNew) {
         batchRepository.save(batchNew);
+    }
+
+    @Override
+    public List<Batch> findAllList() {
+        return batchRepository.findAll();
     }
 }

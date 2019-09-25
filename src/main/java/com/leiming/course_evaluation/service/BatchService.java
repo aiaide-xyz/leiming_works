@@ -14,4 +14,6 @@ public interface BatchService {
     Batch findById(Long id);
 
     void saveOne(Batch batchNew);
+
+    List<Batch> findAllList();
 }

@@ -21,13 +21,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label">学号</label>
         <div class="layui-input-inline">
-            <input  type="text" name="stuNumber" placeholder="请输入学号" autocomplete="off" class="layui-input">
+            <input  type="text" name="stuNumber" placeholder="学号为01-99,系统会自动加上班级" autocomplete="off" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">选择班级</label>
         <div class="layui-input-inline">
-            <select name="classId" lay-search="">
+            <select name="classId" lay-search="" id="selectClass" lay-filter="addClass">
                 <option value="" selected disabled style="display: none;">请选择班级</option>
                 <span th:each="class:${cgClassList}">
                       <option th:value="${class.id}" th:text="${class.className}"></option>
@@ -36,14 +36,16 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">选择学院</label>
+        <label class="layui-form-label">所属学院</label>
         <div class="layui-input-inline">
-            <select name="department" lay-search="" >
-                <option value="" selected disabled style="display: none;">请选择学院</option>
-                <span th:each="dept:${departmentList}">
-                    <option th:value="${dept.id}" th:text="${dept.dptName}"></option>
-                </span>
-            </select>
+<!--            <select name="department" lay-search="" >-->
+<!--                <option value="" selected disabled style="display: none;">学院</option>-->
+<!--                <span th:each="dept:${departmentList}">-->
+<!--                    <option th:value="${dept.id}" th:text="${dept.dptName}"></option>-->
+<!--                </span>-->
+<!--            </select>-->
+            <input  id="department" type="text" value="" name="department" placeholder="学院" autocomplete="off" disabled class="layui-input">
+
         </div>
     </div>
 
@@ -64,26 +66,42 @@
 </div>
 
 <script src="/lib/layui-v2.5.4/layui.all.js"></script>
-<script>
-    layui.use(['form','layer'], function(){
+<script type="text/javascript" th:inline="javascript">
+
+
+    layui.use(['form','layer','jquery'], function(){
         var form = layui.form;
         form.render(); //更新全部
         //各种基于事件的操作，下面会有进一步介绍
+        form.on('select(addClass)', function(data){
+            var classList = [[${cgClassList}]];
+            $.ajax({
+                url:"/getDepartmentByClassId",
+                type:"post",
+                data:{"id":data.value},
+                success:function (data) {
+                    $("#department").val(data);
+                }
+            })
+        });
         $("#edit").click(function () {
+            form.render(); //更新全部
             var id = $('input:hidden').val();
             var sex = $('input:radio:checked').val();
             var username = $("input[name='username']").val();
             var stuNumber = $("input[name='stuNumber']").val();
             var classId = $("select[name='classId']").val();
-            var department = $("select[name='department']").val();
-            if (username==""||stuNumber==""||classId==""||department==""){
+            var department = $("input[name='department']").val();
+
+            console.log(department);
+            if (username==""||stuNumber==""||classId==""||department==""||department==null){
                 layer.msg("每项都必须不为空！")
             }else {
                 console.log(sex);
                 $.ajax({
                     type:"post",
                     url:"/addStudent",
-                    data:{"sex":sex,"username":username,"stuNumber":stuNumber,"classId":classId,"department":department,"id":id},
+                    data:{"sex":sex,"username":username,"stuNumber":stuNumber,"classId":classId,"id":id},
                     success:function (data) {
                         if (data == "ok") {
 

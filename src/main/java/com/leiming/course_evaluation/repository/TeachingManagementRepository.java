@@ -4,8 +4,12 @@ import com.leiming.course_evaluation.dto.TeachingManagement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Component
 public interface TeachingManagementRepository extends JpaRepository<TeachingManagement,Long> {
@@ -13,4 +17,12 @@ public interface TeachingManagementRepository extends JpaRepository<TeachingMana
     Page<TeachingManagement> findAll(Pageable pageable);
     @Query(value = "select count(*) from teaching_management",nativeQuery = true)
     int findAllCount();
+    @Modifying
+    @Transactional
+    @Query(value = "delete from teaching_management where id=?1",nativeQuery = true)
+    int deleteTeacherManagement(int id);
+    @Modifying
+    @Transactional
+    @Query(value = "delete from teaching_management  where id in (?1)",nativeQuery = true)
+    int deleteAllTeacherManagement(List<Long> ids);
 }

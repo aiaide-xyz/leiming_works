@@ -18,4 +18,6 @@ public interface ClassService {
     int deleteClass(int id);
     int deleteAllClass(List<Long> claList);
     CgClass findOneByName(String className);
+
+
 }

@@ -20,31 +20,25 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">批次</label>
+                            <label class="layui-form-label">用户姓名</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="username" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">班级</label>
+                            <label class="layui-form-label">用户性别</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="sex" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">课程</label>
+                            <label class="layui-form-label">用户城市</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="city" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">教师</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="classify" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">院系</label>
+                            <label class="layui-form-label">用户职业</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="classify" autocomplete="off" class="layui-input">
                             </div>
@@ -57,13 +51,18 @@
             </div>
         </fieldset>
 
-        <div class="layui-btn-group">
-            <button class="layui-btn data-add-btn">添加</button>
-            <button class="layui-btn layui-btn-danger data-delete-btn">删除</button>
-        </div>
+
         <div class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"> ></div>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-group">
+                <button class="layui-btn data-add-btn" lay-event="add">添加</button>
+                <button class="layui-btn layui-btn-danger data-delete-btn" lay-event="delete">删除</button>
+            </div>
+        </script>
+
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">查看更多/编辑</a>
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
     </div>
@@ -78,7 +77,7 @@
         table.render({
             elem: document.getElementById('currentTableId'),
             url: '/teachingManagements',
-
+            toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"},
                 {type: 'numbers', title: 'ID', sort: true},
@@ -86,7 +85,7 @@
                 {field: 'cgClass', title: '班级'},
                 {field: 'course', title: '课程'},
                 {field: 'teacher', title: '授课教师'},
-                {field: 'department', title: '所属院校'},
+                {field: 'department', title: '所属院校(班级)'},
                 {title: '操作', minWidth: 50, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
             page:true,
@@ -123,16 +122,78 @@
             return false;
         });
 
+        //头工具栏事件
+        table.on('toolbar(currentTableFilter)', function(obj){
+            if (obj.event ==="add"){
+                layer.open({
+                    type:2,
+                    content:"/addTeachingManagement",
+                    maxmin:true,
+                    area:['500px','500px'],
+                    shadeClose:true,
+                    end: function (index) {
+                        layer.close(index);
+                        table.reload('currentTableId',{
+                            url:'/teachingManagements',
+                            where: { //设定异步数据接口的额外参数，任意设
+                            },
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
+                    }
+                })
+            }else if (obj.event ==="delete"){
+                var checkStatus = table.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                if (JSON.stringify(data) == null || JSON.stringify(data) == "[]"){
+                    layer.msg("选择不能为空！");
+                }else {
+                    layer.open({
+                        content: '确认删除吗？',
+                        shadeCloce:'true',
+                        btn: ['确定', '取消'],
+                        yes:function(index,layero) {
+                            var checkStatus = table.checkStatus('currentTableId'),
+                                data = checkStatus.data
+                            var id = [];
+                            if (data.length > 0) {
+                                for (var i = 0; i < data.length; i++) {
+                                    id += data[i].id + ',';
+                                }
+                                console.log(id);
+                                $.ajax({
+                                    url: '/deleteAllTeachingManagement?id=' + id,
+                                });
+                                layer.close(index);
+                                layer.msg('删除成功');
+                                table.reload('currentTableId', {
+                                    url: '/teachingManagements',
+                                    where: { //设定异步数据接口的额外参数，任意设
+                                        id: id
+                                    },
+                                    page: {
+                                        curr: 1 //重新从第 1 页开始
+                                    }
+                                });
+                            }
+                        },
+                        btn2:function (index) {
+                            layer.close(index);
+                        }
+                    });
+                }
+            }
+        })
+
         // 监听添加操作
         $(".data-add-btn").on("click", function () {
-            layer.msg('添加数据');
+
         });
 
         // 监听删除操作
         $(".data-delete-btn").on("click", function () {
-            var checkStatus = table.checkStatus('currentTableId')
-                , data = checkStatus.data;
-            layer.alert(JSON.stringify(data));
+
         });
 
         //监听表格复选框选择
@@ -151,19 +212,38 @@
                 // })
                 layer.open({
                     type:2,
-                    content:"https://www.layui.com/admin/std/dist/views/user/user/userform.html",
+                    content:"/editTeachingManagement?id="+data.id,
                     maxmin:true,
-                    area:['500px','500px']
+                    area:['500px','500px'],
+                    shadeClose:true,
+                    end: function(layero, index){//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
+                        table.reload('currentTableId',{
+                            url:'/teachingManagements',
+                            where: { //设定异步数据接口的额外参数，任意设
+                            },
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
+                    }
                 })
 
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
+                    if (index){
+                        $.ajax({
+                            url:"/deleteTeachingManagement?id="+data.id,
+                            success:function (data) {
+                                obj.del();
+                                layer.alert('删除成功');
+                            }
+                        });
+                    }else {
+                        layer.close(index);
+                    }
                 });
             }
         });
-
     });
 </script>
 <script>
