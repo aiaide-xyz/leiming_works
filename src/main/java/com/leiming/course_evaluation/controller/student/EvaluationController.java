@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class EvaluationController {
     @GetMapping("")
     public String toEvaluation(){
-        return "student/evaluation.html";
+        return "student/evaluation-list.html";
     }
 }

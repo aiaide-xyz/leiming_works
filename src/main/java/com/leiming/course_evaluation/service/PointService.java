@@ -9,4 +9,7 @@ public interface PointService {
     Page<Point> findAllByDepartment(Pageable pageable);
     Page<Point> findAllByStudent(Pageable pageable);
     int findAllCountOfStudent();
+
+
+    Point finById(Long aLong);
 }

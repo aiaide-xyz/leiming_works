@@ -48,7 +48,7 @@ public class AdminController {
     @PostMapping(value = "/getDepartmentByClassId")
     @ResponseBody
     public String getDepartmentByClassId(Long id,String className){
-        if (!className.isEmpty()){
+        if (className!=null){
             return classService.findOneByName(className).getDepartment().getDptName();
         }
         return classService.findById(id).getDepartment().getDptName();
@@ -141,9 +141,9 @@ public class AdminController {
 //            System.out.println(666);
             return "equals";
         }
-        student.setPassword(student.getStuNumber());
         CgClass cgClass = classService.findById(classId);
-        student.setStuNumber(student.getStuNumber()+cgClass.getClassName());
+        student.setPassword(cgClass.getClassName()+student.getStuNumber());
+        student.setStuNumber(cgClass.getClassName()+student.getStuNumber());
         student.setCgClass(cgClass);
         student.setDepartment(cgClass.getDepartment());
         try{
@@ -348,26 +348,32 @@ public class AdminController {
     //单个删除
     @GetMapping("/deleteDepartment")
     @ResponseBody
-    public int deleteDepartment(int id){
-        int i =departmentService.deleteDepartment(id);
-        System.out.println("======"+id);
-        return i;
+    public String deleteDepartment(int id){
+        Department dep = departmentService.findByID(Long.valueOf(id));
+        if (dep.getStudents()!=null&&dep.getTeachers()!=null&&dep.getCgClasses()!=null){
+            return "no";
+        }
+        departmentService.deleteDepartment(id);
+        return "no";
     }
     //多个删除
     @GetMapping("/deleteAllDepartment")
     @ResponseBody
-    public int deleteAllDepartment(@RequestParam("id") String id){
+    public String deleteAllDepartment(@RequestParam("id") String id){
         // 接收包含stuId的字符串，并将它分割成字符串数组
         String[] depList = id.split(",");
         // 将字符串数组转为List<Intger> 类型
         List<Long> LString = new ArrayList<Long>();
         for(String str : depList){
+            Department dep = departmentService.findByID(Long.valueOf(id));
+            if (dep.getStudents()!=null&&dep.getTeachers()!=null&&dep.getCgClasses()!=null){
+                return "no";
+            }
             LString.add(new Long(str));
         }
-        System.out.println("====="+LString);
         // 调用service层的批量删除函数
-        int i = departmentService.deleteAllDepartment(LString);
-        return i;
+        departmentService.deleteAllDepartment(LString);
+        return "ok";
     }
 
 
@@ -438,26 +444,34 @@ public class AdminController {
     //删除单个
     @GetMapping("/deleteClass")
     @ResponseBody
-    public int deleteClass(int id){
+    public String deleteClass(int id){
+        CgClass cgClass = classService.findById(Long.valueOf(id));
+        if (cgClass.getStudents()!=null){
+            return "no";
+        }
         int i =classService.deleteClass(id);
         System.out.println("======"+id);
-        return i;
+        return "ok";
     }
     //删除多个
     @GetMapping("/deleteAllClass")
     @ResponseBody
-    public int deleteAllClass(@RequestParam("id") String id){
+    public String deleteAllClass(@RequestParam("id") String id){
         // 接收包含stuId的字符串，并将它分割成字符串数组
         String[] claList = id.split(",");
         // 将字符串数组转为List<Intger> 类型
         List<Long> LString = new ArrayList<Long>();
         for(String str : claList){
+            CgClass cgClass = classService.findById(Long.valueOf(str));
+            if (cgClass.getStudents()!=null){
+                return "no";
+            }
             LString.add(new Long(str));
         }
         System.out.println("====="+LString);
         // 调用service层的批量删除函数
-        int i = classService.deleteAllClass(LString);
-        return i;
+        classService.deleteAllClass(LString);
+        return "ok";
     }
 
 

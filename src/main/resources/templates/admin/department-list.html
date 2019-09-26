@@ -137,9 +137,17 @@
                             console.log(id);
                             $.ajax({
                                 url: '/deleteAllDepartment?id=' + id,
+                                success: function (data) {
+                                    if (data=="ok"){
+                                        layer.alert('删除成功');
+                                        setTimeout(function(){
+                                            location.reload();
+                                        },700);
+                                    }else {
+                                        layer.alert("非法操作，选择中包含已有班级、学生或教师！")
+                                    }
+                                }
                             });
-                            layer.close(index);
-                            layer.msg('删除成功');
                             table.reload('currentTableId', {
                                 url: '/departments',
                                 where: { //设定异步数据接口的额外参数，任意设
@@ -193,13 +201,16 @@
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
                     if (index){
-                        $.ajax({
-                            url:"/deleteDepartment?id="+data.id,
-                            success:function (data) {
-                                obj.del();
-                                layer.alert('删除成功');
-                            }
-                        });
+                        if (data=="ok"){
+                            obj.del();
+
+                            layer.alert('删除成功');
+                            // setTimeout(function(){
+                            //     location.reload();
+                            // },700);
+                        }else {
+                            layer.alert("非法操作，选择中包含已有班级、学生或教师！")
+                        }
                     }else {
                         layer.close(index);
                     }

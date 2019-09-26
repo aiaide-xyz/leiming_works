@@ -145,12 +145,19 @@
                             for (var i = 0; i < data.length; i++) {
                                 id += data[i].id + ',';
                             }
-                            console.log(id);
                             $.ajax({
                                 url: '/deleteAllClass?id=' + id,
+                                success: function (data) {
+                                    if (data=="ok"){
+                                        layer.alert('删除成功');
+                                        setTimeout(function(){
+                                            location.reload();
+                                        },700);
+                                    }else {
+                                        layer.alert("非法操作，选择中包含已有学生！")
+                                    }
+                                }
                             });
-                            layer.close(index);
-                            layer.msg('删除成功');
                             table.reload('currentTableId', {
                                 url: '/classes',
                                 where: { //设定异步数据接口的额外参数，任意设
@@ -206,8 +213,16 @@
                         $.ajax({
                             url:"/deleteClass?id="+data.id,
                             success:function (data) {
-                                obj.del();
-                                layer.msg('删除成功');
+                                if (data=="ok"){
+                                    obj.del();
+
+                                    layer.alert('删除成功');
+                                    // setTimeout(function(){
+                                    //     location.reload();
+                                    // },700);
+                                }else {
+                                    layer.alert("非法操作，选择中包含已有学生！")
+                                }
 
                             }
                         });

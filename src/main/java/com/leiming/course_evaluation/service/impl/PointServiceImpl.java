@@ -31,4 +31,9 @@ public class PointServiceImpl implements PointService {
     public int findAllCountOfStudent() {
         return pointRepository.findAllCountOfStudent();
     }
+
+    @Override
+    public Point finById(Long aLong) {
+        return pointRepository.findById(aLong).get();
+    }
 }

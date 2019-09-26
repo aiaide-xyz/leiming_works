@@ -15,4 +15,6 @@ public interface TeachingManagementService {
     int deleteAllTeacherManagement(List<Long> teaList);
     TeachingManagement findById(Long id);
     void saveOne(TeachingManagement teachingManagement);
+
+
 }

@@ -48,4 +48,6 @@ public class TeachingManagementServiceImpl implements TeachingManagementService 
     public void saveOne(TeachingManagement teachingManagement) {
         teachingManagementRepository.save(teachingManagement);
     }
+
+
 }
