@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PointServiceImpl implements PointService {
     @Autowired
@@ -33,7 +35,18 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
+    public List<Point> findAllByType(String type) {
+        return pointRepository.finAllByType(type);
+    }
+
+
+    @Override
     public Point finById(Long aLong) {
         return pointRepository.findById(aLong).get();
+    }
+
+    @Override
+    public void Save(Point point) {
+        pointRepository.save(point);
     }
 }

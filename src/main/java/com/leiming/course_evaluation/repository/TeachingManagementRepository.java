@@ -25,4 +25,6 @@ public interface TeachingManagementRepository extends JpaRepository<TeachingMana
     @Transactional
     @Query(value = "delete from teaching_management  where id in (?1)",nativeQuery = true)
     int deleteAllTeacherManagement(List<Long> ids);
+    @Query(value = "select * from teaching_management where cg_class=?1",nativeQuery = true)
+    List<TeachingManagement> finAllByClass(String className);
 }

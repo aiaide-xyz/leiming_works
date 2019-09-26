@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface PointRepository extends JpaRepository<Point,Long> {
     @Query(value = "select * from point",nativeQuery = true)
     Page<Point> findAll(Pageable pageable);
@@ -16,5 +18,6 @@ public interface PointRepository extends JpaRepository<Point,Long> {
     Page<Point> findAllByStudent(Pageable pageable);
     @Query(value = "select * from point where type ='department'",nativeQuery = true)
     Page<Point> findAllByDepartment(Pageable pageable);
-
+    @Query(value = "select * from point where type =?1",nativeQuery = true)
+    List<Point> finAllByType(String type);
 }

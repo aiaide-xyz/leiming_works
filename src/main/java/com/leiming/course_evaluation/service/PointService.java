@@ -4,12 +4,16 @@ import com.leiming.course_evaluation.dto.Point;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface PointService {
     Page<Point> findAll(Pageable pageable);
     Page<Point> findAllByDepartment(Pageable pageable);
     Page<Point> findAllByStudent(Pageable pageable);
     int findAllCountOfStudent();
-
+    List<Point> findAllByType(String type);
 
     Point finById(Long aLong);
+
+    void Save(Point point);
 }

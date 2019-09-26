@@ -14,50 +14,13 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
 
-<!--        <fieldset class="layui-elem-field layuimini-search">-->
-<!--            <legend>搜索信息</legend>-->
-<!--            <div style="margin: 10px 10px 10px 10px">-->
-<!--                <form class="layui-form layui-form-pane" action="">-->
-<!--                    <div class="layui-form-item">-->
-<!--                        <div class="layui-inline">-->
-<!--                            <label class="layui-form-label">用户姓名</label>-->
-<!--                            <div class="layui-input-inline">-->
-<!--                                <input type="text" name="username" autocomplete="off" class="layui-input">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="layui-inline">-->
-<!--                            <label class="layui-form-label">用户性别</label>-->
-<!--                            <div class="layui-input-inline">-->
-<!--                                <input type="text" name="sex" autocomplete="off" class="layui-input">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="layui-inline">-->
-<!--                            <label class="layui-form-label">用户城市</label>-->
-<!--                            <div class="layui-input-inline">-->
-<!--                                <input type="text" name="city" autocomplete="off" class="layui-input">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="layui-inline">-->
-<!--                            <label class="layui-form-label">用户职业</label>-->
-<!--                            <div class="layui-input-inline">-->
-<!--                                <input type="text" name="classify" autocomplete="off" class="layui-input">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="layui-inline">-->
-<!--                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">搜索</a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </fieldset>-->
-
         <div class="layui-btn-group">
             <button class="layui-btn data-add-btn">添加</button>
             <button class="layui-btn layui-btn-danger data-delete-btn">删除</button>
         </div>
         <div class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"> ></div>
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">查看更多/编辑</a>
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">指标维护</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
     </div>
@@ -118,9 +81,9 @@
         $(".data-add-btn").on("click", function () {
             layer.open({
                 type:2,
-                content:"/",
+                content:"/point/addPoint?type=student",
                 maxmin:true,
-                area:['500px','500px'],
+                area:['700px','500px'],
                 end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
                     location.reload();　　//layer.open关闭刷新
                 }
@@ -172,9 +135,9 @@
                 // })
                 layer.open({
                     type:2,
-                    content:"/editTeacher?id="+data.id,
+                    content:"/point/editPoint?id="+data.id,
                     maxmin:true,
-                    area:['500px','500px'],
+                    area:['700px','500px'],
                     end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
                         location.reload();　　//layer.open关闭刷新
                     }

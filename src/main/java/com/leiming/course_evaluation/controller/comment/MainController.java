@@ -24,13 +24,5 @@ public class MainController {
     public String index(){
         return "redirect:login";
     }
-    @RequestMapping("/test")
-    public ModelAndView test(Model model){
-        Point point = pointService.finById(new Long(1));
-        List<TeachingManagement> list = teachingManagementService.findAllList();
-        model.addAttribute("point",point);
-        model.addAttribute("list",list);
-        return new ModelAndView("student/evaluation.html","model",model);
 
-    }
 }

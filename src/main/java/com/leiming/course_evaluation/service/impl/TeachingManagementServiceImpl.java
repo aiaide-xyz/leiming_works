@@ -49,5 +49,10 @@ public class TeachingManagementServiceImpl implements TeachingManagementService 
         teachingManagementRepository.save(teachingManagement);
     }
 
+    @Override
+    public List<TeachingManagement> finAllByClass(String className) {
+        return teachingManagementRepository.finAllByClass(className);
+    }
+
 
 }
