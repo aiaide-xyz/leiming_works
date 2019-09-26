@@ -88,7 +88,7 @@
             var course = $("select[name='course']").val();
             var teacher =$("select[name='teacher']").val();
             var department = $("select[name='department']").val();
-            if (batch==""||cgClass==""||department==""||course==""||teacher==""){
+            if (batch==""||cgClass==""||department==""||course==""||teacher==""||batch==null||cgClass==null||department==null||course==null||teacher==null){
                 layer.msg("每项都必须不为空！")
             }else {
                 $.ajax({
