@@ -52,14 +52,14 @@
         </fieldset>
 
 
-        <div class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"> ></div>
 
-        <script type="text/html" id="toolbarDemo">
+
             <div class="layui-btn-group">
-                <button class="layui-btn data-add-btn" lay-event="add">添加</button>
-                <button class="layui-btn layui-btn-danger data-delete-btn" lay-event="delete">删除</button>
+                <button class="layui-btn data-add-btn">添加</button>
+                <button class="layui-btn layui-btn-danger data-delete-btn">删除</button>
             </div>
-        </script>
+
+        <div class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"> ></div>
 
         <script type="text/html" id="currentTableBar">
             <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
@@ -77,7 +77,6 @@
         table.render({
             elem: document.getElementById('currentTableId'),
             url: '/teachingManagements',
-            toolbar: '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"},
                 {type: 'numbers', title: 'ID', sort: true},
@@ -122,78 +121,70 @@
             return false;
         });
 
-        //头工具栏事件
-        table.on('toolbar(currentTableFilter)', function(obj){
-            if (obj.event ==="add"){
-                layer.open({
-                    type:2,
-                    content:"/addTeachingManagement",
-                    maxmin:true,
-                    area:['500px','500px'],
-                    shadeClose:true,
-                    end: function (index) {
-                        layer.close(index);
-                        table.reload('currentTableId',{
-                            url:'/teachingManagements',
-                            where: { //设定异步数据接口的额外参数，任意设
-                            },
-                            page: {
-                                curr: 1 //重新从第 1 页开始
-                            }
-                        });
-                    }
-                })
-            }else if (obj.event ==="delete"){
-                var checkStatus = table.checkStatus('currentTableId')
-                    , data = checkStatus.data;
-                if (JSON.stringify(data) == null || JSON.stringify(data) == "[]"){
-                    layer.msg("选择不能为空！");
-                }else {
-                    layer.open({
-                        content: '确认删除吗？',
-                        shadeCloce:'true',
-                        btn: ['确定', '取消'],
-                        yes:function(index,layero) {
-                            var checkStatus = table.checkStatus('currentTableId'),
-                                data = checkStatus.data
-                            var id = [];
-                            if (data.length > 0) {
-                                for (var i = 0; i < data.length; i++) {
-                                    id += data[i].id + ',';
-                                }
-                                console.log(id);
-                                $.ajax({
-                                    url: '/deleteAllTeachingManagement?id=' + id,
-                                });
-                                layer.close(index);
-                                layer.msg('删除成功');
-                                table.reload('currentTableId', {
-                                    url: '/teachingManagements',
-                                    where: { //设定异步数据接口的额外参数，任意设
-                                        id: id
-                                    },
-                                    page: {
-                                        curr: 1 //重新从第 1 页开始
-                                    }
-                                });
-                            }
-                        },
-                        btn2:function (index) {
-                            layer.close(index);
-                        }
-                    });
-                }
-            }
-        })
 
         // 监听添加操作
         $(".data-add-btn").on("click", function () {
-
+            layer.open({
+                type:2,
+                content:"/addTeachingManagement",
+                maxmin:true,
+                area:['500px','500px'],
+                shadeClose:true,
+                end: function (index) {
+                    layer.close(index);
+                    table.reload('currentTableId',{
+                        url:'/teachingManagements',
+                        where: { //设定异步数据接口的额外参数，任意设
+                        },
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    });
+                }
+            })
         });
 
         // 监听删除操作
         $(".data-delete-btn").on("click", function () {
-
+            var checkStatus = table.checkStatus('currentTableId')
+                , data = checkStatus.data;
+            if (JSON.stringify(data) == null || JSON.stringify(data) == "[]"){
+                layer.msg("选择不能为空！");
+            }else {
+                layer.open({
+                    content: '确认删除吗？',
+                    shadeCloce:'true',
+                    btn: ['确定', '取消'],
+                    yes:function(index,layero) {
+                        var checkStatus = table.checkStatus('currentTableId'),
+                            data = checkStatus.data
+                        var id = [];
+                        if (data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                id += data[i].id + ',';
+                            }
+                            console.log(id);
+                            $.ajax({
+                                url: '/deleteAllTeachingManagement?id=' + id,
+                            });
+                            layer.close(index);
+                            layer.msg('删除成功');
+                            table.reload('currentTableId', {
+                                url: '/teachingManagements',
+                                where: { //设定异步数据接口的额外参数，任意设
+                                    id: id
+                                },
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        }
+                    },
+                    btn2:function (index) {
+                        layer.close(index);
+                    }
+                });
+            }
         });
 
         //监听表格复选框选择

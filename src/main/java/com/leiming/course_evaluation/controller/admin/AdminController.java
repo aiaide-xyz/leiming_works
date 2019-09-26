@@ -592,7 +592,31 @@ public class AdminController {
         }
     }
 
+    //删除单个
+    @GetMapping("/deleteBatch")
+    @ResponseBody
+    public int deleteBatch(int id){
+        int i =batchService.deleteBatch(id);
+        System.out.println("======"+id);
+        return i;
+    }
 
+    //删除多个
+    @GetMapping("/deleteAllBatch")
+    @ResponseBody
+    public int deleteAllBatch(@RequestParam("id") String id){
+        // 接收包含stuId的字符串，并将它分割成字符串数组
+        String[] batList = id.split(",");
+        // 将字符串数组转为List<Intger> 类型
+        List<Long> LString = new ArrayList<Long>();
+        for(String str : batList){
+            LString.add(new Long(str));
+        }
+        System.out.println("====="+LString);
+        // 调用service层的批量删除函数
+        int i = batchService.deleteAllBatch(LString);
+        return i;
+    }
 
 
     //授课管理（包括年级，批次）：页面

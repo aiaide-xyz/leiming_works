@@ -40,4 +40,14 @@ public class BatchServiceImpl implements BatchService {
     public List<Batch> findAllList() {
         return batchRepository.findAll();
     }
+
+    @Override
+    public int deleteBatch(int id) {
+        return batchRepository.deleteBatch(id);
+    }
+
+    @Override
+    public int deleteAllBatch(List<Long> batList) {
+        return batchRepository.deleteAllBatch(batList);
+    }
 }

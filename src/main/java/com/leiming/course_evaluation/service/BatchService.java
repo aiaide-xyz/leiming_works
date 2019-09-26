@@ -16,4 +16,7 @@ public interface BatchService {
     void saveOne(Batch batchNew);
 
     List<Batch> findAllList();
+
+    int deleteBatch(int id);
+    int deleteAllBatch(List<Long> batList);
 }

@@ -103,8 +103,17 @@
                 content:"/addDepartment",
                 maxmin:true,
                 area:['500px','500px'],
-                end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
-                    location.reload();　　//layer.open关闭刷新
+                shadeClose:true,
+                end: function (index) {
+                    layer.close(index);
+                    table.reload('currentTableId',{
+                        url:'/departments',
+                        where: { //设定异步数据接口的额外参数，任意设
+                        },
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    });
                 }
             })
         });
@@ -128,11 +137,16 @@
                             console.log(id);
                             $.ajax({
                                 url: '/deleteAllDepartment?id=' + id,
-                                success: function (data) {
-                                    layer.msg('删除成功');
-                                    setTimeout(function () {
-                                        location.reload();
-                                    }, 700);
+                            });
+                            layer.close(index);
+                            layer.msg('删除成功');
+                            table.reload('currentTableId', {
+                                url: '/departments',
+                                where: { //设定异步数据接口的额外参数，任意设
+                                    id: id
+                                },
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
                                 }
                             });
                         }
@@ -163,8 +177,16 @@
                     content:"/editDepartment?id="+data.id,
                     maxmin:true,
                     area:['500px','500px'],
-                    end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
-                        location.reload();　　//layer.open关闭刷新
+                    shadeClose:true,
+                    end: function(layero, index){//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
+                        table.reload('currentTableId',{
+                            url:'/departments',
+                            where: { //设定异步数据接口的额外参数，任意设
+                            },
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
                     }
                 })
 
