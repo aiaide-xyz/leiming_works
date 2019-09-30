@@ -5,7 +5,9 @@ sql文件在sql文件夹里面
 
 # 项目运行环境
 jdk 1.8
+
 idea 2019.2
+
 springboot 2.x.x
 
 通过git导入idea中，再通过sql文件创建数据库，修改数据库连接信息；
