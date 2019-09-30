@@ -11,13 +11,22 @@
     <link rel="stylesheet" href="/css/public.css" media="all">
 </head>
 <body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend style="color: red;font-weight:bold;display: none" align="center">评教未开启！</legend>
+</fieldset>
 <div class="layuimini-container">
     <div class="layuimini-main">
-
+<!--        <a class="layui-btn {{ d.status == 1 ? 'layui-btn-disabled' : '' }}" lay-event="edit"></a>-->
 
         <div class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"> ></div>
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">评教</a>
+
+            {{#  if(d.status == '未评教'){ }}
+            <a class="layui-btn layui-btn-xs" lay-event="edit">评教</a>
+            {{#  } else if(d.status == "已评教"){ }}
+            <a class="layui-btn layui-btn-disabled layui-btn-xs" lay-event="">已评教</a>
+
+            {{#  } }}
         </script>
     </div>
 </div>
@@ -35,77 +44,41 @@
                 {field: 'batch', title: '批次'},
                 {field: 'course', title: '课程'},
                 {field: 'teacher', title: '授课教师'},
-                {title: '操作', minWidth: 100, templet: '#currentTableBar', fixed: "right", align: "center"}
+                {title: '评教状态', minWidth: 100, templet: '#currentTableBar', unresize: true,fixed: "right", align: "center"}
             ]]
 
 
         });
 
-        // 监听搜索操作
-        form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
 
-            //执行搜索重载
-            table.reload('currentTableId', {
-                page: {
-                    curr: 1
-                }
-                , where: {
-                    searchParams: result
-                }
-            }, 'data');
-
-            return false;
-        });
-
-        // 监听添加操作
-        $(".data-add-btn").on("click", function () {
-            layer.msg('添加数据');
-        });
-
-        // 监听删除操作
-        $(".data-delete-btn").on("click", function () {
-            var checkStatus = table.checkStatus('currentTableId')
-                , data = checkStatus.data;
-            layer.alert(JSON.stringify(data));
-        });
-
-        //监听表格复选框选择
-        table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
-        });
 
         table.on('tool(currentTableFilter)', function (obj) {
-
             var data = obj.data;
             if (obj.event === 'edit') {
-                // layer.open({
-                //     type:2,
-                //     content:'https://www.layui.com/admin/std/dist/views/user/user/userform.html',
-                //     area: ['500px', '300px']
-                // })
                 layer.open({
                     type:2,
                     content:"/student/evaluation/do?id="+data.id,
                     maxmin:true,
-                    area:['1338px','792px']
+                    area:['1338px','792px'],
+                    shadeClose:true,
+                    end: function(layero, index){//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
+                        table.reload('currentTableId',{
+                            url:'/student/evaluation/list',
+                        });
+                    }
                 })
-
-            } else if (obj.event === 'delete') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
-                });
             }
         });
-
     });
 </script>
-<script>
-
+<script type="text/javascript" th:inline="javascript">
+$(function () {
+    var msg = [[${msg}]];
+    if (msg!=""&&msg!=null){
+        $(".layuimini-container").remove();
+        $("legend").css("display","");
+    }
+})
 
 </script>
 

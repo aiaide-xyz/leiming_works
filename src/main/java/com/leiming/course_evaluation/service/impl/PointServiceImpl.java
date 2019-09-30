@@ -49,4 +49,14 @@ public class PointServiceImpl implements PointService {
     public void Save(Point point) {
         pointRepository.save(point);
     }
+
+    @Override
+    public int deletePoint(int id) {
+        return pointRepository.deletePoint(id);
+    }
+
+    @Override
+    public int deleteAllPoint(List<Long> poiList) {
+        return pointRepository.deleteAllPoint(poiList);
+    }
 }

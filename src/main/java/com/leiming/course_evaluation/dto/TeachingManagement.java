@@ -1,9 +1,7 @@
 package com.leiming.course_evaluation.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 //授课管理
 @Entity
 public class TeachingManagement {
@@ -15,6 +13,8 @@ public class TeachingManagement {
     private String course;
     private String teacher;
     private String department;
+    @Transient
+    private String status = "未评教";
     protected TeachingManagement(){
 
     }
@@ -67,11 +67,20 @@ public class TeachingManagement {
         this.department = department;
     }
 
-    public TeachingManagement(String batch, String cgClass, String course, String teacher, String department) {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public TeachingManagement(String batch, String cgClass, String course, String teacher, String department, String status) {
         this.batch = batch;
         this.cgClass = cgClass;
         this.course = course;
         this.teacher = teacher;
         this.department = department;
+        this.status = status;
     }
 }

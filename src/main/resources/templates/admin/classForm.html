@@ -61,11 +61,28 @@
                     url:"/editClass",
                     data:{"type":type,"className":className,"id":id,"departmentId":department},
                     success:function (data) {
-                        layer.msg("修改成功！");
-                        setTimeout(function(){
-                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                            parent.layer.close(index); //再执行关闭
-                        },700);
+                        if (data == "ok") {
+
+                            layer.msg("添加成功！");
+                            setTimeout(function () {
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭
+                            }, 700);
+                        }
+                        else if (data == "equals") {
+                            layer.msg("班级名称不能相同");
+                        }
+                        else if (data == "noEdit") {
+                            layer.msg("未做任何修改"); setTimeout(function () {
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭
+                            }, 700);
+
+                        }
+                        else {
+                            layer.msg("添加失败！");
+
+                        }
 
                     }
                 })

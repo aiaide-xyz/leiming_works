@@ -8,12 +8,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +57,7 @@ public class PointController {
 //        }
         return "ok";
     }
+    //添加与修改的方法
     @PostMapping("/addPoint")
     @ResponseBody
     public String addPoint(Point point){
@@ -69,6 +68,30 @@ public class PointController {
         catch (Exception e){
             return String.valueOf(e);
         }
+    }
+    //删除单个指标
+    @PostMapping("/deletePoint")
+    @ResponseBody
+    public int deletePoint(int id){
+        int i =pointService.deletePoint(id);
+        System.out.println("======"+id);
+        return i;
+    }
+    //删除多个指标
+    @PostMapping("/deleteAllPoint")
+    @ResponseBody
+    public String deleteAllPoint(@RequestParam("id") String id){
+        // 接收包含stuId的字符串，并将它分割成字符串数组
+        String[] poiList = id.split(",");
+        // 将字符串数组转为List<Intger> 类型
+        List<Long> LString = new ArrayList<Long>();
+        for(String str : poiList){
+            LString.add(new Long(str));
+        }
+        System.out.println("====="+LString);
+        // 调用service层的批量删除函数
+        pointService.deleteAllPoint(LString);
+        return "ok";
     }
 
 

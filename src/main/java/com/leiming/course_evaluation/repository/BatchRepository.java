@@ -22,4 +22,6 @@ public interface BatchRepository extends JpaRepository<Batch,Long> {
     @Transactional
     @Query(value = "delete from batch  where id in (?1)",nativeQuery = true)
     int deleteAllBatch(List<Long> ids);
+    @Query(value = "select * from batch where batch_name=?1",nativeQuery = true)
+    Batch findByBatchName(String batch);
 }

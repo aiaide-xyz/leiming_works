@@ -12,8 +12,8 @@ public interface PointService {
     Page<Point> findAllByStudent(Pageable pageable);
     int findAllCountOfStudent();
     List<Point> findAllByType(String type);
-
     Point finById(Long aLong);
-
+    int deletePoint(int id);
+    int deleteAllPoint(List<Long> poiList);
     void Save(Point point);
 }

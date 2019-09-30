@@ -28,12 +28,6 @@
               "href": "student/evaluation",
               "icon": "fa fa-tachometer",
               "target": "_self"
-            },
-            {
-              "title": "查看成绩",
-              "href": "student/evaluation",
-              "icon": "fa fa-tachometer",
-              "target": "_self"
             }
           ]
         },

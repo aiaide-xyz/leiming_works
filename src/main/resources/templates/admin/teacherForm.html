@@ -65,17 +65,34 @@
             if (username==""||teacherNumber==""||department==""){
                 layer.msg("每项都必须不为空！")
             }else {
-                console.log(sex);
                 $.ajax({
                     type:"post",
                     url:"/editTeacher",
                     data:{"sex":sex,"username":username,"teacherNumber":teacherNumber,"department":department,"id":id},
                     success:function (data) {
-                        layer.msg("修改成功！");
-                        setTimeout(function(){
-                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                            parent.layer.close(index); //再执行关闭
-                        },700);
+                        if (data == "ok") {
+
+                            layer.msg("添加成功！");
+                            setTimeout(function () {
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭
+                            }, 700);
+                        }
+                        else if (data == "equals") {
+                            layer.msg("工号不能相同");
+                        }
+                        else if (data == "noEdit") {
+                            layer.msg("未做任何修改");
+                            setTimeout(function () {
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭
+                            }, 700);
+                        }
+
+                        else {
+                            layer.msg("添加失败！");
+
+                        }
 
                     }
                 })

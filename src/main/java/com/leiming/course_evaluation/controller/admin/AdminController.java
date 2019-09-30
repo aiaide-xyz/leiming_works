@@ -10,10 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class AdminController {
@@ -100,7 +97,7 @@ public class AdminController {
     @GetMapping("/editStudent")
     public ModelAndView editStudentPage(Long id,Model model){
         Student student = studentService.findById(id);
-        model.addAttribute("class",student.getCgClass().getClassName());
+        model.addAttribute("className",student.getCgClass().getClassName());
         List<Department> departmentList = departmentService.findAllList();
         List<CgClass> cgClassList = classService.findAllList();
         model.addAttribute("student",student);
@@ -113,14 +110,43 @@ public class AdminController {
     @ResponseBody
     public String editStudent(Student student,Long classId){
         CgClass cgClass = classService.findById(classId);
+        //得到修改之前的学生
+        System.out.println(student.getId());
         Student studentNew = studentService.findById(student.getId());
-        studentNew.setUsername(student.getUsername());
-        studentNew.setStuNumber(cgClass.getClassName()+student.getStuNumber());
-        studentNew.setSex(student.getSex());
-        studentNew.setDepartment(cgClass.getDepartment());
-        studentNew.setCgClass(cgClass);
-        studentService.saveOne(studentNew);
-        return "ok";
+
+        if (studentNew.getStuNumber().equals(cgClass.getClassName() + student.getStuNumber())) {
+            if(studentNew.getUsername().equals(student.getUsername())){
+                if (studentNew.getStuNumber().equals(cgClass.getClassName()+student.getStuNumber())){
+                    if (studentNew.getSex().equals(student.getSex())){
+                        if (Objects.equals(studentNew.getClassName(),student.getClassName())){
+                            if (Objects.equals(studentNew.getDptName(),student.getDptName())){
+                                return "noEdit";
+                            }
+                        }
+                    }
+                }
+            }
+            studentNew.setUsername(student.getUsername());
+            studentNew.setSex(student.getSex());
+            studentNew.setDepartment(cgClass.getDepartment());
+            studentNew.setCgClass(cgClass);
+            studentService.saveOne(studentNew);
+            return "ok";
+        } else {
+
+            if (studentService.findOneByNumber(cgClass.getClassName() + student.getStuNumber()) != null) {
+                return "equals";
+            } else {
+                studentNew.setStuNumber(cgClass.getClassName() + student.getStuNumber());
+                studentNew.setUsername(student.getUsername());
+                studentNew.setSex(student.getSex());
+                studentNew.setDepartment(cgClass.getDepartment());
+                studentNew.setCgClass(cgClass);
+                studentService.saveOne(studentNew);
+                return "ok";
+            }
+        }
+
     }
     //添加学生的界面
     @GetMapping("/addStudent")
@@ -136,12 +162,13 @@ public class AdminController {
     @PostMapping("/addStudent")
     @ResponseBody
     public String addStudent(Student student,Long classId){
+        CgClass cgClass = classService.findById(classId);
         //判断学号是否存在
-        if (studentService.findOneByNumber(student.getStuNumber()) !=null){
+        if (studentService.findOneByNumber(cgClass.getClassName()+student.getStuNumber()) !=null){
 //            System.out.println(666);
             return "equals";
         }
-        CgClass cgClass = classService.findById(classId);
+
         student.setPassword(cgClass.getClassName()+student.getStuNumber());
         student.setStuNumber(cgClass.getClassName()+student.getStuNumber());
         student.setCgClass(cgClass);
@@ -214,12 +241,39 @@ public class AdminController {
     @ResponseBody
     public String editStudent(Teacher teacher,Long department){
         Teacher teacherNew = teacherService.findById(teacher.getId());
-        teacherNew.setUsername(teacher.getUsername());
-        teacherNew.setTeacherNumber(teacher.getTeacherNumber());
-        teacherNew.setSex(teacher.getSex());
-        teacherNew.setDepartment(departmentService.findByID(department));
-        teacherService.saveOne(teacherNew);
-        return "ok";
+
+
+        if (teacherNew.getTeacherNumber().equals(teacher.getTeacherNumber())) {
+            if (teacherNew.getUsername().equals(teacher.getUsername())){
+                if (teacherNew.getSex().equals(teacher.getSex())){
+                    if (teacher.getTeacherNumber().equals(teacher.getTeacherNumber())){
+                        if (teacherNew.getDepartment().getDptName().equals(teacher.getDepartment().getDptName())){
+                            return "noEdit";
+                        }
+                    }
+                }
+            }
+
+
+            teacherNew.setUsername(teacher.getUsername());
+            teacherNew.setTeacherNumber(teacher.getTeacherNumber());
+            teacherNew.setSex(teacher.getSex());
+            teacherNew.setDepartment(departmentService.findByID(department));
+            teacherService.saveOne(teacherNew);
+            return "ok";
+        } else {
+            if (teacherService.findOneByNumber(teacher.getTeacherNumber()) != null) {
+                return "equals";
+            } else {
+                teacherNew.setUsername(teacher.getUsername());
+                teacherNew.setTeacherNumber(teacher.getTeacherNumber());
+                teacherNew.setSex(teacher.getSex());
+                teacherNew.setDepartment(departmentService.findByID(department));
+                teacherService.saveOne(teacherNew);
+                return "ok";
+            }
+
+        }
     }
     //添加教师的界面
     @GetMapping("/addTeacher")
@@ -311,14 +365,34 @@ public class AdminController {
     @PostMapping("/editDepartment")
     @ResponseBody
     public String editDepartment(Department department){
-
         Department departmentNew = departmentService.findById(department.getId());
-        departmentNew.setDptName(department.getDptName());
-        departmentNew.setMark(department.getMark());
-        System.out.println("开始了");
-        System.out.println(departmentNew.getMark());
-        departmentService.saveOne(departmentNew);
-        return "ok";
+        if (departmentNew.getDptName().equals(department.getDptName())){
+
+            if (departmentNew.getMark().equals(department.getMark())){
+                return "noEdit";
+            }
+
+            departmentNew.setDptName(department.getDptName());
+            departmentNew.setMark(department.getMark());
+            System.out.println("开始了");
+            System.out.println(departmentNew.getMark());
+            departmentService.saveOne(departmentNew);
+            return "ok";
+        }
+        else {
+            if (departmentService.findOneByName(department.getDptName()) != null) {
+                return "equals";
+            }
+            else {
+                departmentNew.setDptName(department.getDptName());
+                departmentNew.setMark(department.getMark());
+                System.out.println("开始了");
+                System.out.println(departmentNew.getMark());
+                departmentService.saveOne(departmentNew);
+                return "ok";
+            }
+        }
+
     }
 
     //添加院系的界面
@@ -409,12 +483,35 @@ public class AdminController {
     @ResponseBody
     public String editClass(CgClass cgClass,Long departmentId){
         CgClass cgClassNew = classService.findById(cgClass.getId());
-        cgClassNew.setClassName(cgClass.getClassName());
-        cgClassNew.setType(cgClass.getType());
-        cgClassNew.setDepartment(departmentService.findByID(departmentId));
 
-        classService.saveOne(cgClassNew);
-        return "ok";
+
+        System.out.println(departmentService.findByID(departmentId).getDptName());
+        System.out.println("===================");
+        System.out.println(cgClassNew.getDepartment().getDptName());
+        if (cgClassNew.getClassName().equals(cgClass.getClassName())){
+            if (cgClass.getType().equals(cgClassNew.getType())){
+                if ((departmentService.findByID(departmentId).getDptName()).equals(cgClassNew.getDepartment().getDptName())){
+                    return "noEdit";
+                }
+            }
+            cgClassNew.setClassName(cgClass.getClassName());
+            cgClassNew.setType(cgClass.getType());
+            cgClassNew.setDepartment(departmentService.findByID(departmentId));
+            classService.saveOne(cgClassNew);
+            return "ok";
+        }
+        else {
+            if (classService.findOneByName(cgClass.getClassName()) != null) {
+                return "equals";
+            }
+            else {
+                cgClassNew.setClassName(cgClass.getClassName());
+                cgClassNew.setType(cgClass.getType());
+                cgClassNew.setDepartment(departmentService.findByID(departmentId));
+                classService.saveOne(cgClassNew);
+                return "ok";
+            }
+        }
     }
     //添加班级的界面
     @GetMapping("/addClass")
@@ -582,10 +679,26 @@ public class AdminController {
     @ResponseBody
     public String editBatch(Batch batch){
         Batch batchNew = batchService.findById(batch.getId());
-        batchNew.setBatchName(batch.getBatchName());
-        batchNew.setStatus(batch.getStatus());
-        batchService.saveOne(batchNew);
-        return "ok";
+        if (batchNew.getBatchName().equals(batch.getBatchName())){
+            if (batchNew.getStatus().equals(batch.getStatus())){
+                return "noEdit";
+            }
+
+            batchNew.setStatus(batch.getStatus());
+            batchService.saveOne(batchNew);
+            return "ok";
+        }
+        else {
+            if (batchService.findByBatchName(batch.getBatchName()) != null){
+                return "equals";
+            }
+            else {
+                batchNew.setBatchName(batch.getBatchName());
+                batchNew.setStatus(batch.getStatus());
+                batchService.saveOne(batchNew);
+                return "ok";
+            }
+        }
     }
     //添加批次的界面
     @GetMapping("/addBatch")

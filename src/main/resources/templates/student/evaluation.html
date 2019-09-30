@@ -19,23 +19,25 @@
 
         </fieldset>
         <hr class="layui-bg-orange">
-
-
-
-<!--        <blockquote class="layui-elem-quote"></blockquote>-->
+        <div class="layui-form-item">
         <div class="layui-form" th:each="point:${pointList}">
-            <blockquote  class="layui-elem-quote layui-quote-nm" th:text="${point.pointName}">概念的讲解</blockquote>
+            <blockquote  class="layui-elem-quote layui-quote-nm" th:text="${point.pointName}"></blockquote>
             <div class="layui-input-block" >
-                <input type="radio" name="option" th:value="${point.optionA}" th:title="${point.optionA}">
-                <input type="radio" name="option" th:value="${point.optionA}" th:title="${point.optionB}">
-                <input type="radio" name="option" th:value="${point.optionA}" th:title="${point.optionC}">
-                <input type="radio" name="option" th:value="${point.optionA}" th:title="${point.optionD}">
+<!--                <input type="radio" th:name="${pointStat.count}" th:value="${point.optionA}+'-4'" th:title="${point.optionA}">-->
+                <input type="radio" th:name="${pointStat.count}" th:value="1.00" th:title="${point.optionA}">
+                <input type="radio" th:name="${pointStat.count}" th:value="0.75" th:title="${point.optionB}">
+                <input type="radio" th:name="${pointStat.count}" th:value="0.50" th:title="${point.optionC}">
+                <input type="radio" th:name="${pointStat.count}" th:value="0.25" th:title="${point.optionD}">
+                <input type="hidden" th:value="${point.weight}">
             </div>
             <input type="hidden" th:value="${point.weight}">
         </div>
-
-
-
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button style="display:block;margin:0 auto" type="button" class="layui-btn" id="edit">确认提交</button>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -43,11 +45,64 @@
 
 
 </body>
-<script>
+<script type="text/javascript" th:inline="javascript">
     layui.use('form', function(){
-        var form = layui.form;
 
+        var form = layui.form;
+        form.render(); //更新全部
         //各种基于事件的操作，下面会有进一步介绍
+        $("#edit").click(function () {
+            form.render(); //更新全部
+            var arr1 = new Array();
+            var arr2 = new Array();
+            var arr3 = new Array();
+            $("blockquote").each(function () {
+                var x = $(this).html();
+
+                arr1.push(x);
+
+            });
+            $("input:checked").each(function () {
+                arr2.push($(this).attr("title"));
+            })
+            for (var i = 0; i < arr1.length; i++) {
+                arr3.push(arr1[i]+":"+arr2[i])
+            }
+            console.log(arr3);
+            var x=0;
+            $("input:checked").each(function () {
+                console.log($(this).siblings().last().val());
+                console.log(($(this).siblings().last().val() * $(this).val()));
+                x=x+$(this).siblings().last().val()*$(this).val();
+            });
+            x=x.toFixed(2);
+            var batch = [[${teachingManagement.batch}]];
+            var course = [[${teachingManagement.course}]];
+            var teacher = [[${teachingManagement.teacher}]];
+            $.ajax({
+                url:"/student/evaluation/save",
+                type:'post',
+                data:{"score":x,"batch":batch,"selectedContent":arr3.toString(),"course":course,"teacher":teacher},
+                success:function (data) {
+                    if (data=="ok"){
+                        layer.msg("提交成功！");
+                        setTimeout(function () {
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        }, 700);
+                    }else {
+                        layer.msg("提交失败，服务器错误！");
+                    }
+                }
+            })
+
+
+            // console.log($("input[type=radio]:eq(0):checked").val());;
+            // console.log($("input[value]:checked").val());
+
+
+        })
     });
+
 </script>
 </html>

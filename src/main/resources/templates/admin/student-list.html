@@ -132,7 +132,7 @@
         // 监听删除操作
         $(".data-delete-btn").on("click", function () {
             var checkStatus = table.checkStatus('currentTableId')
-                , data = checkStatus.data;
+                data = checkStatus.data;
             if (JSON.stringify(data) == null || JSON.stringify(data) == "[]"){
                 layer.msg("选择不能为空！");
             }else {

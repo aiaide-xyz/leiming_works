@@ -18,6 +18,5 @@ public interface TeacherService {
     int deleteAllTeacher(List<Long> teaList);
 
     Teacher findOneByNumber(String teacherNumber);
-
     List<Teacher> findAllList();
 }

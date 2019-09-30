@@ -42,7 +42,7 @@
                 {type: "checkbox", width: 65, fixed: "left"},
                 {type: 'numbers', title: '序号', sort: true, width:50},
                 {field: 'pointName', title: '考核指标'},
-                {field: 'weight', title: '权重占比'},
+                {field: 'weight', title: '权重占比(建议所有权重相加等于‘1’或‘100’)'},
                 {title: '操作', minWidth: 50, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
             page:true,
@@ -83,42 +83,64 @@
         $(".data-add-btn").on("click", function () {
             layer.open({
                 type:2,
-                content:"/",
+                content:"/point/addPoint?type=department",
                 maxmin:true,
-                area:['500px','500px'],
-                end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
-                    location.reload();　　//layer.open关闭刷新
+                area:['700px','500px'],
+                shadeClose:true,
+                end: function (index) {
+                    layer.close(index);
+                    table.reload('currentTableId',{
+                        url:'/point/department/list',
+                        where: { //设定异步数据接口的额外参数，任意设
+                        },
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                    });
                 }
             })
         });
 
         // 监听删除操作
         $(".data-delete-btn").on("click", function () {
-            layer.confirm('真的删除行么', function (index) {
-                if (index){
-                    var checkStatus = table.checkStatus('currentTableId'),
-                        data = checkStatus.data
-                    var id=[];
-                    if (data.length > 0) {
-                        for (var i = 0; i < data.length; i++) {
-                            id += data[i].id + ',';
-                        }
-                        console.log(id);
-                        $.ajax({
-                            url: '/deleteAllTeacher?id=' + id,
-                            success: function (data) {
-                                layer.msg('删除成功');
-                                setTimeout(function(){
-                                    location.reload();
-                                },700);
-
+            var checkStatus = table.checkStatus('currentTableId')
+                data = checkStatus.data;
+            if (JSON.stringify(data) == null || JSON.stringify(data) == "[]"){
+                layer.msg("选择不能为空！");
+            }else {
+                layer.confirm('真的删除行么', function (index) {
+                    if (index) {
+                        var checkStatus = table.checkStatus('currentTableId'),
+                            data = checkStatus.data
+                        var id = [];
+                        if (data.length > 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                id += data[i].id + ',';
                             }
-                        });
-                    };
-                }else {
-                    layer.close(index);
-                }
-            });
+                            console.log(id);
+                            $.ajax({
+                                type: 'post',
+                                url: '/point/deleteAllPoint',
+                                data: {'id': id},
+                            });
+                            layer.close(index);
+                            layer.msg('删除成功');
+                            table.reload('currentTableId', {
+                                url: '/point/department/list',
+                                where: { //设定异步数据接口的额外参数，任意设
+                                    id: id
+                                },
+                                page: {
+                                    curr: 1 //重新从第 1 页开始
+                                }
+                            });
+                        }
+                        ;
+                    } else {
+                        layer.close(index);
+                    }
+                });
+            }
         });
 
         //监听表格复选框选择
@@ -137,11 +159,19 @@
                 // })
                 layer.open({
                     type:2,
-                    content:"/editTeacher?id="+data.id,
+                    content:"/point/editPoint?id="+data.id,
                     maxmin:true,
-                    area:['500px','500px'],
-                    end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
-                        location.reload();　　//layer.open关闭刷新
+                    area:['700px','500px'],
+                    shadeClose:true,
+                    end: function(layero, index){//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
+                        table.reload('currentTableId',{
+                            url:'/point/department/list',
+                            where: { //设定异步数据接口的额外参数，任意设
+                            },
+                            page: {
+                                curr: 1 //重新从第 1 页开始
+                            }
+                        });
                     }
                 })
 
@@ -149,7 +179,9 @@
                 layer.confirm('真的删除行么', function (index) {
                     if (index){
                         $.ajax({
-                            url:"/deleteTeacher?id="+data.id,
+                            type:'post',
+                            url:"/point/deletePoint",
+                            data:{'id': data.id},
                             success:function (data) {
                                 obj.del();
                                 layer.alert('删除成功');

@@ -17,4 +17,6 @@ public interface TeachingManagementService {
 
 
     List<TeachingManagement> finAllByClass(String className);
+
+    String findBatchByClass(String className);
 }

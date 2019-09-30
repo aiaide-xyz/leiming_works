@@ -19,4 +19,8 @@ public interface BatchService {
 
     int deleteBatch(int id);
     int deleteAllBatch(List<Long> batList);
+
+    Batch findByBatchName(String batch);
+
+
 }

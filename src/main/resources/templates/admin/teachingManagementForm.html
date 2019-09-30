@@ -80,7 +80,7 @@
         form.render(); //更新全部
         //各种基于事件的操作，下面会有进一步介绍
         form.on('select(addClass)', function(data){
-            var classList = [[${cgClassList}]];
+
             $.ajax({
                 url:"/getDepartmentByClassId",
                 type:"post",
@@ -104,12 +104,28 @@
                     type:"post",
                     url:"/editTeachingManagement",
                     data:{"batch":batch,"cgClass":cgClass,"course":course,"teacher":teacher,"id":id,"department":department},
-                    success:function (data) {
-                        layer.msg("修改成功！");
-                        setTimeout(function(){
+                    success:function (data) {if (data == "ok") {
+
+                        layer.msg("添加成功！");
+                        setTimeout(function () {
                             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                             parent.layer.close(index); //再执行关闭
-                        },700);
+                        }, 700);
+                    }
+                    else if (data == "equals") {
+                        layer.msg("班级和课程不能同时相同");
+                    }
+                    else if (data == "noEdit") {
+                        layer.msg("未做任何修改");
+                        setTimeout(function () {
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        }, 700);
+                    }
+                    else {
+                        layer.msg("添加失败！");
+
+                    }
 
                     }
                 })
