@@ -27,4 +27,14 @@ public class EvaluationRecordingServiceImpl implements EvaluationRecordingServic
     public void save(EvaluationRecording evaluationRecording) {
         evaluationRecordingRepository.save(evaluationRecording);
     }
+
+    @Override
+    public List<EvaluationRecording> findAll() {
+        return evaluationRecordingRepository.findAll();
+    }
+
+    @Override
+    public List<EvaluationRecording> findByClassAndCourse(String cgClass, String course) {
+        return evaluationRecordingRepository.findByClassAndCourse(cgClass,course);
+    }
 }

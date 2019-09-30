@@ -15,6 +15,12 @@ public class TeachingManagement {
     private String department;
     @Transient
     private String status = "未评教";
+    @Transient
+    private String status2;
+    @Transient
+    private String finalScore = "/";
+    @Transient
+    private String teacherNumber;
     protected TeachingManagement(){
 
     }
@@ -75,12 +81,30 @@ public class TeachingManagement {
         this.status = status;
     }
 
-    public TeachingManagement(String batch, String cgClass, String course, String teacher, String department, String status) {
+    public String getStatus2() {
+        return status2;
+    }
+
+    public void setStatus2(String status2) {
+        this.status2 = status2;
+    }
+
+    public String getFinalScore() {
+        return finalScore;
+    }
+
+    public void setFinalScore(String finalScore) {
+        this.finalScore = finalScore;
+    }
+
+    public TeachingManagement(String batch, String cgClass, String course, String teacher, String department, String status, String status2, String finalScore) {
         this.batch = batch;
         this.cgClass = cgClass;
         this.course = course;
         this.teacher = teacher;
         this.department = department;
         this.status = status;
+        this.status2 = status2;
+        this.finalScore = finalScore;
     }
 }

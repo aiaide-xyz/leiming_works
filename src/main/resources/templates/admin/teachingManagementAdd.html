@@ -27,12 +27,18 @@
     <div class="layui-form-item">
         <label class="layui-form-label">班级</label>
         <div class="layui-input-inline">
-            <select name="class" lay-search="">
+            <select name="class" lay-search="" lay-filter="addClass">
                 <option value="" selected disabled style="display: none;">请选择班级</option>
                 <span th:each="class:${cgClassList}">
                     <option th:value="${class.className}" th:text="${class.className}"></option>
                 </span>
             </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">所属学院</label>
+        <div class="layui-input-inline">
+            <input  id="department" type="text" value="学院" name="department" autocomplete="off" disabled class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -57,17 +63,7 @@
             </select>
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">所属学院</label>
-        <div class="layui-input-inline">
-            <select name="department" lay-search="">
-                <option value="" selected disabled style="display: none;">请选择学院</option>
-                <span th:each="dept:${departmentList}">
-                    <option th:value="${dept.dptName}" th:text="${dept.dptName}"></option>
-                </span>
-            </select>
-        </div>
-    </div>
+
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button type="button" class="layui-btn" id="edit">确认添加</button>
@@ -81,20 +77,31 @@
         var form = layui.form;
         form.render(); //更新全部
         //各种基于事件的操作，下面会有进一步介绍
+        form.on('select(addClass)', function(data){
+
+            $.ajax({
+                url:"/getDepartmentByClassId",
+                type:"post",
+                data:{"className":data.value},
+                success:function (data) {
+                    $("#department").val(data);
+                }
+            })
+        });
         $("#edit").click(function () {
-            var id = $('input:hidden').val();
+            // var id = $('input:hidden').val();
             var batch = $("select[name='batch']").val();
             var cgClass = $("select[name='class']").val();
             var course = $("select[name='course']").val();
             var teacher =$("select[name='teacher']").val();
-            var department = $("select[name='department']").val();
+            var department = $("input[name='department']").val();
             if (batch==""||cgClass==""||department==""||course==""||teacher==""||batch==null||cgClass==null||department==null||course==null||teacher==null){
                 layer.msg("每项都必须不为空！")
             }else {
                 $.ajax({
                     type:"post",
                     url:"/addTeachingManagement",
-                    data:{"batch":batch,"cgClass":cgClass,"course":course,"teacher":teacher,"id":id,"department":department},
+                    data:{"batch":batch,"cgClass":cgClass,"course":course,"teacher":teacher,"department":department},
                     success:function (data) {
                         if (data == "ok") {
                             layer.msg("添加成功！");

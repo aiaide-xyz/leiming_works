@@ -13,13 +13,43 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
+
+        <fieldset class="layui-elem-field layuimini-search">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">班级名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">搜索</a>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">班级类型</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="sex" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">搜索</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
         <div class="layui-btn-group">
             <button class="layui-btn data-add-btn">添加</button>
             <button class="layui-btn layui-btn-danger data-delete-btn">删除</button>
         </div>
         <div class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"> ></div>
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">查看更多/编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
     </div>
@@ -33,13 +63,18 @@
 
         table.render({
             elem: document.getElementById('currentTableId'),
-            url: '/batches',
+            url: '/admin/evaluation/list',
 
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"},
                 {type: 'numbers', title: '序号', sort: true, width:50},
-                {field: 'batchName', title: '批次名'},
-                {field: 'status', title: '评教状态'},
+                {field: 'teacher',title: '教师'},
+                // {field: 'dptName',title: '工号'},
+                {field: 'cgClass',title: '授课班级'},
+                {field: 'course',title: '所搜课程'},
+                {field: 'department',title: '所属学院'},
+                {field: 'status2',title: '评教状态'},
+                {field: 'finalScore',title: '平均得分'},
                 {title: '操作', minWidth: 50, templet: '#currentTableBar', fixed: "right", align: "center"}
             ]],
             page:true,
@@ -80,14 +115,14 @@
         $(".data-add-btn").on("click", function () {
             layer.open({
                 type:2,
-                content:"/addBatch",
+                content:"/addClass",
                 maxmin:true,
                 area:['500px','500px'],
                 shadeClose:true,
                 end: function (index) {
                     layer.close(index);
                     table.reload('currentTableId',{
-                        url:'/batches',
+                        url:'/classes',
                         where: { //设定异步数据接口的额外参数，任意设
                         },
                         page: {
@@ -104,27 +139,31 @@
                 , data = checkStatus.data;
             if (JSON.stringify(data) == null || JSON.stringify(data) == "[]"){
                 layer.msg("选择不能为空！");
-            }else {
-                layer.open({
-                    content: '确认删除吗？',
-                    shadeCloce:'true',
-                    btn: ['确定', '取消'],
-                    yes:function(index,layero) {
+            }else{
+                layer.confirm('真的删除行么', function (index) {
+                    if (index){
                         var checkStatus = table.checkStatus('currentTableId'),
                             data = checkStatus.data
-                        var id = [];
+                        var id=[];
                         if (data.length > 0) {
                             for (var i = 0; i < data.length; i++) {
                                 id += data[i].id + ',';
                             }
-                            console.log(id);
                             $.ajax({
-                                url: '/deleteAllBatch?id=' + id,
+                                url: '/deleteAllClass?id=' + id,
+                                success: function (data) {
+                                    if (data=="ok"){
+                                        layer.alert('删除成功');
+                                        setTimeout(function(){
+                                            location.reload();
+                                        },700);
+                                    }else {
+                                        layer.alert("非法操作，选择中包含已有学生！")
+                                    }
+                                }
                             });
-                            layer.close(index);
-                            layer.msg('删除成功');
                             table.reload('currentTableId', {
-                                url: '/batches',
+                                url: '/classes',
                                 where: { //设定异步数据接口的额外参数，任意设
                                     id: id
                                 },
@@ -132,9 +171,8 @@
                                     curr: 1 //重新从第 1 页开始
                                 }
                             });
-                        }
-                    },
-                    btn2:function (index) {
+                        };
+                    }else {
                         layer.close(index);
                     }
                 });
@@ -157,13 +195,13 @@
                 // })
                 layer.open({
                     type:2,
-                    content:"/editBatch?id="+data.id,
+                    content:"/editClass?id="+data.id,
                     maxmin:true,
                     area:['500px','500px'],
                     shadeClose:true,
                     end: function(layero, index){//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
                         table.reload('currentTableId',{
-                            url:'/batches',
+                            url:'/classes',
                             where: { //设定异步数据接口的额外参数，任意设
                             },
                             page: {
@@ -177,10 +215,19 @@
                 layer.confirm('真的删除行么', function (index) {
                     if (index){
                         $.ajax({
-                            url:"/deleteBatch?id="+data.id,
+                            url:"/deleteClass?id="+data.id,
                             success:function (data) {
-                                obj.del();
-                                layer.alert('删除成功');
+                                if (data=="ok"){
+                                    obj.del();
+
+                                    layer.alert('删除成功');
+                                    // setTimeout(function(){
+                                    //     location.reload();
+                                    // },700);
+                                }else {
+                                    layer.alert("非法操作，选择中包含已有学生！")
+                                }
+
                             }
                         });
                     }else {

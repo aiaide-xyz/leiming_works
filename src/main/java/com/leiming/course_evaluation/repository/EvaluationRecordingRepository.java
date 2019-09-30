@@ -11,4 +11,6 @@ import java.util.List;
 public interface EvaluationRecordingRepository extends JpaRepository<EvaluationRecording,Long> {
     @Query(value = "select * from evaluation_recording where user_number=?1",nativeQuery = true)
     List<EvaluationRecording> findByNumber(String stuNumber);
+    @Query(value = "select * from evaluation_recording WHERE class_name=?1 AND course=?2",nativeQuery = true)
+    List<EvaluationRecording> findByClassAndCourse(String cgClass, String course);
 }

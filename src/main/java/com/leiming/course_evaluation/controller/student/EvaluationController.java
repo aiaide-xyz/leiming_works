@@ -5,17 +5,13 @@ import com.leiming.course_evaluation.service.BatchService;
 import com.leiming.course_evaluation.service.EvaluationRecordingService;
 import com.leiming.course_evaluation.service.PointService;
 import com.leiming.course_evaluation.service.TeachingManagementService;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.thymeleaf.util.StringUtils;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
@@ -45,8 +41,11 @@ public class EvaluationController {
         //获取学生的班级
         String className = student.getCgClass().getClassName();
         String batch = teachingManagementService.findBatchByClass(className);
-        if (batchService.findByBatchName(batch).getStatus().equals("未开启")){
-            model.addAttribute("msg","此班级所在批次未开启评教");
+        String status = batchService.findByBatchName(batch).getStatus();
+        if (status.equals("未开启")){
+            model.addAttribute("msg","未开启");
+        }else if (status.equals("评教结束")){
+            model.addAttribute("msg","评教结束");
         }
         return "student/evaluation-list.html";
     }
@@ -86,7 +85,6 @@ public class EvaluationController {
     @RequestMapping("/save")
     @ResponseBody
     public String save(String score,String selectedContent,HttpServletRequest request,TeachingManagement teachingManagement){
-        System.out.println(teachingManagement.getTeacher());
         EvaluationRecording evaluationRecording = new EvaluationRecording();
         if (request.getSession().getAttribute("user") instanceof Student){
             Student student = (Student)request.getSession().getAttribute("user");

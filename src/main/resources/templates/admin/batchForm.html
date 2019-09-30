@@ -15,7 +15,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label">批次</label>
         <div class="layui-input-inline">
-            <input type="text" th:value="${batch.batchName}" name="batchName"placeholder="班级名" autocomplete="off" class="layui-input">
+            <input type="text" th:value="${batch.batchName}" name="batchName"placeholder="批次名" autocomplete="off" class="layui-input">
         </div>
 
     </div>
@@ -25,6 +25,7 @@
         <div class="layui-input-block">
             <input type="radio" name="status" value="正在评教" title="正在评教" checked>
             <input type="radio" name="status" value="未开启" title="未开启" th:checked="${batch.status=='未开启'}? true : false">
+            <input type="radio" name="status" value="评教结束" title="评教结束" th:checked="${batch.status=='评教结束'}? true : false">
         </div>
     </div>
     </form>
@@ -58,7 +59,7 @@
                     data:{"status":status,"batchName":batchName,"id":id},
                     success:function (data) {
                         if (data == "ok") {
-                            layer.msg("添加成功！");
+                            layer.msg("修改成功！");
                             setTimeout(function () {
                                 var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                                 parent.layer.close(index); //再执行关闭

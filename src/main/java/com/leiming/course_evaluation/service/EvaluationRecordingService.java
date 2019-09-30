@@ -14,4 +14,8 @@ public interface EvaluationRecordingService {
     List<EvaluationRecording> findByNumber(String stuNumber);
 
     void save(EvaluationRecording evaluationRecording);
+
+    List<EvaluationRecording> findAll();
+
+    List<EvaluationRecording> findByClassAndCourse(String cgClass, String course);
 }
