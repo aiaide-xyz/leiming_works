@@ -14,3 +14,7 @@ springboot 2.x.x
 通过git导入idea中，再通过sql文件创建数据库，修改数据库连接信息；
 运行**CourseEvaluationApplication.java**
 通过springboot内置Tomcat启动
+
+访问http://localhost:8080
+
+可以通过数据库查看不同类型用户的账号密码
