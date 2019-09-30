@@ -709,13 +709,12 @@ public class AdminController {
     @PostMapping("/addBatch")
     @ResponseBody
     public String addBatch(Batch batch){
-
-        try {
+        if (batchService.findByBatchName(batch.getBatchName()) != null){
+            return "equals";
+        }
+        else {
             batchService.saveOne(batch);
             return "ok";
-        }
-        catch (Exception e){
-            return "no";
         }
     }
 
@@ -779,14 +778,36 @@ public class AdminController {
     @PostMapping("/editTeachingManagement")
     @ResponseBody
     public String editTeachingManagement(TeachingManagement teachingManagement){
+        //修改之前
         TeachingManagement teachingManagementNew = teachingManagementService.findById(teachingManagement.getId());
-        teachingManagementNew.setBatch(teachingManagement.getBatch());
-        teachingManagementNew.setCgClass(teachingManagement.getCgClass());
-        teachingManagementNew.setCourse(teachingManagement.getCourse());
-        teachingManagementNew.setTeacher(teachingManagement.getTeacher());
-        teachingManagementNew.setDepartment(teachingManagement.getDepartment());
-        teachingManagementService.saveOne(teachingManagementNew);
-        return "ok";
+        if (teachingManagementNew.getCgClass().equals(teachingManagement.getCgClass()) && teachingManagementNew.getCourse().equals(teachingManagement.getCourse())){
+            if (teachingManagementNew.getBatch().equals(teachingManagement.getBatch())){
+                if (teachingManagementNew.getTeacher().equals(teachingManagement.getTeacher())){
+                    if (teachingManagementNew.getDepartment().equals(teachingManagement.getDepartment())){
+                        return "noEdit";
+                    }
+                }
+            }
+            teachingManagementNew.setBatch(teachingManagement.getBatch());
+            teachingManagementNew.setTeacher(teachingManagement.getTeacher());
+            teachingManagementNew.setDepartment(teachingManagement.getDepartment());
+            teachingManagementService.saveOne(teachingManagementNew);
+            return "ok";
+        }
+        else {
+            if (teachingManagementService.findOneByClassAndCourse(teachingManagement.getCgClass(),teachingManagement.getCourse()) != null){
+                return "equals";
+            }
+            else {
+                teachingManagementNew.setBatch(teachingManagement.getBatch());
+                teachingManagementNew.setCgClass(teachingManagement.getCgClass());
+                teachingManagementNew.setCourse(teachingManagement.getCourse());
+                teachingManagementNew.setTeacher(teachingManagement.getTeacher());
+                teachingManagementNew.setDepartment(teachingManagement.getDepartment());
+                teachingManagementService.saveOne(teachingManagementNew);
+                return "ok";
+            }
+        }
     }
 
     //添加授课管理的界面
@@ -814,12 +835,13 @@ public class AdminController {
     @PostMapping("/addTeachingManagement")
     @ResponseBody
     public String addTeachingManagement(TeachingManagement teachingManagement){
-        teachingManagement.getCgClass();
+        if (teachingManagementService.findOneByClassAndCourse(teachingManagement.getCgClass(),teachingManagement.getCourse()) != null){
+            return "equals";
+        }
         try {
             teachingManagementService.saveOne(teachingManagement);
             return "ok";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return "no";
         }
     }

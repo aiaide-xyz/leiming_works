@@ -58,6 +58,10 @@ public class TeachingManagementServiceImpl implements TeachingManagementService 
     public String findBatchByClass(String className) {
         return teachingManagementRepository.finBatchByClass(className);
     }
+    @Override
+    public TeachingManagement findOneByClassAndCourse(String cgClass, String course) {
+        return teachingManagementRepository.findOneByClassAndCourse(cgClass,course);
+    }
 
 
 }

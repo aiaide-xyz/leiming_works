@@ -29,4 +29,6 @@ public interface TeachingManagementRepository extends JpaRepository<TeachingMana
     List<TeachingManagement> finAllByClass(String className);
     @Query(value = "select batch from teaching_management where cg_class=?1 LIMIT 0,1",nativeQuery = true)
     String finBatchByClass(String className);
+    @Query(value = "from TeachingManagement where cgClass = ?1 and course = ?2")
+    TeachingManagement findOneByClassAndCourse(String cgClass, String course);
 }
