@@ -84,7 +84,7 @@ public class EvaluationController {
     }
     @RequestMapping("/save")
     @ResponseBody
-    public String save(String score,String selectedContent,HttpServletRequest request,TeachingManagement teachingManagement){
+    public String save(String score,String selectedContent,HttpServletRequest request,TeachingManagement teachingManagement,String teacherName,String teacherNumber){
         EvaluationRecording evaluationRecording = new EvaluationRecording();
         if (request.getSession().getAttribute("user") instanceof Student){
             Student student = (Student)request.getSession().getAttribute("user");
@@ -100,6 +100,14 @@ public class EvaluationController {
             evaluationRecording.setSelectedContent(selectedContent);
         }else if (request.getSession().getAttribute("user") instanceof Teacher){
             Teacher teacher = (Teacher)request.getSession().getAttribute("user");
+            evaluationRecording.setSelectedContent(selectedContent);
+            evaluationRecording.setTeacherNumber(teacherNumber);
+            evaluationRecording.setTeacher(teacherName);
+            evaluationRecording.setScore(score);
+            evaluationRecording.setUserType("department");
+            evaluationRecording.setUsername(teacher.getUsername());
+            evaluationRecording.setUserNumber(teacher.getTeacherNumber());
+            evaluationRecording.setDepartment(teacher.getDepartment().getDptName());
         }
         try {
             evaluationRecordingService.save(evaluationRecording);

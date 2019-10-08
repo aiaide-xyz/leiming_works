@@ -8,6 +8,7 @@ import com.leiming.course_evaluation.service.EvaluationRecordingService;
 import com.leiming.course_evaluation.service.TeachingManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,12 +35,24 @@ public class AdminEvaluationController {
     @Autowired
     private BatchService batchService;
     @GetMapping("")
-    public ModelAndView evaluation(){
+    public ModelAndView evaluation(Model model){
+        model.addAttribute("type","student");
+
+        return new ModelAndView("admin/evaluation-list.html");
+    }
+    @GetMapping("/department")
+    public ModelAndView departmentEvaluation(Model model){
+        model.addAttribute("type","department");
         return new ModelAndView("admin/evaluation-list.html");
     }
     @GetMapping("/list")
     @ResponseBody
-    public Map<String,Object> evaluationList(){
+    public Map<String,Object> evaluationList(String type){
+        if (type.equals("student")){
+
+        } else if (type.equals("department")){
+
+        }
         List<TeachingManagement> teachingManagementList = teachingManagementService.findAllList();
         for (TeachingManagement t:teachingManagementList) {
             String status = batchService.findByBatchName(t.getBatch()).getStatus();

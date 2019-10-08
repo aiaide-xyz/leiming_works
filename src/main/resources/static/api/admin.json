@@ -85,10 +85,24 @@
               "target": "_self"
             },
             {
-              "title": "评教详情查看管理",
-              "href": "/admin/evaluation",
+              "title": "评教结果查看",
+              "href": "",
               "icon": "fa fa-shield",
-              "target": "_self"
+              "target": "_self",
+              "child": [
+                {
+                  "title": "教学方面",
+                  "href": "/admin/evaluation",
+                  "icon": "fa fa-tachometer",
+                  "target": "_self"
+                },
+                {
+                  "title": "系部方面",
+                  "href": "/admin/evaluation",
+                  "icon": "fa fa-tachometer",
+                  "target": "_self"
+                }
+              ]
             },
             {
               "title": "班级管理",

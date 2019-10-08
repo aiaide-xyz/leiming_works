@@ -37,4 +37,9 @@ public class EvaluationRecordingServiceImpl implements EvaluationRecordingServic
     public List<EvaluationRecording> findByClassAndCourse(String cgClass, String course) {
         return evaluationRecordingRepository.findByClassAndCourse(cgClass,course);
     }
+
+    @Override
+    public EvaluationRecording findOneByNumber(String userNumber, String teacherNumber) {
+        return evaluationRecordingRepository.findOneByNumber(userNumber,teacherNumber);
+    }
 }

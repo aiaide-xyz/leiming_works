@@ -9,8 +9,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="../lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="/lib/layui-v2.5.4/css/layui.css" media="all">
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+
     <script src="/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
     <script src="/lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
     <!--[if lt IE 9]>
@@ -33,6 +34,7 @@
         .captcha-img {display:inline-block;width:34%;float:right;}
         .captcha-img img {height:34px;border:1px solid #e6e6e6;height:36px;width:100%;}
     </style>
+
 </head>
 <body>
 <div class="layui-container">
@@ -63,9 +65,9 @@
                 <span style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}" id="msg"></span>
                 <span>&nbsp;</span>
 
-                <div class="layui-form-item">
-                    <input type="checkbox" name="rememberMe" value="true" lay-skin="primary" title="记住密码">
-                </div>
+<!--                <div class="layui-form-item">-->
+<!--                    <input type="checkbox" name="rememberMe" value="true" lay-skin="primary" title="记住密码">-->
+<!--                </div>-->
                 <div class="layui-form-item">
                     <button class="layui-btn layui-btn-fluid" type="submit" lay-submit="login" lay-filter="login">登 入</button>
                 </div>
@@ -130,6 +132,47 @@
             $(this).attr("src", "/getGifCode?"+Math.random());
         })
     });
+</script>
+<script>
+
+    //把信息设置进去Cookie里面去
+    $("input[type='checkbox']").click(function () {
+
+        var username = $('#username').val();
+        var password = $('#password').val();
+        var aa = $("input[type='checkbox']").is(":checked");//获取是否选中
+        if(aa==true){//如果选中-->记住密码登录
+            alert("ok");
+            $.cookie("username",username.trim(),7);//有效时间7天，也可以设置为永久，把时间去掉就好
+            $.cookie("password",password.trim(),7);
+        }else{//如果没选中-->不记住密码登录
+            $.cookie("password", "");
+            $.cookie("username", "");
+        }
+    })
+
+
+    $(function () {
+        function getCookie(){ //获取cookie
+            var username = $.cookie("username"); //获取cookie中的用户名
+            var pwd =  $.cookie("password"); //获取cookie中的登陆密码
+            if(pwd){//密码存在的话把“记住用户名和密码”复选框勾选住
+                $("[name='rememenber']").attr("checked","true");
+            }
+            if(username!=""){//用户名存在的话把用户名填充到用户名文本框
+                $("#username").val(username);
+            }else{
+                $("#username").val("");
+            }
+            if(pwd!=""){//密码存在的话把密码填充到密码文本框
+                $("#password").val(pwd);
+            }else{
+                $("#password").val("");
+            }
+        }
+    })
+
+
 </script>
 </body>
 </html>

@@ -52,6 +52,7 @@
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
     </div>
+    <input type="hidden" th:value="${type}">
 </div>
 <script src="/lib/layui-v2.5.4/layui.js" charset="utf-8" ></script>
 <script th:inline="none">
@@ -59,10 +60,11 @@
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
+        var type = $("input:hidden").val();
 
         table.render({
             elem: document.getElementById('currentTableId'),
-            url: '/admin/evaluation/list',
+            url: '/admin/evaluation/list?type='+type,
 
             cols: [[
                 {type: "checkbox", width: 50, fixed: "left"},

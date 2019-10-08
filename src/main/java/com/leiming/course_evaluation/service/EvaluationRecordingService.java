@@ -18,4 +18,5 @@ public interface EvaluationRecordingService {
     List<EvaluationRecording> findAll();
 
     List<EvaluationRecording> findByClassAndCourse(String cgClass, String course);
+    EvaluationRecording findOneByNumber(String userNumber,String teacherNumber);
 }

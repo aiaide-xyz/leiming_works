@@ -18,7 +18,7 @@ public class TeachingManagement {
     @Transient
     private String status2;
     @Transient
-    private String finalScore = "/";
+    private String finalScore = "未结算";
     @Transient
     private String teacherNumber;
     protected TeachingManagement(){
@@ -97,7 +97,15 @@ public class TeachingManagement {
         this.finalScore = finalScore;
     }
 
-    public TeachingManagement(String batch, String cgClass, String course, String teacher, String department, String status, String status2, String finalScore) {
+    public String getTeacherNumber() {
+        return teacherNumber;
+    }
+
+    public void setTeacherNumber(String teacherNumber) {
+        this.teacherNumber = teacherNumber;
+    }
+
+    public TeachingManagement(String batch, String cgClass, String course, String teacher, String department, String status, String status2, String finalScore, String teacherNumber) {
         this.batch = batch;
         this.cgClass = cgClass;
         this.course = course;
@@ -106,5 +114,6 @@ public class TeachingManagement {
         this.status = status;
         this.status2 = status2;
         this.finalScore = finalScore;
+        this.teacherNumber = teacherNumber;
     }
 }
