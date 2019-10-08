@@ -17,7 +17,6 @@ public class LoginFilter implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest arg0,
                                 HttpServletResponse arg1, Object arg2, Exception arg3)
             throws Exception {
-        System.out.println("之后");
     }
 
     /**
@@ -26,7 +25,6 @@ public class LoginFilter implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
                            Object handler, ModelAndView arg3) throws Exception {
-        System.out.println("进入页面之前");
 
     }
 
@@ -35,7 +33,6 @@ public class LoginFilter implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("进入controller之前");
         //判断session有没有“user”的值，也就是有没有登录
         Object user = request.getSession().getAttribute("user");
         if(user!=null){

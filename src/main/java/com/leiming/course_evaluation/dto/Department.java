@@ -14,6 +14,7 @@ public class Department {
     private Long id;
     private String dptName;
     private String mark;
+    private String status = "未开启";
     @OneToMany(mappedBy = "department")//与学生建立一对多关系
 
     private List<Student> students;
@@ -49,6 +50,14 @@ public class Department {
         this.mark = mark;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public List<Student> getStudents() {
         return students;
     }
@@ -73,9 +82,10 @@ public class Department {
         this.cgClasses = cgClasses;
     }
 
-    public Department(String dptName, String mark, List<Student> students, List<Teacher> teachers, List<CgClass> cgClasses) {
+    public Department(String dptName, String mark, String status, List<Student> students, List<Teacher> teachers, List<CgClass> cgClasses) {
         this.dptName = dptName;
         this.mark = mark;
+        this.status = status;
         this.students = students;
         this.teachers = teachers;
         this.cgClasses = cgClasses;

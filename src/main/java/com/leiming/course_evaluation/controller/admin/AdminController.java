@@ -369,13 +369,13 @@ public class AdminController {
         if (departmentNew.getDptName().equals(department.getDptName())){
 
             if (departmentNew.getMark().equals(department.getMark())){
+                if (departmentNew.getStatus().equals(department.getStatus()))
                 return "noEdit";
             }
 
             departmentNew.setDptName(department.getDptName());
             departmentNew.setMark(department.getMark());
-            System.out.println("开始了");
-            System.out.println(departmentNew.getMark());
+            departmentNew.setStatus(department.getStatus());
             departmentService.saveOne(departmentNew);
             return "ok";
         }
@@ -386,8 +386,7 @@ public class AdminController {
             else {
                 departmentNew.setDptName(department.getDptName());
                 departmentNew.setMark(department.getMark());
-                System.out.println("开始了");
-                System.out.println(departmentNew.getMark());
+                departmentNew.setStatus(department.getStatus());
                 departmentService.saveOne(departmentNew);
                 return "ok";
             }

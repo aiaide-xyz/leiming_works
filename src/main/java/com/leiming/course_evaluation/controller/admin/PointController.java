@@ -1,6 +1,5 @@
 package com.leiming.course_evaluation.controller.admin;
 
-import com.leiming.course_evaluation.dto.Course;
 import com.leiming.course_evaluation.dto.Point;
 import com.leiming.course_evaluation.service.PointService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,10 +1,11 @@
 package com.leiming.course_evaluation.controller.admin;
 
-import com.leiming.course_evaluation.dto.Batch;
 import com.leiming.course_evaluation.dto.EvaluationRecording;
+import com.leiming.course_evaluation.dto.Teacher;
 import com.leiming.course_evaluation.dto.TeachingManagement;
 import com.leiming.course_evaluation.service.BatchService;
 import com.leiming.course_evaluation.service.EvaluationRecordingService;
+import com.leiming.course_evaluation.service.TeacherService;
 import com.leiming.course_evaluation.service.TeachingManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,8 @@ public class AdminEvaluationController {
     private EvaluationRecordingService evaluationRecordingService;
     @Autowired
     private BatchService batchService;
+    @Autowired
+    private TeacherService teacherService;
     @GetMapping("")
     public ModelAndView evaluation(Model model){
         model.addAttribute("type","student");
@@ -43,48 +46,68 @@ public class AdminEvaluationController {
     @GetMapping("/department")
     public ModelAndView departmentEvaluation(Model model){
         model.addAttribute("type","department");
-        return new ModelAndView("admin/evaluation-list.html");
+        return new ModelAndView("admin/evaluation-teacher-list.html");
     }
     @GetMapping("/list")
     @ResponseBody
     public Map<String,Object> evaluationList(String type){
-        if (type.equals("student")){
-
-        } else if (type.equals("department")){
-
-        }
-        List<TeachingManagement> teachingManagementList = teachingManagementService.findAllList();
-        for (TeachingManagement t:teachingManagementList) {
-            String status = batchService.findByBatchName(t.getBatch()).getStatus();
-
-            if (status.equals("正在评教")){
-                t.setStatus2(status);
-            }else if (status.equals("未开启")){
-                t.setStatus2(status);
-            }else if (status.equals("评教结束")){
-                t.setStatus2(status);
-                List<EvaluationRecording> evaluationRecordings = evaluationRecordingService.findByClassAndCourse(t.getCgClass(),t.getCourse());
-                float score = 0;
-                float numb = 0;
-                if (evaluationRecordings!=null){
-                    for (EvaluationRecording e:evaluationRecordings) {
-                        numb++;
-                        score += Float.parseFloat(e.getScore());
-                    }
-                    DecimalFormat decimalFormat=new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
-                    String p=decimalFormat.format(score/numb);//format 返回的是字符串
-                    if (p.length()==3){
-                        p="0"+p;
-                    }
-                    t.setFinalScore(p);
-                }
-            }
-        }
         Map<String,Object> map = new HashMap<>();
-        map.put("data",teachingManagementList);
         map.put("code",0);
         map.put("msg","");
         map.put("count",1000);
+        if (type.equals("student")){
+            List<TeachingManagement> data = teachingManagementService.findAllList();
+            for (TeachingManagement t:data) {
+                String status = batchService.findByBatchName(t.getBatch()).getStatus();
+                if (status.equals("正在评教")){
+                    t.setStatus2(status);
+                }else if (status.equals("未开启")){
+                    t.setStatus2(status);
+                }else if (status.equals("评教结束")){
+                    t.setStatus2(status);
+                    List<EvaluationRecording> evaluationRecordings = evaluationRecordingService.findByClassAndCourse(t.getCgClass(),t.getCourse());
+                    float score = 0;
+                    float numb = 0;
+                    if (evaluationRecordings!=null){
+                        for (EvaluationRecording e:evaluationRecordings) {
+                            numb++;
+                            score += Float.parseFloat(e.getScore());
+                        }
+                        DecimalFormat decimalFormat=new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+                        String p=decimalFormat.format(score/numb);//format 返回的是字符串
+                        if (p.length()==3){
+                            p="0"+p;
+                        }
+                        t.setFinalScore(p);
+                    }
+                }
+                map.put("data",data);
+            }
+        } else if (type.equals("department")){
+            List<Teacher> teacherList = teacherService.findAllList();
+            for (Teacher t:teacherList) {
+                t.setStatus(t.getDepartment().getStatus());
+                t.setDptName(t.getDepartment().getDptName());
+                if (t.getDepartment().getStatus().equals("评教结束")){
+                    List<EvaluationRecording> evaluationRecordingList = evaluationRecordingService.findByTeacherNumber(t.getTeacherNumber());
+                    float score = 0;
+                    float numb = 0;
+                    if (evaluationRecordingList!=null){
+                        for (EvaluationRecording e:evaluationRecordingList) {
+                            numb++;
+                            score += Float.parseFloat(e.getScore());
+                        }
+                        DecimalFormat decimalFormat=new DecimalFormat(".00");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+                        String p=decimalFormat.format(score/numb);//format 返回的是字符串
+                        if (p.length()==3){
+                            p="0"+p;
+                        }
+                        t.setFinalScore(p);
+                    }
+                }
+                map.put("data",teacherList);
+            }
+        }
         return map;
     }
 

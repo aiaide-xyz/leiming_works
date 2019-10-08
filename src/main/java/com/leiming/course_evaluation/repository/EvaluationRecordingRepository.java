@@ -13,6 +13,8 @@ public interface EvaluationRecordingRepository extends JpaRepository<EvaluationR
     List<EvaluationRecording> findByNumber(String stuNumber);
     @Query(value = "select * from evaluation_recording WHERE class_name=?1 AND course=?2 and user_type='student'",nativeQuery = true)
     List<EvaluationRecording> findByClassAndCourse(String cgClass, String course);
-    @Query(value = "select * from evaluation_recording where user_number=?1 and teacher_number=?2",nativeQuery = true)
+    @Query(value = "select * from evaluation_recording where user_number=?1 and teacher_number=?2 and user_type='department'",nativeQuery = true)
     EvaluationRecording findOneByNumber(String userNumber, String teacherNumber);
+    @Query(value = "select * from evaluation_recording where user_number=?1 and user_type='department'",nativeQuery = true)
+    List<EvaluationRecording> findByTeacherNumber(String teacherNumber);
 }

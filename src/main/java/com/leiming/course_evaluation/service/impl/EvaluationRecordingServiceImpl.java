@@ -42,4 +42,9 @@ public class EvaluationRecordingServiceImpl implements EvaluationRecordingServic
     public EvaluationRecording findOneByNumber(String userNumber, String teacherNumber) {
         return evaluationRecordingRepository.findOneByNumber(userNumber,teacherNumber);
     }
+
+    @Override
+    public List<EvaluationRecording> findByTeacherNumber(String teacherNumber) {
+        return evaluationRecordingRepository.findByTeacherNumber(teacherNumber);
+    }
 }

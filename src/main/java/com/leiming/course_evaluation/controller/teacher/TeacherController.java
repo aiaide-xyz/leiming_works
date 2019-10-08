@@ -1,7 +1,6 @@
 package com.leiming.course_evaluation.controller.teacher;
 
-import com.leiming.course_evaluation.dto.Admin;
-import com.leiming.course_evaluation.dto.Student;
+
 import com.leiming.course_evaluation.dto.Teacher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

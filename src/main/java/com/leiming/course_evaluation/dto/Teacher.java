@@ -20,6 +20,10 @@ public class Teacher {
     @Transient//禁止此字段对应数据库
     private String dptName;
     @Transient//禁止此字段对应数据库
+    private String finalScore = "未结算";
+    @Transient//禁止此字段对应数据库
+    private String status2;
+    @Transient//禁止此字段对应数据库
     private String status = "未评教";
     @ManyToOne//与院系实体多对一关系建立
     @JoinColumn(name = "department_id")
@@ -78,6 +82,22 @@ public class Teacher {
         this.dptName = dptName;
     }
 
+    public String getFinalScore() {
+        return finalScore;
+    }
+
+    public void setFinalScore(String finalScore) {
+        this.finalScore = finalScore;
+    }
+
+    public String getStatus2() {
+        return status2;
+    }
+
+    public void setStatus2(String status2) {
+        this.status2 = status2;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -94,12 +114,14 @@ public class Teacher {
         this.department = department;
     }
 
-    public Teacher(String username, String password, String sex, String teacherNumber, String dptName, String status, Department department) {
+    public Teacher(String username, String password, String sex, String teacherNumber, String dptName, String finalScore, String status2, String status, Department department) {
         this.username = username;
         this.password = password;
         this.sex = sex;
         this.teacherNumber = teacherNumber;
         this.dptName = dptName;
+        this.finalScore = finalScore;
+        this.status2 = status2;
         this.status = status;
         this.department = department;
     }

@@ -98,7 +98,7 @@
                 },
                 {
                   "title": "系部方面",
-                  "href": "/admin/evaluation",
+                  "href": "/admin/evaluation/department",
                   "icon": "fa fa-tachometer",
                   "target": "_self"
                 }

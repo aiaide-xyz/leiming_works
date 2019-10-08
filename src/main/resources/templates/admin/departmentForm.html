@@ -25,6 +25,14 @@
         </div>
     </div>
     <div class="layui-form-item">
+        <label class="layui-form-label">评教状态</label>
+        <div class="layui-input-block">
+            <input type="radio" name="status" value="正在评教" title="正在评教" checked>
+            <input type="radio" name="status" value="未开启" title="未开启" th:checked="${department.status=='未开启'}? true : false">
+            <input type="radio" name="status" value="评教结束" title="评教结束" th:checked="${department.status=='评教结束'}? true : false">
+        </div>
+    </div>
+    <div class="layui-form-item">
         <div class="layui-input-block">
             <button type="button" class="layui-btn" id="edit">确认修改</button>
         </div>
@@ -41,16 +49,14 @@
             var id = $('input:hidden').val();
             var dptName = $("input[name='dptName']").val();
             var mark = $("input[name='mark']").val();
-            console.log(id);
-            console.log(dptName);
-            console.log(mark);
+            var status = $('input:radio:checked').val();
             if (dptName==""||mark==""){
                 layer.msg("每项都必须不为空！")
             }else {
                 $.ajax({
                     type:"post",
                     url:"/editDepartment",
-                    data:{"dptName":dptName,"mark":mark,"id":id},
+                    data:{"dptName":dptName,"mark":mark,"id":id,"status":status},
                     success:function (data) {
                         if (data == "ok") {
 

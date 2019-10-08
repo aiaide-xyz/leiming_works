@@ -1,10 +1,7 @@
 package com.leiming.course_evaluation.controller.teacher;
 
 import com.leiming.course_evaluation.dto.*;
-import com.leiming.course_evaluation.service.EvaluationRecordingService;
-import com.leiming.course_evaluation.service.PointService;
-import com.leiming.course_evaluation.service.TeacherService;
-import com.leiming.course_evaluation.service.TeachingManagementService;
+import com.leiming.course_evaluation.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,12 +21,10 @@ import java.util.Map;
 public class TeacherEvaluationController {
     @Autowired
     private TeacherService teacherService;
-
+    @Autowired
+    private DepartmentService departmentService;
     @Autowired
     private PointService pointService;
-    @Autowired
-    private TeachingManagementService teachingManagementService;
-
     @Autowired
     private EvaluationRecordingService evaluationRecordingService;
 
@@ -39,8 +34,15 @@ public class TeacherEvaluationController {
      * @return
      */
     @GetMapping("")
-    public String toEvaluation(HttpServletRequest request, Model model){
-        return "teacher/evaluation-list.html";
+    public ModelAndView toEvaluation(HttpServletRequest request, Model model){
+        Teacher teacher = (Teacher) request.getSession().getAttribute("user");
+        Department department = departmentService.findByID(teacher.getDepartment().getId());
+        if (department.getStatus().equals("未开启")){
+            model.addAttribute("msg","未开启");
+        }else if (department.getStatus().equals("评教结束")){
+            model.addAttribute("msg","评教结束");
+        }
+        return new ModelAndView("teacher/evaluation-list.html","model",model);
     }
     @GetMapping("/list")
     @ResponseBody

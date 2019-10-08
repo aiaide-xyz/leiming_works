@@ -13,6 +13,7 @@
 <body>
 <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
     <legend style="color: red;font-weight:bold;display: none" align="center">评教未开启！</legend>
+    <legend style="color: red;font-weight:bold;display: none" align="center">评教已结束！</legend>
 </fieldset>
 <div class="layuimini-container">
     <div class="layuimini-main">
@@ -72,13 +73,18 @@
     });
 </script>
 <script type="text/javascript" th:inline="javascript">
-$(function () {
-    var msg = [[${msg}]];
-    if (msg!=""&&msg!=null){
-        $(".layuimini-container").remove();
-        $("legend").css("display","");
-    }
-})
+    $(function () {
+        var msg = [[${msg}]];
+        if (msg!=""&&msg!=null){
+            $(".layuimini-container").remove();
+            if (msg=="未开启"){
+                $("legend:eq(0)").css("display","");
+            }else if (msg=="评教结束"){
+                $("legend:eq(1)").css("display","");
+            }
+
+        }
+    })
 
 </script>
 
