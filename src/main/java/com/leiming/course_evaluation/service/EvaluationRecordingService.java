@@ -1,6 +1,7 @@
 package com.leiming.course_evaluation.service;
 
 import com.leiming.course_evaluation.dto.EvaluationRecording;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
@@ -18,8 +19,12 @@ public interface EvaluationRecordingService {
     List<EvaluationRecording> findAll();
 
     List<EvaluationRecording> findByClassAndCourse(String cgClass, String course);
-    EvaluationRecording findOneByNumber(String userNumber,String teacherNumber);
+    EvaluationRecording findOneByNumber(String userNumber, String teacherNumber);
 
 
     List<EvaluationRecording> findByTeacherNumber(String teacherNumber);
+
+      void deleteEvaluationRecording(Long id);
+
+    int deleteEvaluationRecordingByTeacherId(String id);
 }

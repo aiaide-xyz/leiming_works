@@ -47,4 +47,14 @@ public class EvaluationRecordingServiceImpl implements EvaluationRecordingServic
     public List<EvaluationRecording> findByTeacherNumber(String teacherNumber) {
         return evaluationRecordingRepository.findByTeacherNumber(teacherNumber);
     }
+
+    @Override
+    public void deleteEvaluationRecording(Long id) {
+         evaluationRecordingRepository.deleteEvaluationRecording(id);
+    }
+
+    @Override
+    public int deleteEvaluationRecordingByTeacherId(String id) {
+       return evaluationRecordingRepository.deleteEvaluationRecordingByTeacherId(id);
+    }
 }

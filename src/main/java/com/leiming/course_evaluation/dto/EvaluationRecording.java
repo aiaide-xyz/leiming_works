@@ -147,4 +147,22 @@ public class EvaluationRecording {
         this.selectedContent = selectedContent;
         this.score = score;
     }
+
+    @Override
+    public String toString() {
+        return "EvaluationRecording{" +
+                "id=" + id +
+                ", userType='" + userType + '\'' +
+                ", teacher='" + teacher + '\'' +
+                ", course='" + course + '\'' +
+                ", teacherNumber='" + teacherNumber + '\'' +
+                ", batch='" + batch + '\'' +
+                ", username='" + username + '\'' +
+                ", userNumber='" + userNumber + '\'' +
+                ", className='" + className + '\'' +
+                ", department='" + department + '\'' +
+                ", selectedContent='" + selectedContent + '\'' +
+                ", score='" + score + '\'' +
+                '}';
+    }
 }
