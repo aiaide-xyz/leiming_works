@@ -101,7 +101,6 @@ public class AdminEvaluationController {
                     }else {
                         float score = 0;
                         float numb = 0;
-
                         for (EvaluationRecording e : evaluationRecordingList) {
                             numb++;
                             score += Float.parseFloat(e.getScore());
@@ -113,8 +112,6 @@ public class AdminEvaluationController {
                         }
                         t.setFinalScore(p);
                     }
-
-
                 }
                 map.put("data", teacherList);
             }
@@ -151,22 +148,15 @@ public class AdminEvaluationController {
     public String remove(Long id) {
         Teacher teacher = teacherService.findById(id);
         try {
-            int i = evaluationRecordingService.deleteEvaluationRecordingByTeacherId(teacher.getTeacherNumber());
-            if (i == 1){
+            int i = evaluationRecordingService.deleteEvaluationRecordingByTeacherId(Long.valueOf(teacher.getTeacherNumber()));
+            if (i == 0){
+                return "not";
+            }else {
                 return "ok";
             }
-            else {
-                return "not";
             }
-
-
-        }
         catch (Exception e){
             return "no";
         }
-
-
     }
-
-
 }

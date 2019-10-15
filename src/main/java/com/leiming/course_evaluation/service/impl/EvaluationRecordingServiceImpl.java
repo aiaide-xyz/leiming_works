@@ -54,7 +54,12 @@ public class EvaluationRecordingServiceImpl implements EvaluationRecordingServic
     }
 
     @Override
-    public int deleteEvaluationRecordingByTeacherId(String id) {
-       return evaluationRecordingRepository.deleteEvaluationRecordingByTeacherId(id);
+    public void deleteEvaluationRecordingById(Long id) {
+        evaluationRecordingRepository.deleteById(id);
+    }
+
+    @Override
+    public int deleteEvaluationRecordingByTeacherId(Long teacherNumber) {
+        return evaluationRecordingRepository.deleteByTeacherId(teacherNumber);
     }
 }

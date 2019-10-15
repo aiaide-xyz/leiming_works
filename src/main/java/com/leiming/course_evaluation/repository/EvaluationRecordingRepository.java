@@ -28,7 +28,5 @@ public interface EvaluationRecordingRepository extends JpaRepository<EvaluationR
     @Query(value = "delete from evaluation_recording where teacher_number = ?1",nativeQuery = true)
     @Modifying
     @Transactional
-    int deleteEvaluationRecordingByTeacherId(String id);
-
-
+    int deleteByTeacherId(Long teacherNumber);
 }

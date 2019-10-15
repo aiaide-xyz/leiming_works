@@ -16,7 +16,6 @@ public class Department {
     private String mark;
     private String status = "未开启";
     @OneToMany(mappedBy = "department")//与学生建立一对多关系
-
     private List<Student> students;
     @OneToMany(mappedBy = "department")//与教师建立一对多关系
     private List<Teacher> teachers = new ArrayList<>();

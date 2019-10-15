@@ -24,7 +24,9 @@ public interface EvaluationRecordingService {
 
     List<EvaluationRecording> findByTeacherNumber(String teacherNumber);
 
-      void deleteEvaluationRecording(Long id);
+    void deleteEvaluationRecording(Long id);
 
-    int deleteEvaluationRecordingByTeacherId(String id);
+    void deleteEvaluationRecordingById(Long id);
+
+    int deleteEvaluationRecordingByTeacherId(Long teacherNumber);
 }
