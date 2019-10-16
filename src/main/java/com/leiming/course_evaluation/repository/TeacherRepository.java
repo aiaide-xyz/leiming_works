@@ -4,6 +4,7 @@ import com.leiming.course_evaluation.dto.Student;
 import com.leiming.course_evaluation.dto.Teacher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -28,4 +29,6 @@ public interface TeacherRepository extends JpaRepository<Teacher,Long> {
     int deleteAllTeacher(List<Long> ids);
     @Query(value = "from Teacher where teacherNumber = ?1")
     Teacher findOneByNumber(String teacherNumber);
+
+    Page<Teacher> findAll(Specification<Teacher> teacherSpecification, Pageable pageable);
 }

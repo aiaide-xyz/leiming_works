@@ -6,6 +6,7 @@ import com.leiming.course_evaluation.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,5 +51,10 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public List<Teacher> findAllList() {
         return teacherRepository.findAll();
+    }
+
+    @Override
+    public Page<Teacher> findAll(Specification<Teacher> teacherSpecification, Pageable pageable) {
+        return teacherRepository.findAll(teacherSpecification,pageable);
     }
 }

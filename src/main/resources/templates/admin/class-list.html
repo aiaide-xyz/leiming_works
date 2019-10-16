@@ -22,16 +22,13 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">班级名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                                <input type="text" id="className" name="className" autocomplete="off" class="layui-input">
                             </div>
-                        </div>
-                        <div class="layui-inline">
-                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">搜索</a>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">班级类型</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
+                                <input type="text" id="type" name="type" autocomplete="off" class="layui-input">
                             </div>
                         </div>
 
@@ -45,7 +42,6 @@
 
         <div class="layui-btn-group">
             <button class="layui-btn data-add-btn">添加</button>
-            <button class="layui-btn layui-btn-danger data-delete-btn">删除</button>
         </div>
         <div class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"> ></div>
         <script type="text/html" id="currentTableBar">
@@ -89,24 +85,24 @@
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
+            // 搜索条件
+            var className = $("#className").val();
+            var type = $("#type").val();
 
             //执行搜索重载
             table.reload('currentTableId', {
+                url:"/LikeCgClass",
                 page: {
                     curr: 1
                 }
                 , where: {
-                    searchParams: result
+                    'className':$.trim(className),
+                    'type':$.trim(type)
                 }
             }, 'data');
 
             return false;
         });
-
         // 监听添加操作
         $(".data-add-btn").on("click", function () {
             layer.open({
@@ -130,7 +126,7 @@
         });
 
         // 监听删除操作
-        $(".data-delete-btn").on("click", function () {
+        /*$(".data-delete-btn").on("click", function () {
             var checkStatus = table.checkStatus('currentTableId')
                 , data = checkStatus.data;
             if (JSON.stringify(data) == null || JSON.stringify(data) == "[]"){
@@ -174,7 +170,7 @@
                 });
             }
         });
-
+*/
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {
             console.log(obj)

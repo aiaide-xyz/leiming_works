@@ -3,6 +3,7 @@ package com.leiming.course_evaluation.repository;
 import com.leiming.course_evaluation.dto.TeachingManagement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +32,7 @@ public interface TeachingManagementRepository extends JpaRepository<TeachingMana
     String finBatchByClass(String className);
     @Query(value = "from TeachingManagement where cgClass = ?1 and course = ?2")
     TeachingManagement findOneByClassAndCourse(String cgClass, String course);
+
+    Page<TeachingManagement> findAll(Specification<TeachingManagement> teachingManagementSpecification, Pageable pageable);
+
 }

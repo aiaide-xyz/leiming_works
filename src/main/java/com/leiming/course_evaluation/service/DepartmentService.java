@@ -4,6 +4,7 @@ import com.leiming.course_evaluation.dto.Department;
 import com.leiming.course_evaluation.dto.Teacher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -21,4 +22,5 @@ public interface DepartmentService {
     int deleteDepartment(int id);
     int deleteAllDepartment(List<Long> depList);
     Department findOneByName(String dptName);
+    Page<Department> findAll(Specification<Department> departmentSpecification, Pageable pageable);
 }

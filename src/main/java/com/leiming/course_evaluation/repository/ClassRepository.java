@@ -4,6 +4,7 @@ import com.leiming.course_evaluation.dto.CgClass;
 import com.leiming.course_evaluation.dto.Teacher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,6 @@ public interface ClassRepository extends JpaRepository<CgClass,Long> {
 
     @Query(value = "from CgClass where className = ?1")
     CgClass findOneByName(String className);
+
+    Page<CgClass> findAll(Specification<CgClass> cgClassSpecification, Pageable pageable);
 }

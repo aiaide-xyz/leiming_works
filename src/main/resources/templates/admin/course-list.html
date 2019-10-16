@@ -22,7 +22,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">课程名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                                <input type="text" id="courseName" name="courseName" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -78,24 +78,21 @@
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
-
+            // 搜索条件
+            var courseName = $("#courseName").val();
             //执行搜索重载
             table.reload('currentTableId', {
+                url:"/LikeCourse",
                 page: {
                     curr: 1
                 }
                 , where: {
-                    searchParams: result
+                    'courseName': $.trim(courseName)
                 }
             }, 'data');
 
             return false;
         });
-
         // 监听添加操作
         $(".data-add-btn").on("click", function () {
             layer.open({

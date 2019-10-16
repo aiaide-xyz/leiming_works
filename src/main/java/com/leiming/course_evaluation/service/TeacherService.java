@@ -4,6 +4,7 @@ import com.leiming.course_evaluation.dto.Student;
 import com.leiming.course_evaluation.dto.Teacher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface TeacherService {
 
     Teacher findOneByNumber(String teacherNumber);
     List<Teacher> findAllList();
+    Page<Teacher> findAll(Specification<Teacher> teacherSpecification, Pageable pageable);
+
 }

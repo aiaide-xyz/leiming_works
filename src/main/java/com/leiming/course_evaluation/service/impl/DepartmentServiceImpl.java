@@ -6,6 +6,7 @@ import com.leiming.course_evaluation.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,5 +61,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public Department findOneByName(String dptName) {
         return departmentRepository.findOneByName(dptName);
+    }
+
+    @Override
+    public Page<Department> findAll(Specification<Department> departmentSpecification, Pageable pageable) {
+        return departmentRepository.findAll(departmentSpecification,pageable);
     }
 }

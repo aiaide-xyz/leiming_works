@@ -22,7 +22,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">院系名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                                <input type="text" id="dptName" name="dptName" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -35,7 +35,6 @@
 
         <div class="layui-btn-group">
             <button class="layui-btn data-add-btn">添加</button>
-            <button class="layui-btn layui-btn-danger data-delete-btn">删除</button>
         </div>
         <div class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"> ></div>
         <script type="text/html" id="currentTableBar">
@@ -78,18 +77,15 @@
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
-
+            var dptName=$('#dptName').val();
             //执行搜索重载
             table.reload('currentTableId', {
+                url:"/LikeDepartment",
                 page: {
                     curr: 1
                 }
                 , where: {
-                    searchParams: result
+                    'dptName' : $.trim(dptName)
                 }
             }, 'data');
 
@@ -119,7 +115,7 @@
         });
 
         // 监听删除操作
-        $(".data-delete-btn").on("click", function () {
+        /*$(".data-delete-btn").on("click", function () {
             var checkStatus = table.checkStatus('currentTableId')
                 , data = checkStatus.data;
             if (JSON.stringify(data) == null || JSON.stringify(data) == "[]"){
@@ -164,7 +160,7 @@
                     }
                 });
             }
-        });
+        });*/
 
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {

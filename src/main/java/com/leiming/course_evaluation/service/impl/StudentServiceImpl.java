@@ -6,6 +6,7 @@ import com.leiming.course_evaluation.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,5 +47,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student findOneByNumber(String stuNumber) {
         return studentRepository.findOneByNumber(stuNumber);
+    }
+
+    @Override
+    public Page<Student> findAll(Specification<Student> spc, Pageable pageable) {
+        return studentRepository.findAll(spc, pageable);
     }
 }

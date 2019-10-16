@@ -2,13 +2,17 @@ package com.leiming.course_evaluation.controller.admin;
 
 import com.leiming.course_evaluation.dto.*;
 import com.leiming.course_evaluation.service.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.persistence.criteria.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -208,6 +212,45 @@ public class AdminController {
     }
 
 
+    //搜索学生
+    @GetMapping("/LikeStudents")
+    @ResponseBody
+    public Map<String,Object> student(Integer page, Integer limit,Student student){
+        page--;
+        Pageable pageable = PageRequest.of(page,limit);
+        List<Student> content = studentService.findAll(new Specification<Student>(){
+            @Override
+            public Predicate toPredicate(Root<Student> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder cb) {
+                List<Predicate> list = new ArrayList<>();
+                //根据username 模糊查询student
+                if (StringUtils.isNotBlank(student.getUsername())) {
+                    list.add(cb.like(root.get("username").as(String.class), "%" + student.getUsername() + "%"));
+                }
+                //根据stuNumber 查询student
+                if (StringUtils.isNotBlank(student.getStuNumber())) {
+                    list.add(cb.like(root.get("stuNumber").as(String.class), "%"+ student.getStuNumber()+ "%"));
+                }
+                //根据className 查询student
+                if (StringUtils.isNotBlank(student.getClassName())) {
+                    Join<CgClass, Student> join = root.join("cgClass", JoinType.LEFT);
+                    list.add(cb.like(join.get("className"), "%"+  student.getClassName()+ "%" ));
+                }
+                Predicate[] pre = new Predicate[list.size()];
+                criteriaQuery.where(list.toArray(pre));
+                return cb.and(list.toArray(pre));
+            }
+        },pageable).getContent();
+        Map<String,Object> map = new HashMap<>();
+        for (Student s:content
+        ) {
+            s.setDptName(s.getDepartment().getDptName());
+            s.setClassName(s.getCgClass().getClassName());
+        }
+        map.put("data",content);
+        map.put("size",studentService.findAllCount());
+        return map;
+    }
+
 
     //教师列表获取
     @GetMapping("/teachers")
@@ -336,7 +379,43 @@ public class AdminController {
 
 
 
-
+    //搜索老师
+    @GetMapping("/LikeTeacher")
+    @ResponseBody
+    public Map<String,Object> teacher(Integer page, Integer limit,Teacher teacher){
+        page--;
+        Pageable pageable = PageRequest.of(page,limit);
+        List<Teacher> content = teacherService.findAll(new Specification<Teacher>(){
+            @Override
+            public Predicate toPredicate(Root<Teacher> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder cb) {
+                List<Predicate> list = new ArrayList<>();
+                //根据username 模糊查询teacher
+                if (StringUtils.isNotBlank(teacher.getUsername())) {
+                    list.add(cb.like(root.get("username").as(String.class), "%" + teacher.getUsername() + "%"));
+                }
+                //根据teacherNumber 查询teacher
+                if (StringUtils.isNotBlank(teacher.getTeacherNumber())) {
+                    list.add(cb.like(root.get("teacherNumber").as(String.class),"%" +  teacher.getTeacherNumber()+ "%"));
+                }
+                //根据dptName 查询teacher
+                if (StringUtils.isNotBlank(teacher.getDptName())) {
+                    Join<Department, Teacher> join = root.join("department", JoinType.LEFT);
+                    list.add(cb.like(join.get("dptName"),"%"+ teacher.getDptName()+ "%"));
+                }
+                Predicate[] pre = new Predicate[list.size()];
+                criteriaQuery.where(list.toArray(pre));
+                return cb.and(list.toArray(pre));
+            }
+        },pageable).getContent();
+        Map<String,Object> map = new HashMap<>();
+        for (Teacher t:content
+        ) {
+            t.setDptName(t.getDepartment().getDptName());
+        }
+        map.put("data",content);
+        map.put("size",teacherService.findAllCount());
+        return map;
+    }
 
 
 
@@ -430,7 +509,7 @@ public class AdminController {
         return "no";
     }
     //多个删除
-    @GetMapping("/deleteAllDepartment")
+    /*@GetMapping("/deleteAllDepartment")
     @ResponseBody
     public String deleteAllDepartment(@RequestParam("id") String id){
         // 接收包含stuId的字符串，并将它分割成字符串数组
@@ -447,8 +526,33 @@ public class AdminController {
         // 调用service层的批量删除函数
         departmentService.deleteAllDepartment(LString);
         return "ok";
-    }
+    }*/
 
+
+    //搜索院系
+    @GetMapping("/LikeDepartment")
+    @ResponseBody
+    public Map<String,Object> department(Integer page, Integer limit,Department department){
+        page--;
+        Pageable pageable = PageRequest.of(page,limit);
+        List<Department> content = departmentService.findAll(new Specification<Department>(){
+            @Override
+            public Predicate toPredicate(Root<Department> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder cb) {
+                List<Predicate> list = new ArrayList<>();
+                //根据dptName 模糊查询Department
+                if (StringUtils.isNotBlank(department.getDptName())) {
+                    list.add(cb.like(root.get("dptName").as(String.class), "%" + department.getDptName() + "%"));
+                }
+                Predicate[] pre = new Predicate[list.size()];
+                criteriaQuery.where(list.toArray(pre));
+                return cb.and(list.toArray(pre));
+            }
+        },pageable).getContent();
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",content);
+        map.put("size",departmentService.findAllCount());
+        return map;
+    }
 
 
     //班级列表获取
@@ -550,7 +654,7 @@ public class AdminController {
         return "ok";
     }
     //删除多个
-    @GetMapping("/deleteAllClass")
+    /*@GetMapping("/deleteAllClass")
     @ResponseBody
     public String deleteAllClass(@RequestParam("id") String id){
         // 接收包含stuId的字符串，并将它分割成字符串数组
@@ -568,8 +672,41 @@ public class AdminController {
         // 调用service层的批量删除函数
         classService.deleteAllClass(LString);
         return "ok";
-    }
+    }*/
 
+
+    //搜索班级
+    @GetMapping("/LikeCgClass")
+    @ResponseBody
+    public Map<String,Object> cgClass(Integer page, Integer limit,CgClass cgClass){
+        page--;
+        Pageable pageable = PageRequest.of(page,limit);
+        List<CgClass> content = classService.findAll(new Specification<CgClass>(){
+            @Override
+            public Predicate toPredicate(Root<CgClass> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder cb) {
+                List<Predicate> list = new ArrayList<>();
+                //根据className 模糊查询class
+                if (StringUtils.isNotBlank(cgClass.getClassName())) {
+                    list.add(cb.like(root.get("className").as(String.class), "%" + cgClass.getClassName() + "%"));
+                }
+                //根据type 查询class
+                if (StringUtils.isNotBlank(cgClass.getType())) {
+                    list.add(cb.equal(root.get("type").as(String.class), cgClass.getType()));
+                }
+                Predicate[] pre = new Predicate[list.size()];
+                criteriaQuery.where(list.toArray(pre));
+                return cb.and(list.toArray(pre));
+            }
+        },pageable).getContent();
+        Map<String,Object> map = new HashMap<>();
+        for (CgClass t:content
+        ) {
+            t.setDptName(t.getDepartment().getDptName());
+        }
+        map.put("data",content);
+        map.put("size",classService.findAllCount());
+        return map;
+    }
 
 
 
@@ -652,6 +789,34 @@ public class AdminController {
         int i = courseService.deleteAllCourse(LString);
         return i;
     }
+
+
+    //搜索课程
+    @GetMapping("/LikeCourse")
+    @ResponseBody
+    public Map<String,Object> course(Integer page, Integer limit,Course course){
+        page--;
+        Pageable pageable = PageRequest.of(page,limit);
+        List<Course> content = courseService.findAll(new Specification<Course>(){
+            @Override
+            public Predicate toPredicate(Root<Course> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder cb) {
+                List<Predicate> list = new ArrayList<>();
+                //根据dptName 模糊查询Department
+                if (StringUtils.isNotBlank(course.getCourseName())) {
+                    list.add(cb.like(root.get("courseName").as(String.class), "%" + course.getCourseName() + "%"));
+                }
+                Predicate[] pre = new Predicate[list.size()];
+                criteriaQuery.where(list.toArray(pre));
+                return cb.and(list.toArray(pre));
+            }
+        },pageable).getContent();
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",content);
+        map.put("size",courseService.findAllCount());
+        return map;
+    }
+
+
 
 
 
@@ -870,6 +1035,44 @@ public class AdminController {
         // 调用service层的批量删除函数
         int i = teachingManagementService.deleteAllTeacherManagement(LString);
         return i;
+    }
+
+
+    //搜索授课
+    @GetMapping("/LikeTeachingManagements")
+    @ResponseBody
+    public Map<String,Object> teachingManagement(Integer page, Integer limit,TeachingManagement teachingManagement){
+        page--;
+        Pageable pageable = PageRequest.of(page,limit);
+        List<TeachingManagement> content = teachingManagementService.findAll(new Specification<TeachingManagement>(){
+            @Override
+            public Predicate toPredicate(Root<TeachingManagement> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder cb) {
+                List<Predicate> list = new ArrayList<>();
+                //根据cgClass 模糊查询teachingManagement
+                if (StringUtils.isNotBlank(teachingManagement.getCgClass())) {
+                    list.add(cb.like(root.get("cgClass").as(String.class), "%" + teachingManagement.getCgClass() + "%"));
+                }
+                //根据course 查询teachingManagement
+                if (StringUtils.isNotBlank(teachingManagement.getCourse())) {
+                    list.add(cb.like(root.get("course").as(String.class),"%" + teachingManagement.getCourse() + "%"));
+                }
+                //根据teacher 模糊查询teachingManagement
+                if (StringUtils.isNotBlank(teachingManagement.getTeacher())) {
+                    list.add(cb.like(root.get("teacher").as(String.class), "%" + teachingManagement.getTeacher() + "%"));
+                }
+                //根据batch 查询teachingManagement
+                if (StringUtils.isNotBlank(teachingManagement.getBatch())) {
+                    list.add(cb.like(root.get("batch").as(String.class), "%"+ teachingManagement.getBatch() +"%"));
+                }
+                Predicate[] pre = new Predicate[list.size()];
+                criteriaQuery.where(list.toArray(pre));
+                return cb.and(list.toArray(pre));
+            }
+        },pageable).getContent();
+        Map<String,Object> map = new HashMap<>();
+        map.put("data",content);
+        map.put("size",teachingManagementService.findAllCount());
+        return map;
     }
 
 

@@ -4,6 +4,7 @@ import com.leiming.course_evaluation.dto.Admin;
 import com.leiming.course_evaluation.dto.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -32,4 +33,6 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
 
     @Query(value = "from Student where stuNumber = ?1")
     Student findOneByNumber(String stuNumber);
+    Page<Student> findAll(Specification<Student> spc, Pageable pageable);
+
 }

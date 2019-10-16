@@ -3,6 +3,7 @@ package com.leiming.course_evaluation.service;
 import com.leiming.course_evaluation.dto.TeachingManagement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
@@ -20,4 +21,5 @@ public interface TeachingManagementService {
 
     String findBatchByClass(String className);
     TeachingManagement findOneByClassAndCourse(String cgClass, String course);
+    Page<TeachingManagement> findAll(Specification<TeachingManagement> teachingManagementSpecification, Pageable pageable);
 }

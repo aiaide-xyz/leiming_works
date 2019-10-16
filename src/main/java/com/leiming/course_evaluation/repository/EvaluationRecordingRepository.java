@@ -1,6 +1,9 @@
 package com.leiming.course_evaluation.repository;
 
 import com.leiming.course_evaluation.dto.EvaluationRecording;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +20,7 @@ public interface EvaluationRecordingRepository extends JpaRepository<EvaluationR
     List<EvaluationRecording> findByClassAndCourse(String cgClass, String course);
     @Query(value = "select * from evaluation_recording where user_number=?1 and teacher_number=?2 and user_type='department'",nativeQuery = true)
     EvaluationRecording findOneByNumber(String userNumber, String teacherNumber);
-    @Query(value = "select * from evaluation_recording where user_number=?1 and user_type='department'",nativeQuery = true)
+    @Query(value = "select * from evaluation_recording where teacher_number=?1 and user_type='department'",nativeQuery = true)
     List<EvaluationRecording> findByTeacherNumber(String teacherNumber);
 
     @Query(value = "delete from evaluation_recording where id = ?1",nativeQuery = true)
@@ -29,4 +32,6 @@ public interface EvaluationRecordingRepository extends JpaRepository<EvaluationR
     @Modifying
     @Transactional
     int deleteByTeacherId(Long teacherNumber);
+    Page<EvaluationRecording> findAll(Specification<EvaluationRecording> evaluationRecordingSpecification, Pageable pageable);
+
 }

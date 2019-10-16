@@ -22,16 +22,13 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">教师</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                                <input type="text" id="teacher" name="teacher" autocomplete="off" class="layui-input">
                             </div>
-                        </div>
-                        <div class="layui-inline">
-                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">搜索</a>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">班级</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
+                                <input type="text" id="cgClass" name="cgClass" autocomplete="off" class="layui-input">
                             </div>
                         </div>
 
@@ -94,18 +91,18 @@
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
-
+            //搜索条件
+            var teacher = $("#teacher").val();
+            var cgClass = $("#cgClass").val();
             //执行搜索重载
             table.reload('currentTableId', {
+                url:"/admin/evaluation/LikeEvaluation",
                 page: {
                     curr: 1
                 }
                 , where: {
-                    searchParams: result
+                    'teacher' : $.trim(teacher),
+                    'cgClass' : $.trim(cgClass)
                 }
             }, 'data');
 
@@ -177,9 +174,15 @@
                             success:function (data) {
                                 if (data=="ok"){
                                     layer.alert('重置成功');
-                                    // setTimeout(function(){
-                                    //     location.reload();
-                                    // },700);
+                                    var type = $("input:hidden").val();
+                                    table.reload('currentTableId', {
+                                        url: '/admin/evaluation/list?type='+type,
+                                        page: {
+                                            curr: 1
+                                        }
+                                        , where: {
+                                        }
+                                    }, 'data');
                                 }else {
                                     layer.alert("已重置")
                                 }

@@ -3,6 +3,7 @@ package com.leiming.course_evaluation.repository;
 import com.leiming.course_evaluation.dto.Department;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -33,4 +34,6 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
     int deleteAllDepartment(List<Long> ids);
     @Query(value = "from Department where dptName=?1")
     Department findOneByName(String dptName);
+    Page<Department> findAll(Specification<Department> departmentSpecification, Pageable pageable);
+
 }

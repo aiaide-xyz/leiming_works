@@ -22,19 +22,19 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">姓名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                                <input type="text" id="username" name="username" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">工号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
+                                <input type="text" id="teacherNumber" name="teacherNumber" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">院系</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
+                                <input type="text" id="dptName" name="dptName" autocomplete="off" class="layui-input">
                             </div>
                         </div>
 
@@ -94,20 +94,22 @@
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
-
+            // 搜索条件
+            var username = $('#username').val();
+            var teacherNumber = $('#teacherNumber').val();
+            var dptName = $('#dptName').val();
             //执行搜索重载
             table.reload('currentTableId', {
+                url:"/LikeTeacher",
                 page: {
                     curr: 1
                 }
                 , where: {
-                    searchParams: result
+                    'username': $.trim(username),
+                    'teacherNumber': $.trim(teacherNumber),
+                    'dptName': $.trim(dptName),
                 }
-            }, 'data');
+            });
 
             return false;
         });

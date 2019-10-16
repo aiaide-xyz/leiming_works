@@ -4,6 +4,9 @@ import com.leiming.course_evaluation.dto.EvaluationRecording;
 import com.leiming.course_evaluation.repository.EvaluationRecordingRepository;
 import com.leiming.course_evaluation.service.EvaluationRecordingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,5 +64,10 @@ public class EvaluationRecordingServiceImpl implements EvaluationRecordingServic
     @Override
     public int deleteEvaluationRecordingByTeacherId(Long teacherNumber) {
         return evaluationRecordingRepository.deleteByTeacherId(teacherNumber);
+    }
+
+    @Override
+    public Page<EvaluationRecording> findAll(Specification<EvaluationRecording> evaluationRecordingSpecification, Pageable pageable) {
+        return evaluationRecordingRepository.findAll(evaluationRecordingSpecification,pageable);
     }
 }

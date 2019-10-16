@@ -22,19 +22,19 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">姓名</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                                <input type="text" id="username" name="username" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">学号</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
+                                <input type="text" id="stuNumber" name="stuNumber" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
                             <label class="layui-form-label">班级</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
+                                <input type="text" id="className" name="className" autocomplete="off" class="layui-input">
                             </div>
                         </div>
 
@@ -93,22 +93,23 @@
         });
 
         // 监听搜索操作
-        form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
-
+        form.on('submit(data-search-btn)', function () {
+            // 搜索条件
+            var username = $('#username').val();
+            var className = $('#className').val();
+            var stuNumber = $('#stuNumber').val();
             //执行搜索重载
             table.reload('currentTableId', {
+                url:"/LikeStudents",
                 page: {
                     curr: 1
                 }
                 , where: {
-                    searchParams: result
+                    'username': $.trim(username),
+                    'className': $.trim(className),
+                    'stuNumber': $.trim(stuNumber),
                 }
-            }, 'data');
-
+            });
             return false;
         });
 
